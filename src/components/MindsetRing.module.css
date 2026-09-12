@@ -1,0 +1,271 @@
+/* MindsetRing — all styles scoped to this module (never touches globals).
+   Reuses global design tokens (--navy, --paper, --aqua, --muted, --font-instrument)
+   via var() with safe fallbacks so the component also works in isolation. */
+
+.section {
+  position: relative;
+  height: 360vh; /* tall scroll track: 4 persona bands + 1 exit band */
+  background: var(--navy, #081c26);
+  color: #fff;
+}
+
+.sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+}
+
+.stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* after the last persona, the whole thing floats away to reveal what's next */
+.stageExit {
+  opacity: 0;
+  transform: translateY(-64px) scale(0.96);
+}
+
+/* ── heading, centered near the top ───────────────────────────────────────── */
+.head {
+  position: absolute;
+  top: clamp(24px, 8vh, 88px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(680px, 90vw);
+  text-align: center;
+  z-index: 3;
+  pointer-events: none;
+}
+.eyebrow {
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--aqua, #98d6d3);
+  margin: 0 0 10px;
+}
+.heading {
+  font-family: var(--font-instrument), ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(1.5rem, 4vw, 2.6rem);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin: 0;
+  text-wrap: balance;
+}
+
+/* ── the ring, front and center ───────────────────────────────────────────── */
+.ringInner {
+  position: relative;
+  width: min(78vw, 360px);
+  aspect-ratio: 1;
+  z-index: 2;
+}
+.ring {
+  width: 100%;
+  height: 100%;
+  display: block;
+  filter: drop-shadow(0 18px 50px rgba(0, 0, 0, 0.4));
+}
+.ring circle {
+  transition: none; /* values are tweened in JS via rAF */
+}
+
+/* arc labels around the ring */
+.label {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+  z-index: 3;
+}
+.labelVal {
+  font-size: clamp(1.1rem, 3vw, 1.6rem);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.labelName {
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.78);
+  font-weight: 600;
+}
+.labelCerebral {
+  top: 20%;
+  left: -8%;
+  text-align: right;
+  align-items: flex-end;
+}
+.labelAlpha {
+  top: 20%;
+  right: -8%;
+  text-align: left;
+  align-items: flex-start;
+}
+.labelPrime {
+  bottom: -4%;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  align-items: center;
+}
+
+/* ── floating persona figures — alternating sides, edge-masked ────────────── */
+.figure {
+  position: absolute;
+  top: 50%;
+  width: min(38vw, 420px);
+  max-width: 46vw;
+  margin: 0;
+  opacity: 0;
+  z-index: 1;
+  pointer-events: none;
+  transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+.figLeft {
+  left: 0;
+  transform: translate(-4%, calc(-50% + 48px));
+  text-align: left;
+}
+.figRight {
+  right: 0;
+  transform: translate(4%, calc(-50% + 48px));
+  text-align: right;
+}
+.figActive {
+  opacity: 1;
+}
+.figLeft.figActive,
+.figRight.figActive {
+  transform: translate(0, -50%);
+}
+
+.figImg {
+  width: 100%;
+  height: auto;
+  max-height: 62vh;
+  object-fit: cover;
+  border-radius: 18px;
+  display: block;
+}
+/* dissolve the edge nearest the ring so the image never clashes with it */
+.figLeft .figImg {
+  -webkit-mask-image: linear-gradient(to right, #000 30%, transparent 96%);
+  mask-image: linear-gradient(to right, #000 30%, transparent 96%);
+}
+.figRight .figImg {
+  -webkit-mask-image: linear-gradient(to left, #000 30%, transparent 96%);
+  mask-image: linear-gradient(to left, #000 30%, transparent 96%);
+}
+
+.figCaption {
+  margin-top: 14px;
+  padding: 0 6px;
+}
+.figTag {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aqua, #98d6d3);
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.figQuote {
+  display: block;
+  font-family: var(--font-instrument), ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(1.1rem, 2.4vw, 1.6rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+  color: #fff;
+}
+
+/* ── step markers ─────────────────────────────────────────────────────────── */
+.steps {
+  position: absolute;
+  bottom: clamp(20px, 6vh, 56px);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  z-index: 3;
+}
+.stepDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.24);
+  transition: background 0.3s ease, width 0.3s ease;
+}
+.stepActive {
+  width: 26px;
+  background: var(--aqua, #98d6d3);
+}
+
+/* ── mobile: images fade in above the ring instead of hard left/right ─────── */
+@media (max-width: 768px) {
+  .figure {
+    top: auto;
+    bottom: 8vh;
+    left: 50%;
+    right: auto;
+    width: min(78vw, 340px);
+    max-width: 78vw;
+    text-align: center;
+  }
+  .figLeft,
+  .figRight {
+    transform: translate(-50%, 40px);
+  }
+  .figLeft.figActive,
+  .figRight.figActive {
+    transform: translate(-50%, 0);
+  }
+  /* fade the BOTTOM edge on mobile (image sits below/around the ring) */
+  .figLeft .figImg,
+  .figRight .figImg {
+    -webkit-mask-image: linear-gradient(to top, transparent 2%, #000 42%);
+    mask-image: linear-gradient(to top, transparent 2%, #000 42%);
+    max-height: 34vh;
+  }
+  .figCaption {
+    text-align: center;
+  }
+  .ringInner {
+    width: min(72vw, 300px);
+  }
+}
+
+/* ── reduced motion: no transitions/drift; show the static default ────────── */
+@media (prefers-reduced-motion: reduce) {
+  .stage,
+  .figure,
+  .stepDot {
+    transition: none !important;
+  }
+  .figLeft,
+  .figRight {
+    transform: translate(0, -50%);
+  }
+  .stageExit {
+    opacity: 1;
+    transform: none;
+  }
+}

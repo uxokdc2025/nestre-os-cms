@@ -1,0 +1,12 @@
+node_modules
+.next
+.env
+.env*.local
+/qa
+build
+dist
+.DS_Store
+.vercel
+.env*
+.credentials.local.md
+tsconfig.tsbuildinfo

@@ -1,0 +1,36 @@
+/* Nestre CMS admin — NESTRE brand skin (navy background, aqua buttons). */
+:root,
+:root[data-theme='dark'] {
+  /* NESTRE dark blue as the base; elevations tinted to match */
+  --theme-bg: #081c26;
+  --theme-input-bg: #0e2a34;
+  --theme-elevation-0: #061620;
+  --theme-elevation-50: #0b2530;
+  --theme-elevation-100: #0f2a35;
+  --theme-elevation-150: #14313c;
+  --theme-elevation-200: #183742;
+  /* brand accent for links, focus, active states */
+  --theme-success-500: #6bbdb9;
+}
+
+body { background: #081c26; }
+
+/* Primary buttons → NESTRE aqua */
+.btn.btn--style-primary:not(.btn--disabled) {
+  background-color: #98d6d3;
+  border-color: #98d6d3;
+}
+.btn.btn--style-primary:not(.btn--disabled) .btn__content,
+.btn.btn--style-primary:not(.btn--disabled) .btn__label {
+  color: #081c26;
+}
+.btn.btn--style-primary:not(.btn--disabled):hover {
+  background-color: #6bbdb9;
+  border-color: #6bbdb9;
+}
+
+/* Aqua accents for interactive text */
+a:not(.btn),
+.nav__link--active {
+  color: #98d6d3;
+}

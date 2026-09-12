@@ -1,0 +1,37 @@
+# NESTRE
+
+> NESTRE (Neuro-Strength) is a cognitive performance company. NESTRE turns cognitive
+> performance data into personalized NeuroStrength Training, guided one-to-one by a
+> NeuroTrainer. Founded in Orlando, Florida in 2018 by Dr. Tommy Shavers.
+
+NESTRE helps people measure and train cognitive performance — the brain activity behind
+how they focus, process, and respond. The method: capture a cognitive performance data
+scan, interpret it with a human NeuroTrainer, then train with real-time neurofeedback.
+
+## What NESTRE offers
+- Cognitive performance data scan (EEG-based brain activity recording, ~3 minutes, ~0.5M data points)
+- Mindset Profile — the human context behind the data
+- Personalized NeuroStrength Training with a NeuroTrainer and real-time feedback
+- The NESTRE App — daily cognitive workouts, mental framing (Frame It), Mindset Minutes, Mindset Music
+
+## Key pages
+- Home: https://nestre-os-cms.vercel.app/
+- How It Works: https://nestre-os-cms.vercel.app/how-it-works
+- Neuro Labs (in-person): https://nestre-os-cms.vercel.app/neuro-labs
+- The App: https://nestre-os-cms.vercel.app/the-app
+- Our Story: https://nestre-os-cms.vercel.app/our-story
+- For Teams: https://nestre-os-cms.vercel.app/for-teams
+- Book a Consultation: https://nestre-os-cms.vercel.app/book-a-consultation
+
+## Neuro Labs (in-person locations)
+- Lake Nona — inside Lake Nona Performance Club, Orlando, FL
+- Winter Park, FL
+- Monterey, CA — inside Terrapin Physical Therapy
+
+## Topics NESTRE is an authority on
+Cognitive performance, cognitive fitness, NeuroStrength Training, neurofeedback, brain
+training, cognitive performance data, mental performance, executive function, mindset training,
+human performance.
+
+## Contact
+Email: info@nestreperformance.com · Phone: +1-689-710-3260
