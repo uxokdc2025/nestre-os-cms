@@ -72,7 +72,10 @@ export function Block({ block }: { block: any }) {
             <div className="bg">
               <Visual
                 url={mediaUrl(block.video) || mediaUrl(block.background)}
-                poster={mediaUrl(block.background)}
+                // When a hero video exists, DON'T use the old still as its poster —
+                // it flashes the stale background image before the video paints.
+                // The video shows its own first frame over the navy .hero bg instead.
+                poster={mediaUrl(block.video) ? null : mediaUrl(block.background)}
                 alt={mediaAlt(block.background)}
               />
             </div>
@@ -246,14 +249,14 @@ export function Block({ block }: { block: any }) {
                   {block.eyebrow && <p className="eyebrow">{block.eyebrow}</p>}
                   {block.heading && <h2 className="h2" style={{ marginTop: 14, whiteSpace: 'pre-line' }}>{block.heading}</h2>}
                   {block.body && <p className="lead muted" style={{ whiteSpace: 'pre-line' }}>{block.body}</p>}
-                  <div className="sticky-media-inner"><img src={img!} alt={mediaAlt(block.image)} /></div>
+                  <div className="sticky-media-inner"><Visual url={img} alt={mediaAlt(block.image)} /></div>
                 </div>
               </div>
               <div className="sticky-list">
                 {block.rows.map((r: any, i: number) => {
                   const metrics = parseScorecard(r.body)
                   if (metrics) return (
-                    <div key={i} className="feature-card scorecard-card">
+                    <div key={i} className="feature-card scorecard-card" style={{ ['--i' as string]: i } as React.CSSProperties}>
                       {r.label && <span className="feature-step">{r.label}</span>}
                       {r.title && <h3>{r.title}</h3>}
                       <div className="scorecard-bars">
@@ -267,7 +270,7 @@ export function Block({ block }: { block: any }) {
                     </div>
                   )
                   return (
-                    <div key={i} className="feature-card">
+                    <div key={i} className="feature-card" style={{ ['--i' as string]: i } as React.CSSProperties}>
                       {r.label && <span className="feature-step">{r.label}</span>}
                       {r.title && <h3>{r.title}</h3>}
                       {r.body && <p className="muted">{r.body}</p>}
@@ -290,7 +293,7 @@ export function Block({ block }: { block: any }) {
                 {block.body && <p className="lead muted" style={{ whiteSpace: 'pre-line' }}>{block.body}</p>}
                 <Buttons ctas={block.ctas} />
               </div>
-              <div className="split-media thumb-lg"><img src={img} alt={mediaAlt(block.image)} /></div>
+              <div className="split-media thumb-lg"><Visual url={img} alt={mediaAlt(block.image)} /></div>
             </div>
           </section>
         )

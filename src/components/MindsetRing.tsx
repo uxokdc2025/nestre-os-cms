@@ -1,76 +1,63 @@
 'use client'
 
 /**
- * MindsetRing — a self-contained, scroll-driven "Mindset Profile" ring section.
+ * MindsetRing (V2) — scroll-driven "Mindset Profile" section, card-pair layout.
  *
- * WHAT IT IS
- * A tall (~360vh) scrollytelling section. An SVG donut ring (Cerebral / Alpha /
- * Prime) is FRONT AND CENTER and stays sticky-centered in the viewport for the
- * whole section. As the reader scrolls, the active persona advances through the
- * sequence (baseline → Executive → Athlete → Deep-Thinker). Each persona's
- * lifestyle image floats up on ALTERNATING sides (left, right, left, right),
- * edge-masked with a gradient so it dissolves into the background before it
- * reaches the ring and never overlaps it. A short on-brand one-liner rides with
- * each image. On every step the ring's center re-tweens — arcs redraw and the
- * three percentages count up to that persona's split. After the final persona,
- * the whole ring + imagery floats away (fade + drift) to reveal the next
- * section cleanly. Honors prefers-reduced-motion (static Executive, no motion).
- * All styling lives in the co-located CSS Module — it never touches the global
- * stylesheet.
- *
- * ── INTEGRATION ────────────────────────────────────────────────────────────
- * As a standalone section in any page.tsx (e.g. src/app/(frontend)/page.tsx),
- * drop it between other <section> blocks — it renders its own <section>:
- *
- *     import { MindsetRing } from '@/components/MindsetRing'
- *     // ...
- *     <MindsetRing />
- *
- * That single line is the entire integration. No props are required; the
- * component owns its scroll wiring, height (360vh), and teardown. Because it is
- * a client component, it is safe to render inside a Server Component page.
- *
- * Optional props let you retune copy/data without editing the component:
- *     <MindsetRing eyebrow="Mindset Profile" heading="Your cognitive fingerprint." />
- *     <MindsetRing sequence={CUSTOM_SEQUENCE} />   // any Persona[] (see mindset-personas.ts)
- *
- * ── BECOMING A PAYLOAD BLOCK LATER ─────────────────────────────────────────
- * To expose this in the CMS as an editable block:
- *   1. Add a block config (e.g. src/blocks/MindsetRing.ts) with fields:
- *        eyebrow (text), heading (text), and a `personas` array field whose
- *        subfields mirror the Persona type (key, label, cerebral, alpha, prime,
- *        headline, sub, quote, image (upload relationship), imageAlt).
- *   2. Register that block in the relevant collection's `blocks` array (do this
- *      in the collection file — NOT in this component).
- *   3. In the block renderer (RenderBlocks), map the block fields onto this
- *      component's props: <MindsetRing eyebrow={block.eyebrow} heading={block.heading}
- *      sequence={block.personas.map(toPersona)} /> — converting each uploaded
- *      media doc to its `/api/media/file/<filename>` URL for the `image` field.
- * The Persona shape (see '@/lib/mindset-personas') is intentionally plain so a
- * Payload block maps onto it 1:1.
+ * A tall pinned section. Centered heading on top; below it a side-by-side PAIR:
+ * a persona card (portrait + type chip + first-person quote + name + role) on the
+ * left, and a "Mindset Profile" ring card on the right. As the reader scrolls,
+ * the active persona advances (Baseline → Executive → Athlete → Deep-Thinker):
+ * the persona card cross-fades (blur + slide), the ring re-tweens its three neon
+ * arcs (Cerebral / Alpha / Prime) and the percentages recount, and the ambient
+ * glow shifts to the persona's accent. Progress dots track position. Honors
+ * prefers-reduced-motion (static Executive). All styling lives in the co-located
+ * CSS module. Design/interaction match the approved source V2.
  */
 
-import { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
   SEQUENCE as DEFAULT_SEQUENCE,
-  ARC_ORDER,
   DIMENSIONS,
   type Persona,
   type MindsetValues,
 } from '@/lib/mindset-personas'
 import styles from './MindsetRing.module.css'
 
-// ── Ring geometry ────────────────────────────────────────────────────────────
-const SIZE = 360
-const CENTER = SIZE / 2
-const STROKE = 26
-const R = 150
-const CIRC = 2 * Math.PI * R
-const GAP_DEG = 4 // small visual gap between arcs, in degrees
+// ── Ring geometry (source V2) ────────────────────────────────────────────────
+const CX = 180
+const CY = 188
+const R = 118
+const LBLR = 150
+const GAP = 5
+
+const color = (k: keyof MindsetValues) => DIMENSIONS.find((d) => d.key === k)!.color
+// muted label-name tints, matched to the source
+const NAME_TINT: Record<keyof MindsetValues, string> = {
+  cerebral: '#d59ce0',
+  alpha: '#8fe3b0',
+  prime: '#96daf0',
+}
+// draw order + fixed label angles (deg, clockwise from 12 o'clock)
+const SEG: { key: keyof MindsetValues; name: string; deg: number }[] = [
+  { key: 'alpha', name: 'ALPHA', deg: 90 },
+  { key: 'prime', name: 'PRIME', deg: 180 },
+  { key: 'cerebral', name: 'CEREBRAL', deg: 270 },
+]
 
 const easeInOut = (t: number) => (t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2)
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t
 const clamp = (n: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, n))
+
+const polar = (r: number, deg: number): [number, number] => {
+  const a = ((deg - 90) * Math.PI) / 180
+  return [CX + r * Math.cos(a), CY + r * Math.sin(a)]
+}
+const arcPath = (r: number, a0: number, a1: number) => {
+  const [x0, y0] = polar(r, a0)
+  const [x1, y1] = polar(r, a1)
+  const large = a1 - a0 > 180 ? 1 : 0
+  return `M ${x0} ${y0} A ${r} ${r} 0 ${large} 1 ${x1} ${y1}`
+}
 
 type Props = {
   eyebrow?: string
@@ -79,14 +66,12 @@ type Props = {
 }
 
 export function MindsetRing({
-  eyebrow = 'Mindset Profile',
-  heading = 'Your mind has a fingerprint. This is how we read it.',
+  eyebrow = 'Your Mindset Profile',
+  heading = 'No two minds read the same.',
   sequence = DEFAULT_SEQUENCE,
 }: Props) {
   const steps = sequence.length
-
   const [active, setActive] = useState(0)
-  const [exiting, setExiting] = useState(false)
   const [vals, setVals] = useState<MindsetValues>(sequence[0].values)
   const [reduced, setReduced] = useState(false)
 
@@ -94,14 +79,13 @@ export function MindsetRing({
   const rafScroll = useRef<number | null>(null)
   const rafTween = useRef<number | null>(null)
 
-  // ── prefers-reduced-motion: static, representative state ────────────────────
+  // prefers-reduced-motion → static representative persona (Executive when present)
   useEffect(() => {
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
     const apply = () => {
       if (mq.matches) {
-        const idx = Math.min(1, steps - 1) // Executive when present
+        const idx = Math.min(1, steps - 1)
         setReduced(true)
-        setExiting(false)
         setActive(idx)
         setVals(sequence[idx].values)
       } else {
@@ -113,11 +97,9 @@ export function MindsetRing({
     return () => mq.removeEventListener('change', apply)
   }, [sequence, steps])
 
-  // ── Scroll → active step + exit (throttled with rAF) ────────────────────────
+  // scroll → active persona (one band per persona while pinned)
   useEffect(() => {
     if (reduced) return
-    // One band per persona, plus a final band that floats everything away.
-    const nBands = steps + 1
     const onScroll = () => {
       if (rafScroll.current != null) return
       rafScroll.current = requestAnimationFrame(() => {
@@ -128,11 +110,8 @@ export function MindsetRing({
         const scrollable = rect.height - window.innerHeight
         if (scrollable <= 0) return
         const progress = clamp(-rect.top / scrollable, 0, 1)
-        const band = clamp(Math.floor(progress * nBands), 0, nBands - 1)
-        const idx = Math.min(band, steps - 1)
-        const exit = band >= steps
+        const idx = clamp(Math.round(progress * (steps - 1)), 0, steps - 1)
         setActive((prev) => (prev === idx ? prev : idx))
-        setExiting((prev) => (prev === exit ? prev : exit))
       })
     }
     onScroll()
@@ -145,7 +124,7 @@ export function MindsetRing({
     }
   }, [reduced, steps])
 
-  // ── Tween ring values when the active persona changes ───────────────────────
+  // tween ring values on persona change
   useEffect(() => {
     const target = sequence[active].values
     if (reduced) {
@@ -172,169 +151,148 @@ export function MindsetRing({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active, reduced, sequence])
 
-  // Whole-number percentages that always sum to exactly 100.
-  const cerebralPct = Math.round(vals.cerebral)
-  const alphaPct = Math.round(vals.alpha)
-  const primePct = 100 - cerebralPct - alphaPct
-  const shown: Record<keyof MindsetValues, number> = {
-    cerebral: cerebralPct,
-    alpha: alphaPct,
-    prime: primePct,
-  }
+  // whole-number percentages that sum to 100
+  const total = vals.cerebral + vals.alpha + vals.prime || 1
+  const cerPct = Math.round((vals.cerebral / total) * 100)
+  const alpPct = Math.round((vals.alpha / total) * 100)
+  const priPct = 100 - cerPct - alpPct
+  const pct: Record<keyof MindsetValues, number> = { cerebral: cerPct, alpha: alpPct, prime: priPct }
 
-  const persona = sequence[active]
-  const ariaLabel = `Mindset profile: ${cerebralPct}% Cerebral, ${alphaPct}% Alpha, ${primePct}% Prime — ${persona.label}`
-
-  // ── Arcs + boundary node dots from live values ──────────────────────────────
-  const fractions = ARC_ORDER.map((k) => vals[k] / 100)
-  let cumulative = 0
-  const gapFrac = GAP_DEG / 360
-  const arcs = ARC_ORDER.map((key, i) => {
-    const frac = fractions[i]
-    const dim = DIMENSIONS.find((d) => d.key === key)!
-    const dash = Math.max(0, frac - gapFrac) * CIRC
-    const offset = -cumulative * CIRC
-    const angle = (cumulative * 360 - 90 + GAP_DEG / 2) * (Math.PI / 180)
-    const node = {
-      x: CENTER + R * Math.cos(angle),
-      y: CENTER + R * Math.sin(angle),
-      color: dim.color,
-    }
-    cumulative += frac
-    return { key, color: dim.color, dash, offset, node }
+  // build arcs sequentially (source math): sweeps proportional, small gaps
+  const avail = 360 - SEG.length * GAP
+  let a = 0
+  const arcs = SEG.map((s) => {
+    const sweep = (vals[s.key] / total) * avail
+    const startDeg = a + GAP / 2
+    const endDeg = startDeg + sweep
+    a = endDeg + GAP / 2
+    const [dx, dy] = polar(R, startDeg)
+    return { ...s, d: arcPath(R, startDeg, Math.max(startDeg + 0.001, endDeg)), dot: { x: dx, y: dy } }
   })
 
+  const persona = sequence[active]
+  const ariaLabel = `Mindset profile: ${cerPct}% Cerebral, ${alpPct}% Alpha, ${priPct}% Prime — ${persona.label}`
+
   return (
-    <section
-      ref={sectionRef}
-      className={styles.section}
-      aria-labelledby="mindset-ring-heading"
-    >
+    <section ref={sectionRef} className={styles.section} aria-labelledby="mindset-ring-heading">
       <div className={styles.sticky}>
-        <div className={`${styles.stage} ${exiting ? styles.stageExit : ''}`}>
-          {/* heading, centered at top */}
-          <div className={styles.head}>
-            <p className={styles.eyebrow}>{eyebrow}</p>
-            <h2 id="mindset-ring-heading" className={styles.heading}>
-              {heading}
-            </h2>
+        <div className={styles.ambient} style={{ ['--glow' as string]: persona.accent } as React.CSSProperties} />
+
+        <div className={styles.head}>
+          <p className={styles.eyebrow}>{eyebrow}</p>
+          <h2 id="mindset-ring-heading" className={styles.heading}>
+            {heading}
+          </h2>
+        </div>
+
+        <div className={styles.pair}>
+          {/* persona card (cross-fades) */}
+          <div className={styles.pslot}>
+            {sequence.map((p, i) => {
+              const cls =
+                i === active
+                  ? `${styles.persona} ${styles.personaActive}`
+                  : i < active
+                    ? `${styles.persona} ${styles.personaPast}`
+                    : styles.persona
+              return (
+                <div key={p.key} className={cls} aria-hidden={i === active ? undefined : true}>
+                  <div className={styles.pcard}>
+                    <span className={styles.ptype}>{p.label}</span>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={p.image} alt={i === active ? p.imageAlt : ''} loading="lazy" />
+                    <div className={styles.pgrad} />
+                    <div className={styles.pov}>
+                      <p className={styles.pquote}>{p.quote}</p>
+                      <div className={styles.pname}>{p.name}</div>
+                      <div className={styles.prole}>{p.role}</div>
+                    </div>
+                  </div>
+                </div>
+              )
+            })}
           </div>
 
-          {/* floating persona images — alternating sides, edge-masked */}
-          {sequence.map((p, i) => {
-            const side = i % 2 === 0 ? styles.figLeft : styles.figRight
-            const isActive = i === active && !exiting
-            return (
-              <figure
-                key={p.key}
-                className={`${styles.figure} ${side} ${isActive ? styles.figActive : ''}`}
-                aria-hidden={isActive ? undefined : true}
+          {/* ring card */}
+          <div className={styles.mcard}>
+            <div className={styles.mcardTitle}>Mindset Profile</div>
+            <div className={styles.mcardRule} />
+            <div className={styles.ringbox}>
+              <svg
+                className={styles.ring}
+                viewBox="0 0 360 400"
+                preserveAspectRatio="xMidYMid meet"
+                role="img"
+                aria-label={ariaLabel}
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  className={styles.figImg}
-                  src={p.image}
-                  alt={isActive ? p.imageAlt : ''}
-                  loading="lazy"
-                />
-                <figcaption className={styles.figCaption}>
-                  <span className={styles.figTag}>{p.label}</span>
-                  <span className={styles.figQuote}>{p.quote}</span>
-                </figcaption>
-              </figure>
-            )
-          })}
-
-          {/* the ring — front and center */}
-          <div className={styles.ringInner}>
-            <svg
-              className={styles.ring}
-              viewBox={`0 0 ${SIZE} ${SIZE}`}
-              role="img"
-              aria-label={ariaLabel}
-            >
-              <circle
-                cx={CENTER}
-                cy={CENTER}
-                r={R}
-                fill="none"
-                stroke="rgba(255,255,255,0.08)"
-                strokeWidth={STROKE}
-              />
-              <g transform={`rotate(-90 ${CENTER} ${CENTER})`}>
-                {arcs.map((a) => (
-                  <circle
-                    key={a.key}
-                    cx={CENTER}
-                    cy={CENTER}
-                    r={R}
-                    fill="none"
-                    stroke={a.color}
-                    strokeWidth={STROKE}
-                    strokeLinecap="round"
-                    strokeDasharray={`${a.dash} ${CIRC}`}
-                    strokeDashoffset={a.offset}
+                <circle className={styles.track} cx={CX} cy={CY} r={R} />
+                {arcs.map((arc) => (
+                  <path
+                    key={`arc-${arc.key}`}
+                    className={styles.arc}
+                    d={arc.d}
+                    stroke={color(arc.key)}
+                    style={{ filter: `drop-shadow(0 0 12px ${color(arc.key)}d9)` }}
                   />
                 ))}
-              </g>
-              {arcs.map((a) => (
-                <circle
-                  key={`node-${a.key}`}
-                  cx={a.node.x}
-                  cy={a.node.y}
-                  r={7}
-                  fill="var(--navy, #081c26)"
-                  stroke={a.node.color}
-                  strokeWidth={3}
-                />
-              ))}
-              {/* NESTRE "N" monogram — clean geometric circuit N */}
-              <g
-                stroke="#fff"
-                strokeWidth={9}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                fill="none"
-              >
-                <path d="M150 210 L150 150 L210 210 L210 150" />
-                <circle cx={150} cy={150} r={5} fill="#fff" stroke="none" />
-                <circle cx={210} cy={210} r={5} fill="#fff" stroke="none" />
-              </g>
-            </svg>
-
-            {/* arc labels — real text, count up */}
-            <div className={`${styles.label} ${styles.labelCerebral}`}>
-              <span className={styles.labelVal} style={{ color: DIMENSIONS[0].color }}>
-                {shown.cerebral}%
-              </span>
-              <span className={styles.labelName}>Cerebral</span>
-            </div>
-            <div className={`${styles.label} ${styles.labelAlpha}`}>
-              <span className={styles.labelVal} style={{ color: DIMENSIONS[1].color }}>
-                {shown.alpha}%
-              </span>
-              <span className={styles.labelName}>Alpha</span>
-            </div>
-            <div className={`${styles.label} ${styles.labelPrime}`}>
-              <span className={styles.labelVal} style={{ color: DIMENSIONS[2].color }}>
-                {shown.prime}%
-              </span>
-              <span className={styles.labelName}>Prime</span>
+                {arcs.map((arc) => (
+                  <circle
+                    key={`dot-${arc.key}`}
+                    className={styles.dot}
+                    cx={arc.dot.x}
+                    cy={arc.dot.y}
+                    r={5}
+                    fill={color(arc.key)}
+                    style={{ filter: `drop-shadow(0 0 8px ${color(arc.key)})` }}
+                  />
+                ))}
+                {SEG.map((s) => {
+                  const [lx, ly] = polar(LBLR, s.deg)
+                  const anchor = s.deg === 90 ? 'start' : s.deg === 270 ? 'end' : 'middle'
+                  return (
+                    <g key={`lbl-${s.key}`}>
+                      <text
+                        className={styles.lblVal}
+                        x={lx}
+                        y={s.deg === 180 ? ly + 6 : ly - 2}
+                        textAnchor={anchor}
+                        fill={color(s.key)}
+                      >
+                        {pct[s.key]}%
+                      </text>
+                      <text
+                        className={styles.lblName}
+                        x={lx}
+                        y={s.deg === 180 ? ly + 22 : ly + 14}
+                        textAnchor={anchor}
+                        fill={NAME_TINT[s.key]}
+                      >
+                        {s.name}
+                      </text>
+                    </g>
+                  )
+                })}
+                {/* NESTRE "N" monogram */}
+                <g transform={`translate(${CX},${CY})`}>
+                  <path className={styles.nmark} d="M -25 32 L -25 -32 L 25 32 L 25 -32" />
+                  <circle className={styles.nmarkDot} cx={-25} cy={-32} r={4.2} />
+                  <circle className={styles.nmarkDot} cx={25} cy={32} r={4.2} />
+                  <circle className={styles.nmarkDot} cx={25} cy={-32} r={4.2} />
+                  <circle className={styles.nmarkDot} cx={-25} cy={8} r={3.3} />
+                  <circle className={styles.nmarkDot} cx={4} cy={-2} r={3} />
+                </g>
+              </svg>
             </div>
           </div>
-
-          {/* step markers */}
-          {!reduced && (
-            <ul className={styles.steps} aria-hidden="true">
-              {sequence.map((p, i) => (
-                <li
-                  key={p.key}
-                  className={`${styles.stepDot} ${i === active && !exiting ? styles.stepActive : ''}`}
-                />
-              ))}
-            </ul>
-          )}
         </div>
+
+        {!reduced && (
+          <div className={styles.prog} aria-hidden="true">
+            {sequence.map((p, i) => (
+              <b key={p.key} className={`${styles.progDot} ${i === active ? styles.progOn : ''}`} />
+            ))}
+          </div>
+        )}
       </div>
     </section>
   )

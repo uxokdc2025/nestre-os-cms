@@ -112,6 +112,105 @@ export function Carousels() {
     const rails = Array.from(document.querySelectorAll('main .panels, main .phones')) as HTMLElement[]
     const cleanups: (() => void)[] = [() => document.removeEventListener('click', onScrollCta), () => vio.disconnect(), () => window.removeEventListener('scroll', checkNums), () => { window.removeEventListener('scroll', onParallax); window.removeEventListener('resize', onParallax); if (praf) cancelAnimationFrame(praf) }]
 
+    // Progressive bottom blur fades OUT once the footer is reached — the footer is
+    // never blurred (per design). Toggle .hide when the footer enters the viewport.
+    const bottomBlur = document.querySelector('.bottom-blur') as HTMLElement | null
+    // the footer is sticky (revealed as #main scrolls up), so detect the footer by
+    // #main's bottom edge rising into the viewport — not the footer's own rect.
+    const mainEl = document.querySelector('main#main') as HTMLElement | null
+    if (bottomBlur && mainEl) {
+      const onBlurToggle = () => {
+        const atFooter = mainEl.getBoundingClientRect().bottom < window.innerHeight - 4
+        bottomBlur.classList.toggle('hide', atFooter)
+      }
+      onBlurToggle()
+      window.addEventListener('scroll', onBlurToggle, { passive: true })
+      window.addEventListener('resize', onBlurToggle)
+      cleanups.push(() => { window.removeEventListener('scroll', onBlurToggle); window.removeEventListener('resize', onBlurToggle) })
+    }
+
+    // HARD RULE for every sticky component: mark a section .framed once its LEFT
+    // column is completely within the viewport — the right side (timeline items,
+    // scorecard, and the vertical line) only begins transitioning after that.
+    const framers = (Array.from(document.querySelectorAll('.sticky-rows, .stat-sticky')) as HTMLElement[])
+      .map((sec) => ({ sec, left: sec.querySelector('.sticky-left') as HTMLElement | null }))
+      .filter((f) => f.left)
+    if (framers.length) {
+      // gate the right column on JS being live (CSS keys the hidden state off this)
+      document.documentElement.classList.add('sticky-js')
+      const checkFramed = () => {
+        const vh = window.innerHeight
+        // A section at the very bottom of the page can never scroll its left up to
+        // the pin — so once the page is scrolled to the end, frame any remaining
+        // section that's in view (otherwise its right side would stay hidden forever).
+        const atBottom = vh + window.scrollY >= document.documentElement.scrollHeight - 2
+        let remaining = false
+        for (const { sec, left } of framers) {
+          if (sec.classList.contains('framed')) continue
+          const r = left!.getBoundingClientRect()
+          const h = left!.offsetHeight
+          // The right side must NOT appear until the LEFT is fully in frame.
+          //  · column fits the viewport → require the whole column in view
+          //    (top settled at/above the top, bottom above the fold)
+          //  · column taller than the viewport → require it PINNED at the top and
+          //    still overflowing the bottom (i.e. it fills the screen). Never fires
+          //    while the column's top is still mid-viewport (the old bug).
+          const inView = r.top < vh && r.bottom > 0
+          const framed = (atBottom && inView)
+            || (h <= vh - 88
+              ? r.top >= -4 && r.bottom <= vh + 4
+              : r.top <= 104 && r.bottom >= vh - 8)
+          if (framed) sec.classList.add('framed')
+          else remaining = true
+        }
+        if (!remaining) window.removeEventListener('scroll', checkFramed)
+      }
+      checkFramed()
+      window.addEventListener('scroll', checkFramed, { passive: true })
+      window.addEventListener('resize', checkFramed)
+      cleanups.push(() => { window.removeEventListener('scroll', checkFramed); window.removeEventListener('resize', checkFramed) })
+    }
+
+    // Split-media frames: as the frame enters from the BOTTOM it rises into place
+    // (no fade), and the image pans within the clipped frame at a different speed —
+    // the frame and image move opposite/at different rates (parallax). Pronounced,
+    // and it begins the moment the frame comes up from the bottom.
+    const splitFrames = Array.from(document.querySelectorAll('main .split-media')) as HTMLElement[]
+    if (splitFrames.length && !reduce) {
+      splitFrames.forEach((f) => {
+        f.style.willChange = 'transform'
+        const im = f.querySelector('img, video') as HTMLElement | null
+        if (im) im.style.willChange = 'translate'
+      })
+      let fraf = 0
+      const runSplit = () => {
+        fraf = 0
+        const vh = window.innerHeight
+        for (const f of splitFrames) {
+          const im = f.querySelector('img, video') as HTMLElement | null
+          if (!im) continue
+          const r = f.getBoundingClientRect()
+          if (r.bottom < -120 || r.top > vh + 120) continue
+          // GATE: the frame stays held DOWN until the LEFT copy is framed (its top
+          // has risen to ~28% down the viewport = fully in view), THEN it rises up
+          // into place. So the left leads; the right follows.
+          const copy = (f.closest('.split')?.querySelector('.split-copy') as HTMLElement | null) || f
+          const copyTop = copy.getBoundingClientRect().top
+          const framedLine = vh * 0.28
+          const rise = Math.max(0, Math.min(1, (framedLine - copyTop) / (vh * 0.34)))
+          f.style.transform = `translateY(${((1 - rise) * 120).toFixed(1)}px)`
+          // image pans the other way within the frame (composes with CSS scale)
+          const mid = (r.top + r.height / 2 - vh / 2) / vh // +.5 bottom → -.5 top
+          im.style.translate = `0 ${(mid * 64).toFixed(1)}px`
+        }
+      }
+      const onSplit = () => { if (!fraf) fraf = requestAnimationFrame(runSplit) }
+      runSplit()
+      window.addEventListener('scroll', onSplit, { passive: true })
+      window.addEventListener('resize', onSplit)
+      cleanups.push(() => { window.removeEventListener('scroll', onSplit); window.removeEventListener('resize', onSplit); if (fraf) cancelAnimationFrame(fraf) })
+    }
+
     // hero slowly grows (zoom + subtle drift) as you scroll away from it
     const heroBg = document.querySelector('main .hero .bg') as HTMLElement | null
     const heroEl = document.querySelector('main .hero') as HTMLElement | null

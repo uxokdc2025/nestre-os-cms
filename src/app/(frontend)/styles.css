@@ -21,7 +21,26 @@ body {
 img { max-width: 100%; display: block; }
 a { color: inherit; text-decoration: none; }
 h1, h2, h3 { margin: 0; letter-spacing: -0.02em; line-height: 1.02; text-wrap: balance; }
-.wrap { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+.wrap { max-width: 1340px; margin: 0 auto; padding: 0 28px; }
+
+/* Progressive bottom blur (BottomBlur.tsx): fixed bar of stacked, gradient-masked
+   backdrop-filter layers so content blurs toward the bottom edge. Hidden once the
+   footer is reached (Carousels.tsx toggles .hide) — the footer is never blurred. */
+.bottom-blur { position: fixed; left: 0; right: 0; bottom: 0; height: 130px; z-index: 35; pointer-events: none; transition: opacity .35s ease, transform .35s ease; }
+/* hide at the footer by sliding off-screen (not just opacity) — a bare opacity:0
+   can leave backdrop-filter stale so the blur never re-composites on the way back
+   up; the transform forces a clean re-sample when .hide is removed. */
+.bottom-blur.hide { opacity: 0; transform: translateY(100%); }
+.bottom-blur > i { position: absolute; inset: 0; display: block; }
+
+/* Custom cursor (CustomCursor.tsx) — fine-pointer devices only; native cursor hidden */
+@media (pointer: fine) {
+  html.has-cursor, html.has-cursor * { cursor: none !important; }
+  .cursor-dot { position: fixed; top: 0; left: 0; width: 8px; height: 8px; border-radius: 50%; background: var(--aqua); pointer-events: none; z-index: 10000; will-change: transform; transition: opacity .2s ease; }
+  .cursor-ring { position: fixed; top: 0; left: 0; width: 36px; height: 36px; border-radius: 50%; border: 1.5px solid #fff; mix-blend-mode: difference; pointer-events: none; z-index: 9999; will-change: transform; transition: width .28s cubic-bezier(.22,1,.36,1), height .28s cubic-bezier(.22,1,.36,1), opacity .2s ease; }
+  .cursor-ring.hover { width: 60px; height: 60px; }
+  .cursor-ring.down { width: 28px; height: 28px; }
+}
 .eyebrow { font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 600; }
 
 /* sections */
@@ -50,7 +69,11 @@ h1, h2, h3 { margin: 0; letter-spacing: -0.02em; line-height: 1.02; text-wrap: b
 .hero .bg { position: absolute; inset: 0; }
 .hero .bg img, .hero .bg video { width: 100%; height: 100%; object-fit: cover; }
 .hero .grad { position: absolute; inset: 0; background: linear-gradient(90deg, var(--navy), rgba(8,28,38,.6) 55%, rgba(8,28,38,.1)); }
-.hero .inner { position: relative; padding-top: 120px; padding-bottom: 120px; } /* keep .wrap's horizontal padding */
+/* width:100% so the content fills the centered wrap (max-width 1340) and always
+   left-aligns at the SAME X on every page — without it, .wrap's margin:auto makes
+   this flex child shrink to its headline width and re-center, so the X-start drifts
+   page to page. */
+.hero .inner { position: relative; width: 100%; padding-top: 120px; padding-bottom: 120px; } /* keep .wrap's horizontal padding */
 .hero h1 { font-size: clamp(3rem, 9vw, 6.5rem); font-weight: 600; }
 .hero .subhead { font-size: clamp(1.4rem, 3vw, 1.9rem); font-weight: 500; margin-top: 22px; }
 .hero .subhead .accent { color: var(--aqua); }
@@ -127,7 +150,7 @@ h1, h2, h3 { margin: 0; letter-spacing: -0.02em; line-height: 1.02; text-wrap: b
 
 /* podcast */
 .thumb-lg { position: relative; border-radius: 16px; overflow: hidden; margin-top: 32px; aspect-ratio: 16/9; }
-.thumb-lg img { width: 100%; height: 100%; object-fit: cover; }
+.thumb-lg img, .thumb-lg video { width: 100%; height: 100%; object-fit: cover; display: block; }
 .play { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); width: 76px; height: 76px; border-radius: 50%; background: rgba(255,255,255,.92); display: grid; place-items: center; }
 
 /* closing */
@@ -261,11 +284,12 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px soli
     /* start the reveal LATER — around entry 40% (element ~40% up from the bottom
        edge) through cover, so the movement plays where it's actually visible
        instead of finishing while the element is still at the very bottom. */
-    .reveal-child { animation: revIn linear both; animation-timeline: view(); animation-range: entry calc(40% + min(var(--i,0), 7) * 8%) cover calc(18% + min(var(--i,0), 7) * 8%); }
-    .reveal-card { animation: revCardIn linear both; animation-timeline: view(); animation-range: entry calc(34% + min(var(--i,0), 5) * 10%) cover calc(24% + min(var(--i,0), 5) * 10%); }
+    /* elastic entrance (overshoot easing) — NO blur; content springs into frame */
+    .reveal-child { animation: revIn cubic-bezier(.34, 1.4, .5, 1) both; animation-timeline: view(); animation-range: entry calc(40% + min(var(--i,0), 7) * 8%) cover calc(18% + min(var(--i,0), 7) * 8%); }
+    .reveal-card { animation: revCardIn cubic-bezier(.34, 1.4, .5, 1) both; animation-timeline: view(); animation-range: entry calc(34% + min(var(--i,0), 5) * 10%) cover calc(24% + min(var(--i,0), 5) * 10%); }
   }
-  @keyframes revIn { from { opacity: 0; transform: translateY(28px); filter: blur(10px); } to { opacity: 1; transform: none; filter: blur(0); } }
-  @keyframes revCardIn { from { opacity: 0; transform: translateY(52px) scale(.955); filter: blur(14px); } to { opacity: 1; transform: none; filter: blur(0); } }
+  @keyframes revIn { from { opacity: 0; transform: translateY(34px); } to { opacity: 1; transform: none; } }
+  @keyframes revCardIn { from { opacity: 0; transform: translateY(56px) scale(.94); } to { opacity: 1; transform: none; } }
   .hero .inner > * { animation: heroRise .8s cubic-bezier(.22,1,.36,1) both; }
   .hero .eyebrow { animation-delay: .05s; }
   .hero h1 { animation-delay: .12s; }
@@ -543,11 +567,19 @@ html { scroll-behavior: smooth; }
 
 /* Sticky scrollytelling — home "neck up": copy + runner pin on the left in full
    frame, the scorecard rises in on the right (bars draw + numbers scale/count up) */
+/* tighter, closer columns so the scorecard sits nearer the left (not marooned far right) */
+/* runner scrollytelling: the whole pair PINS; the left stays put while the
+   scorecard (visible the whole time) travels up from the bottom — driven by
+   Carousels.tsx — until its top lands on the H1, then the pin releases and both
+   scroll on together. */
+.stat-sticky .sticky-rows { grid-template-columns: 1fr 1fr; gap: 44px; }
 .stat-sticky .sticky-left { position: sticky; top: 104px; align-self: start; }
-.stat-sticky .stat-left-inner .h2 { max-width: 15ch; }
+.stat-sticky .stat-left-inner .h2 { max-width: none; }
 .stat-sticky .stat-left-inner .lead { max-width: 40ch; }
 .stat-runner-under { display: block; margin-top: -10px; width: 100%; max-width: 440px; height: auto; filter: drop-shadow(0 24px 48px rgba(8,28,38,.22)); }
-.stat-scroll { padding-top: 34vh; }
+/* card top lines up with the H1 top (≈ the eyebrow block height) so the left copy
+   and the scorecard are aligned and move together — not the card marooned lower */
+.stat-scroll { padding-top: 2.9rem; }
 .stat-scroll .statcard { max-width: 460px; }
 /* The card itself reveals (blur/fade) via revCardIn. The bars + metric numbers
    do NOT animate with it — they wait for `.in` (added by Carousels.tsx only once
@@ -558,6 +590,7 @@ html { scroll-behavior: smooth; }
 }
 @media (max-width: 900px) {
   .stat-scroll { padding-top: 0; }
+  .stat-sticky .sticky-rows { grid-template-columns: 1fr; }
   .stat-sticky .sticky-left { position: static; }
   .stat-runner-under { max-width: 320px; margin-top: 28px; }
 }
@@ -569,16 +602,16 @@ html { scroll-behavior: smooth; }
 .sticky-rows.reverse .sticky-left { order: 2; }
 .sticky-left { position: sticky; top: 96px; align-self: start; }
 .sticky-left .eyebrow { margin-bottom: 0; }
-.sticky-left .h2 { max-width: 14ch; }             /* narrow → "Leave with direction." wraps to line 2 */
+.sticky-left .h2 { max-width: none; }   /* heading fills the column — as wide as the media below it */
 .sticky-left .lead { margin-top: 16px; max-width: 42ch; }
 .sticky-media-inner { margin-top: 28px; border-radius: 22px; overflow: hidden; box-shadow: 0 30px 70px rgba(8,28,38,.20); }
 /* fixed height (well under the 600px desktop cap) — portrait or landscape both
    fill cleanly, never blown up, never collapsed. */
-.sticky-media-inner img { width: 100%; height: 440px; object-fit: cover; display: block; }
+.sticky-media-inner img, .sticky-media-inner video { width: 100%; height: clamp(340px, 44vh, 500px); object-fit: cover; display: block; }
 @media (max-width: 900px) { .sticky-media-inner img { height: 300px; } }
 /* tall card column (tall cards + generous gaps) so the left pins through ALL cards */
 /* cards start lower so the LEFT content frames first; they then rise in as you scroll */
-.sticky-list { display: flex; flex-direction: column; gap: 100px; padding-top: 30vh; }
+.sticky-list { display: flex; flex-direction: column; gap: 0; padding-top: 30vh; }
 @media (max-width: 900px) { .sticky-list { padding-top: 0; } }
 /* smaller cards; each fills DARK with white text as it scrolls up past the image */
 .feature-card { min-height: 350px; padding: 40px 40px; border-radius: 18px; background: #fff; color: var(--ink); border: 1px solid var(--line); box-shadow: 0 10px 30px rgba(8,28,38,.05); display: flex; flex-direction: column; justify-content: center; }
@@ -596,6 +629,38 @@ html { scroll-behavior: smooth; }
 /* on a navy section the cards start dark-on-dark */
 .sec.navy .feature-card { background: rgba(255,255,255,.04); border-color: rgba(255,255,255,.1); box-shadow: none; }
 .sec.navy .feature-step { color: var(--aqua); }
+
+/* Right-column stacks → line + dot TIMELINE (à la neiden) instead of card boxes.
+   A vertical line runs the list; each item sits at a dot. The data scorecard keeps
+   its own box (it's a viz), just aligned to the timeline. */
+.sticky-list { position: relative; }
+/* HARD RULE for every sticky component: the ENTIRE right column stays hidden until
+   the section is .framed (left fully in frame — set by Carousels.tsx). A plain
+   opacity gate, NOT a paused scroll-timeline animation (that leaked content in
+   before the gate). .sticky-js is added by JS, so with JS off nothing is trapped. */
+/* gated, no fade: the right column is hidden (not faded) until the left is framed,
+   then its callouts RISE in (revTimelineIn, staggered) — left leads, right follows. */
+.sticky-js .sticky-list { visibility: hidden; }
+.sticky-js .sticky-rows.framed .sticky-list { visibility: visible; }
+/* (runner scorecard is NOT gated — it stays visible the whole way up; its rise is
+   driven by Carousels.tsx. Only the timeline right-columns use the opacity gate.) */
+/* right column: stacked callouts separated by a VERY THIN horizontal rule — no
+   vertical line, no dots. Each callout still rises in as it enters view. */
+.sticky-list > .feature-card { min-height: 0; padding: 34px 0; background: none !important; border: 0 !important; box-shadow: none !important; }
+.sticky-list > .feature-card + .feature-card { border-top: 1px solid var(--line) !important; }
+.sticky-list > .feature-card h3 { color: var(--ink); }
+/* navy sticky sections: white titles + a light divider so they read on the band. */
+.sec.navy .sticky-list > .feature-card h3 { color: #fff; }
+.sec.navy .sticky-list > .feature-card + .feature-card { border-top-color: rgba(255,255,255,.14) !important; }
+.sticky-list .feature-step { font-size: 14px; }
+@media (prefers-reduced-motion: no-preference) { @supports (animation-timeline: view()) {
+  /* each callout rises in from below as it enters */
+  .sticky-list > .feature-card { animation: revTimelineIn cubic-bezier(.34, 1.4, .5, 1) both; animation-timeline: view(); animation-range: entry calc(34% + min(var(--i,0), 5) * 10%) cover calc(24% + min(var(--i,0), 5) * 10%); }
+}}
+@keyframes revTimelineIn { from { opacity: 0; transform: translateY(48px); } to { opacity: 1; transform: none; } }
+.sticky-list > .scorecard-card { position: relative; padding: 26px; background: var(--navy) !important; border: 1px solid rgba(255,255,255,.1) !important; }
+/* (runner scorecard "wait for the left" is handled by the .stat-scroll opacity gate
+   above — the whole right column is hidden until .stat-sticky.framed.) */
 
 /* readiness scorecard card — stays navy (its bars are designed dark), no white→navy flip */
 .scorecard-card { background: var(--navy) !important; color: #fff !important; border-color: rgba(255,255,255,.10) !important; animation: none !important; }
@@ -654,6 +719,12 @@ html { scroll-behavior: smooth; }
 .closing-vign { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(130% 100% at 50% 22%, transparent 24%, rgba(3,12,17,.9) 100%); }
 .closing-copy { position: absolute; left: 0; right: 0; bottom: 0; padding: 9vh 6vw; color: #fff; will-change: clip-path, transform; }
 .closing-copy .eyebrow { color: var(--aqua); margin-bottom: 16px; max-width: 34ch; text-wrap: balance; }
+/* the left-aligned closing sits over the bright part of the image early in the
+   scroll (vignette is still weak) — a dedicated bottom scrim keeps the microtext
+   + heading readable on any frame. copy-right (dark text on light) is exempt. */
+.closing-copy:not(.copy-right)::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 75%; background: linear-gradient(to top, rgba(3,12,17,.9), rgba(3,12,17,.5) 45%, transparent); z-index: 0; pointer-events: none; }
+.closing-copy:not(.copy-right) > * { position: relative; z-index: 1; }
+.closing-copy:not(.copy-right) .eyebrow { color: #fff; }
 /* copy on the right side (when the subject sits on the left of the image) —
    dark type so it reads against the lighter right side of the photo */
 .closing-copy.copy-right { text-align: right; padding-right: calc(6vw + 180px); }
@@ -663,12 +734,17 @@ html { scroll-behavior: smooth; }
 .closing-copy.copy-right .closing-body { color: rgba(8,28,38,.82); }
 .closing-copy.copy-right .eyebrow { color: var(--aqua-ink); }
 /* ---------- two-column split (copy | image) for image-only feature sections ---------- */
-.split { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+/* copy column ~100px narrower than the media so the video fills the reclaimed space */
+.split { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 56px; align-items: center; }
+.split.reverse { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
 .split.reverse .split-media { order: -1; }
 .split-copy .h2 { margin-top: 14px; }
-.split-copy .lead { margin-top: 16px; max-width: 46ch; }
-.split-media { border-radius: 20px; overflow: hidden; margin: 0; max-width: none; }
-.split-media img { width: 100%; height: auto; display: block; }
+.split-copy .lead { margin-top: 16px; max-width: 42ch; }
+/* fixed window so the image can pan behind it (parallax): frame reveals one way,
+   image drifts the other — driven by Carousels.tsx. Image oversized (scale) so the
+   pan never exposes an edge. */
+.split-media { border-radius: 20px; overflow: hidden; margin: 0; max-width: none; aspect-ratio: 4 / 3; }
+.split-media img, .split-media video { width: 100%; height: 100%; object-fit: cover; display: block; scale: 1.2; will-change: translate; }
 @media (max-width: 860px) { .split { grid-template-columns: 1fr; gap: 28px; } .split.reverse .split-media { order: 0; } }
 @media (max-width: 760px) { .closing-copy.copy-right { text-align: left; } .closing-copy.copy-right h2, .closing-copy.copy-right .closing-body { margin-left: 0; } .closing-copy.copy-right .btns { justify-content: flex-start; } }
 .closing-copy h2 { font-size: clamp(2.4rem, 6vw, 5rem); font-weight: 600; line-height: 1.02; max-width: 12ch; text-wrap: balance; }

@@ -1,10 +1,10 @@
-/* MindsetRing — all styles scoped to this module (never touches globals).
-   Reuses global design tokens (--navy, --paper, --aqua, --muted, --font-instrument)
-   via var() with safe fallbacks so the component also works in isolation. */
+/* MindsetRing (V2 card-pair) — persona card + ring card side by side, reshaping
+   across personas on scroll. Ported from the approved source design; all styles
+   scoped to this module. Reuses global tokens via var() with fallbacks. */
 
 .section {
   position: relative;
-  height: 360vh; /* tall scroll track: 4 persona bands + 1 exit band */
+  height: 460vh; /* tall scroll track: one band per persona while pinned */
   background: var(--navy, #081c26);
   color: #fff;
 }
@@ -14,36 +14,34 @@
   top: 0;
   height: 100vh;
   overflow: hidden;
-  display: grid;
-  place-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(88px, 12vh, 120px) 0 clamp(28px, 5vh, 56px);
 }
 
-.stage {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  display: grid;
-  place-items: center;
-  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-/* after the last persona, the whole thing floats away to reveal what's next */
-.stageExit {
-  opacity: 0;
-  transform: translateY(-64px) scale(0.96);
-}
-
-/* ── heading, centered near the top ───────────────────────────────────────── */
-.head {
+/* ambient glow behind the pair — colour follows the active persona accent */
+.ambient {
   position: absolute;
-  top: clamp(24px, 8vh, 88px);
-  left: 50%;
-  transform: translateX(-50%);
-  width: min(680px, 90vw);
-  text-align: center;
-  z-index: 3;
+  inset: 0;
   pointer-events: none;
+  background: radial-gradient(
+    560px 560px at 60% 54%,
+    color-mix(in srgb, var(--glow, #98d6d3) 22%, transparent),
+    transparent 60%
+  );
+  filter: blur(36px);
+  opacity: 0.8;
+  transition: background 0.6s ease;
+}
+
+/* heading */
+.head {
+  text-align: center;
+  padding: 0 24px;
+  z-index: 6;
+  margin-bottom: clamp(26px, 4.4vh, 52px);
 }
 .eyebrow {
   font-size: 12px;
@@ -51,11 +49,11 @@
   text-transform: uppercase;
   font-weight: 600;
   color: var(--aqua, #98d6d3);
-  margin: 0 0 10px;
+  margin: 0 0 9px;
 }
 .heading {
   font-family: var(--font-instrument), ui-sans-serif, system-ui, sans-serif;
-  font-size: clamp(1.5rem, 4vw, 2.6rem);
+  font-size: clamp(1.5rem, 3.4vw, 2.6rem);
   font-weight: 600;
   line-height: 1.05;
   letter-spacing: -0.02em;
@@ -63,209 +61,246 @@
   text-wrap: balance;
 }
 
-/* ── the ring, front and center ───────────────────────────────────────────── */
-.ringInner {
+/* the pair */
+.pair {
   position: relative;
-  width: min(78vw, 360px);
-  aspect-ratio: 1;
+  z-index: 4;
+  display: flex;
+  gap: clamp(24px, 3.4vw, 48px);
+  align-items: center;
+  justify-content: center;
+}
+.pslot {
+  position: relative;
+  height: min(52vmin, 410px);
+  aspect-ratio: 4 / 5;
+}
+
+/* stacked persona cards that cross-fade */
+.persona {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: translateY(52px);
+  filter: blur(8px);
+  will-change: transform, opacity, filter;
+  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.5s ease;
+}
+.personaActive {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0px);
+}
+.personaPast {
+  opacity: 0;
+  transform: translateY(-44px);
+  filter: blur(8px);
+}
+.pcard {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 22px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #1a2333, #0d1420);
+  border: 1px solid rgba(152, 214, 211, 0.2);
+  box-shadow: 0 45px 100px -34px rgba(0, 0, 0, 0.85);
+}
+.pcard img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 22%;
+}
+.pgrad {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 38%, rgba(6, 9, 16, 0.55) 66%, rgba(5, 8, 14, 0.94));
+}
+.ptype {
+  position: absolute;
+  top: 12px;
+  left: 12px;
   z-index: 2;
+  font-size: 9.5px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  font-weight: 700;
+  padding: 6px 11px;
+  border-radius: 999px;
+  background: rgba(8, 12, 20, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #fff;
+}
+.pov {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 18px 20px;
+  z-index: 2;
+}
+.pquote {
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: #d7e0ef;
+  margin: 0 0 10px;
+  font-style: italic;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.pname {
+  font-size: 21px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.prole {
+  font-size: 12px;
+  color: #9fb4b3;
+  margin-top: 2px;
+}
+
+/* the ring card */
+.mcard {
+  position: relative;
+  height: min(52vmin, 410px);
+  aspect-ratio: 1 / 1.04;
+  border-radius: 26px;
+  padding: 22px 20px;
+  background: radial-gradient(130% 90% at 12% 108%, rgba(233, 48, 255, 0.12), transparent 52%),
+    radial-gradient(130% 90% at 90% 106%, rgba(24, 200, 255, 0.12), transparent 52%),
+    linear-gradient(165deg, rgba(20, 32, 44, 0.85), rgba(8, 14, 22, 0.9));
+  border: 1px solid rgba(152, 214, 211, 0.2);
+  box-shadow: 0 50px 120px -34px rgba(0, 0, 0, 0.85),
+    0 0 70px -12px rgba(70, 120, 220, 0.26), inset 0 1px 0 rgba(255, 255, 255, 0.09);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+}
+.mcardTitle {
+  font-size: clamp(17px, 2vw, 22px);
+  font-weight: 600;
+}
+.mcardRule {
+  width: 34px;
+  height: 2px;
+  border-radius: 2px;
+  margin-top: 11px;
+  background: linear-gradient(90deg, transparent, rgba(180, 200, 230, 0.6), transparent);
+}
+.ringbox {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 0 7px;
 }
 .ring {
   width: 100%;
   height: 100%;
-  display: block;
-  filter: drop-shadow(0 18px 50px rgba(0, 0, 0, 0.4));
+  overflow: visible;
 }
-.ring circle {
-  transition: none; /* values are tweened in JS via rAF */
+.track {
+  fill: none;
+  stroke: rgba(120, 145, 185, 0.12);
+  stroke-width: 8;
 }
-
-/* arc labels around the ring */
-.label {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  line-height: 1.1;
-  font-variant-numeric: tabular-nums;
-  z-index: 3;
+.arc {
+  fill: none;
+  stroke-linecap: round;
+  stroke-width: 8.5;
 }
-.labelVal {
-  font-size: clamp(1.1rem, 3vw, 1.6rem);
-  font-weight: 700;
-  letter-spacing: -0.01em;
+.dot {
+  stroke: #fff;
+  stroke-width: 1.4;
 }
-.labelName {
-  font-size: 11px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.78);
-  font-weight: 600;
-}
-.labelCerebral {
-  top: 20%;
-  left: -8%;
-  text-align: right;
-  align-items: flex-end;
-}
-.labelAlpha {
-  top: 20%;
-  right: -8%;
-  text-align: left;
-  align-items: flex-start;
-}
-.labelPrime {
-  bottom: -4%;
-  left: 50%;
-  transform: translateX(-50%);
-  text-align: center;
-  align-items: center;
-}
-
-/* ── floating persona figures — alternating sides, edge-masked ────────────── */
-.figure {
-  position: absolute;
-  top: 50%;
-  width: min(38vw, 420px);
-  max-width: 46vw;
-  margin: 0;
-  opacity: 0;
-  z-index: 1;
-  pointer-events: none;
-  transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: opacity, transform;
-}
-.figLeft {
-  left: 0;
-  transform: translate(-4%, calc(-50% + 48px));
-  text-align: left;
-}
-.figRight {
-  right: 0;
-  transform: translate(4%, calc(-50% + 48px));
-  text-align: right;
-}
-.figActive {
-  opacity: 1;
-}
-.figLeft.figActive,
-.figRight.figActive {
-  transform: translate(0, -50%);
-}
-
-.figImg {
-  width: 100%;
-  height: auto;
-  max-height: 62vh;
-  object-fit: cover;
-  border-radius: 18px;
-  display: block;
-}
-/* dissolve the edge nearest the ring so the image never clashes with it */
-.figLeft .figImg {
-  -webkit-mask-image: linear-gradient(to right, #000 30%, transparent 96%);
-  mask-image: linear-gradient(to right, #000 30%, transparent 96%);
-}
-.figRight .figImg {
-  -webkit-mask-image: linear-gradient(to left, #000 30%, transparent 96%);
-  mask-image: linear-gradient(to left, #000 30%, transparent 96%);
-}
-
-.figCaption {
-  margin-top: 14px;
-  padding: 0 6px;
-}
-.figTag {
-  display: block;
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--aqua, #98d6d3);
-  font-weight: 600;
-  margin-bottom: 6px;
-}
-.figQuote {
-  display: block;
+.lblVal {
   font-family: var(--font-instrument), ui-sans-serif, system-ui, sans-serif;
-  font-size: clamp(1.1rem, 2.4vw, 1.6rem);
+  font-weight: 800;
+  font-size: 26px;
+  letter-spacing: -0.02em;
+}
+.lblName {
+  font-family: var(--font-instrument), ui-sans-serif, system-ui, sans-serif;
   font-weight: 600;
-  letter-spacing: -0.01em;
-  line-height: 1.15;
-  color: #fff;
+  font-size: 10.5px;
+  letter-spacing: 0.2em;
+}
+.nmark {
+  stroke: #fff;
+  stroke-width: 3.3;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.4));
+}
+.nmarkDot {
+  fill: #fff;
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.6));
 }
 
-/* ── step markers ─────────────────────────────────────────────────────────── */
-.steps {
-  position: absolute;
-  bottom: clamp(20px, 6vh, 56px);
-  left: 50%;
-  transform: translateX(-50%);
+/* progress dots */
+.prog {
+  margin-top: clamp(22px, 3.2vh, 38px);
   display: flex;
   gap: 10px;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  z-index: 3;
+  justify-content: center;
+  z-index: 6;
 }
-.stepDot {
+.progDot {
   width: 8px;
   height: 8px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.24);
-  transition: background 0.3s ease, width 0.3s ease;
+  border-radius: 50%;
+  background: rgba(150, 170, 200, 0.28);
+  transition: all 0.35s;
 }
-.stepActive {
-  width: 26px;
-  background: var(--aqua, #98d6d3);
+.progOn {
+  background: #fff;
+  box-shadow: 0 0 14px rgba(255, 255, 255, 0.7);
+  transform: scale(1.2);
 }
 
-/* ── mobile: images fade in above the ring instead of hard left/right ─────── */
-@media (max-width: 768px) {
-  .figure {
-    top: auto;
-    bottom: 8vh;
-    left: 50%;
-    right: auto;
-    width: min(78vw, 340px);
-    max-width: 78vw;
-    text-align: center;
+/* mobile: stack card + ring */
+@media (max-width: 999px) {
+  .sticky {
+    padding: 80px 0 30px;
   }
-  .figLeft,
-  .figRight {
-    transform: translate(-50%, 40px);
+  .head {
+    margin-bottom: 14px;
   }
-  .figLeft.figActive,
-  .figRight.figActive {
-    transform: translate(-50%, 0);
+  .pair {
+    flex-direction: column;
+    gap: 12px;
   }
-  /* fade the BOTTOM edge on mobile (image sits below/around the ring) */
-  .figLeft .figImg,
-  .figRight .figImg {
-    -webkit-mask-image: linear-gradient(to top, transparent 2%, #000 42%);
-    mask-image: linear-gradient(to top, transparent 2%, #000 42%);
-    max-height: 34vh;
+  .pslot {
+    height: auto;
+    width: min(66vw, 270px);
+    aspect-ratio: 16 / 10;
   }
-  .figCaption {
-    text-align: center;
+  .mcard {
+    height: auto;
+    width: min(66vw, 270px);
+    aspect-ratio: 1 / 1.08;
   }
-  .ringInner {
-    width: min(72vw, 300px);
+  .pname {
+    font-size: 18px;
   }
 }
 
-/* ── reduced motion: no transitions/drift; show the static default ────────── */
+/* reduced motion: no cross-fade transitions */
 @media (prefers-reduced-motion: reduce) {
-  .stage,
-  .figure,
-  .stepDot {
+  .persona,
+  .ambient,
+  .progDot {
     transition: none !important;
-  }
-  .figLeft,
-  .figRight {
-    transform: translate(0, -50%);
-  }
-  .stageExit {
-    opacity: 1;
-    transform: none;
   }
 }

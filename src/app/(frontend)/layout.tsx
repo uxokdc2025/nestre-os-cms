@@ -6,6 +6,8 @@ import { SiteFooter } from '@/components/SiteFooter'
 import { Carousels } from '@/components/Carousels'
 import { getChrome } from '@/lib/chrome'
 import { brandCss } from '@/lib/brand-css'
+import { BottomBlur } from '@/components/BottomBlur'
+import { CustomCursor } from '@/components/CustomCursor'
 import './styles.css'
 
 const instrument = Instrument_Sans({
@@ -38,6 +40,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <a href="#main" className="skip-link">Skip to content</a>
         <SiteHeader items={nav?.items || []} cta={nav?.cta} logoUrl={logoUrl} />
         {children}
+        <BottomBlur />
+        <CustomCursor />
         <Carousels />
         <SiteFooter logoUrl={logoUrl} footer={footer} />
       </body>
