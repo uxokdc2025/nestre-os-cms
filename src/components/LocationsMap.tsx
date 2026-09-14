@@ -23,9 +23,9 @@ export type LocationItem = {
 }
 
 const DEFAULTS: LocationItem[] = [
-  { name: 'Lake Nona', address: '6775 Chopra Ter, Orlando, FL 32827', miles: '3.1 miles away', hours: 'Open now', earliest: '11:00am', image: '/img/locations/lake-nona.png', map: '/img/locations/lake-nona-map.png', mapPos: '50% 55%', viewHref: '#', bookHref: '/book-a-consultation' },
-  { name: 'Winter Park', address: '2200 Lee Rd, Winter Park, FL 32789', miles: '5.2 miles away', hours: 'Open now', earliest: '11:00am', image: '/img/locations/winter-park.png', map: '/img/locations/winter-park-map.png', mapPos: '84% 50%', viewHref: '#', bookHref: '/book-a-consultation' },
-  { name: 'Monterey', address: '5 Harris Ct Bldg. T, Suite 102, Monterey, CA 93940', miles: '3,010 miles away', hours: 'Open now', earliest: '11:00am', image: '/img/locations/monterey.png', map: '/img/locations/monterey-map.png', mapPos: '88% 50%', viewHref: '#', bookHref: '/book-a-consultation' },
+  { name: 'Lake Nona', address: '6775 Chopra Ter, Orlando, FL 32827', miles: '3.1 miles away', hours: 'Open now', earliest: '11:00am', image: '/img/locations/lake-nona.png', map: '/img/locations/lake-nona-map.png', mapPos: '50% 78%', viewHref: '#', bookHref: '/book-a-consultation' },
+  { name: 'Winter Park', address: '2200 Lee Rd, Winter Park, FL 32789', miles: '5.2 miles away', hours: 'Open now', earliest: '11:00am', image: '/img/locations/winter-park.png', map: '/img/locations/winter-park-map.png', mapPos: '90% 50%', viewHref: '#', bookHref: '/book-a-consultation' },
+  { name: 'Monterey', address: '5 Harris Ct Bldg. T, Suite 102, Monterey, CA 93940', miles: '3,010 miles away', hours: 'Open now', earliest: '11:00am', image: '/img/locations/monterey.png', map: '/img/locations/monterey-map.png', mapPos: '92% 50%', viewHref: '#', bookHref: '/book-a-consultation' },
 ]
 
 export function LocationsMap({
@@ -105,10 +105,6 @@ export function LocationsMap({
               />
             ))}
             <span className="loc2-map-veil" aria-hidden />
-            <span className="loc2-mapring" aria-hidden>
-              <span className="loc2-mapring-r" />
-              <span className="loc2-mapring-r d2" />
-            </span>
             <span className="loc2-map-name" aria-live="polite">{current.name}</span>
             <a
               className="loc2-map-open"
