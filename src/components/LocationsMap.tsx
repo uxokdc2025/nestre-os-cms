@@ -14,6 +14,7 @@ export type LocationItem = {
   earliest?: string
   image?: string | null
   alt?: string
+  map?: string | null
   x?: number
   y?: number
   viewHref?: string
@@ -21,9 +22,9 @@ export type LocationItem = {
 }
 
 const DEFAULTS: LocationItem[] = [
-  { name: 'Lake Nona', address: '6775 Chopra Ter, Orlando, FL 32827', miles: '3.1 miles away', hours: 'Open now', earliest: '11:00am', image: '/img/locations/lake-nona.png', x: 33, y: 58, viewHref: '#', bookHref: '/book-a-consultation' },
-  { name: 'Winter Park', address: '2200 Lee Rd, Winter Park, FL 32789', miles: '5.2 miles away', hours: 'Open now', earliest: '11:00am', image: '/img/locations/winter-park.png', x: 55, y: 33, viewHref: '#', bookHref: '/book-a-consultation' },
-  { name: 'Monterey', address: '5 Harris Ct Bldg. T, Suite 102, Monterey, CA 93940', miles: '3,010 miles away', hours: 'Open now', earliest: '11:00am', image: '/img/locations/monterey.png', x: 77, y: 63, viewHref: '#', bookHref: '/book-a-consultation' },
+  { name: 'Lake Nona', address: '6775 Chopra Ter, Orlando, FL 32827', miles: '3.1 miles away', hours: 'Open now', earliest: '11:00am', image: '/img/locations/lake-nona.png', map: '/img/locations/lake-nona-map.png', viewHref: '#', bookHref: '/book-a-consultation' },
+  { name: 'Winter Park', address: '2200 Lee Rd, Winter Park, FL 32789', miles: '5.2 miles away', hours: 'Open now', earliest: '11:00am', image: '/img/locations/winter-park.png', map: '/img/locations/winter-park-map.png', viewHref: '#', bookHref: '/book-a-consultation' },
+  { name: 'Monterey', address: '5 Harris Ct Bldg. T, Suite 102, Monterey, CA 93940', miles: '3,010 miles away', hours: 'Open now', earliest: '11:00am', image: '/img/locations/monterey.png', map: '/img/locations/monterey-map.png', viewHref: '#', bookHref: '/book-a-consultation' },
 ]
 
 export function LocationsMap({
@@ -92,44 +93,32 @@ export function LocationsMap({
             })}
           </div>
 
-          {/* stylised brand map — markers reposition-focus on selection */}
+          {/* real map per location — crossfades + slow zoom on selection */}
           <div className="loc2-map">
-            <svg className="loc2-grid" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
-              {/* water */}
-              <path className="loc2-water" d="M100 -4 Q84 6 86 22 Q88 40 74 46 Q60 52 66 34 Q71 18 88 12 Q96 8 100 12 Z" />
-              <ellipse className="loc2-water" cx="22" cy="82" rx="19" ry="12" />
-              {/* park / green space */}
-              <ellipse className="loc2-park" cx="70" cy="80" rx="17" ry="12" />
-              <ellipse className="loc2-park" cx="14" cy="22" rx="14" ry="10" />
-              {/* minor road grid */}
-              {[18, 40, 62, 84].map((y, i) => (
-                <path key={`h${i}`} className="loc2-road" d={`M-2 ${y} Q50 ${y - 6} 102 ${y + 4}`} />
-              ))}
-              {[16, 38, 60, 82].map((x, i) => (
-                <path key={`v${i}`} className="loc2-road" d={`M${x} -2 Q${x + 5} 50 ${x - 4} 102`} />
-              ))}
-              {/* major routes */}
-              <path className="loc2-road major" d="M-2 66 Q34 60 56 40 Q76 22 102 28" />
-              <path className="loc2-road major" d="M22 -2 Q30 40 44 58 Q56 74 60 102" />
-            </svg>
-            <span className="loc2-focus" style={{ left: `${current.x ?? 50}%`, top: `${current.y ?? 50}%` }} aria-hidden />
-            {locs.map((l, i) => {
-              const on = i === active
-              return (
-                <button
-                  key={i}
-                  type="button"
-                  className={`loc2-pin${on ? ' on' : ''}`}
-                  style={{ left: `${l.x ?? 50}%`, top: `${l.y ?? 50}%` }}
-                  onClick={() => setActive(i)}
-                  aria-label={`Show ${l.name}`}
-                  aria-pressed={on}
-                >
-                  <span className="loc2-pin-dot" />
-                  <span className="loc2-pin-label">{l.name}</span>
-                </button>
-              )
-            })}
+            {locs.map((l, i) => (
+              <div
+                key={i}
+                className={`loc2-mapimg${i === active ? ' on' : ''}`}
+                style={l.map ? { backgroundImage: `url(${l.map})` } : undefined}
+                aria-hidden
+              />
+            ))}
+            <span className="loc2-map-veil" aria-hidden />
+            <span className="loc2-mappin" aria-hidden>
+              <span className="loc2-mappin-pulse" />
+              <span className="loc2-mappin-pulse d2" />
+              <span className="loc2-mappin-dot" />
+            </span>
+            <span className="loc2-map-tag" aria-live="polite">{current.name}</span>
+            <a
+              className="loc2-map-open"
+              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${current.name} NESTRE ${current.address || ''}`)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0Z" /><circle cx="12" cy="10" r="3" /></svg>
+              Open in Google Maps
+            </a>
           </div>
         </div>
       </div>
