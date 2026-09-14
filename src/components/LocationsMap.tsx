@@ -21,9 +21,9 @@ export type LocationItem = {
 }
 
 const DEFAULTS: LocationItem[] = [
-  { name: 'Lake Nona', address: '6775 Chopra Ter, Orlando, FL 32827', miles: '3.1 miles away', hours: 'Open now', earliest: '11:00am', x: 33, y: 58, viewHref: '#', bookHref: '/book-a-consultation' },
-  { name: 'Winter Park', address: '2200 Lee Rd, Winter Park, FL 32789', miles: '5.2 miles away', hours: 'Open now', earliest: '11:00am', x: 55, y: 33, viewHref: '#', bookHref: '/book-a-consultation' },
-  { name: 'Monterey', address: '5 Harris Ct Bldg. T, Suite 102, Monterey, CA 93940', miles: '3,010 miles away', hours: 'Open now', earliest: '11:00am', x: 77, y: 63, viewHref: '#', bookHref: '/book-a-consultation' },
+  { name: 'Lake Nona', address: '6775 Chopra Ter, Orlando, FL 32827', miles: '3.1 miles away', hours: 'Open now', earliest: '11:00am', image: '/img/locations/lake-nona.png', x: 33, y: 58, viewHref: '#', bookHref: '/book-a-consultation' },
+  { name: 'Winter Park', address: '2200 Lee Rd, Winter Park, FL 32789', miles: '5.2 miles away', hours: 'Open now', earliest: '11:00am', image: '/img/locations/winter-park.png', x: 55, y: 33, viewHref: '#', bookHref: '/book-a-consultation' },
+  { name: 'Monterey', address: '5 Harris Ct Bldg. T, Suite 102, Monterey, CA 93940', miles: '3,010 miles away', hours: 'Open now', earliest: '11:00am', image: '/img/locations/monterey.png', x: 77, y: 63, viewHref: '#', bookHref: '/book-a-consultation' },
 ]
 
 export function LocationsMap({
@@ -95,12 +95,22 @@ export function LocationsMap({
           {/* stylised brand map — markers reposition-focus on selection */}
           <div className="loc2-map">
             <svg className="loc2-grid" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
-              {Array.from({ length: 9 }).map((_, i) => (
-                <line key={`v${i}`} x1={(i + 1) * 10} y1="0" x2={(i + 1) * 10} y2="100" />
+              {/* water */}
+              <path className="loc2-water" d="M100 -4 Q84 6 86 22 Q88 40 74 46 Q60 52 66 34 Q71 18 88 12 Q96 8 100 12 Z" />
+              <ellipse className="loc2-water" cx="22" cy="82" rx="19" ry="12" />
+              {/* park / green space */}
+              <ellipse className="loc2-park" cx="70" cy="80" rx="17" ry="12" />
+              <ellipse className="loc2-park" cx="14" cy="22" rx="14" ry="10" />
+              {/* minor road grid */}
+              {[18, 40, 62, 84].map((y, i) => (
+                <path key={`h${i}`} className="loc2-road" d={`M-2 ${y} Q50 ${y - 6} 102 ${y + 4}`} />
               ))}
-              {Array.from({ length: 9 }).map((_, i) => (
-                <line key={`h${i}`} x1="0" y1={(i + 1) * 10} x2="100" y2={(i + 1) * 10} />
+              {[16, 38, 60, 82].map((x, i) => (
+                <path key={`v${i}`} className="loc2-road" d={`M${x} -2 Q${x + 5} 50 ${x - 4} 102`} />
               ))}
+              {/* major routes */}
+              <path className="loc2-road major" d="M-2 66 Q34 60 56 40 Q76 22 102 28" />
+              <path className="loc2-road major" d="M22 -2 Q30 40 44 58 Q56 74 60 102" />
             </svg>
             <span className="loc2-focus" style={{ left: `${current.x ?? 50}%`, top: `${current.y ?? 50}%` }} aria-hidden />
             {locs.map((l, i) => {

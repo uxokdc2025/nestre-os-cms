@@ -752,7 +752,10 @@ html { scroll-behavior: smooth; }
 .loc2-map { position: relative; border: 1px solid var(--line); border-radius: 20px; overflow: hidden; min-height: 520px;
   background: radial-gradient(120% 90% at 30% 15%, #ffffff 0%, #eef2f0 58%, #e6ece9 100%); }
 .loc2-grid { position: absolute; inset: 0; width: 100%; height: 100%; }
-.loc2-grid line { stroke: rgba(16,33,42,.06); stroke-width: 1; }
+.loc2-water { fill: rgba(152,214,211,.34); }
+.loc2-park { fill: rgba(43,107,102,.09); }
+.loc2-road { fill: none; stroke: rgba(16,33,42,.10); stroke-width: .7; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.loc2-road.major { stroke: rgba(16,33,42,.18); stroke-width: 1.4; }
 .loc2-focus { position: absolute; width: 200px; height: 200px; transform: translate(-50%, -50%); border-radius: 50%; pointer-events: none;
   background: radial-gradient(closest-side, rgba(152,214,211,.55), rgba(152,214,211,0) 70%);
   transition: left .5s cubic-bezier(.22,1,.36,1), top .5s cubic-bezier(.22,1,.36,1); }
