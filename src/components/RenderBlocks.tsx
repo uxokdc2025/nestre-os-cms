@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { PodcastPlayer } from './PodcastPlayer'
 import { ClosingParallax } from './ClosingParallax'
 import { PhoneShowcase } from './PhoneShowcase'
+import { LocationsMap } from './LocationsMap'
 
 type Media = { url?: string | null; alt?: string | null } | string | null | undefined
 type CTA = { label?: string; href?: string | null; style?: string }
@@ -344,27 +345,22 @@ export function Block({ block }: { block: any }) {
           </div>
         </section>
       )
-    case 'locations':
-      return (
-        <section className="sec paper">
-          <div className="wrap">
-            {block.eyebrow && <p className="eyebrow">{block.eyebrow}</p>}
-            {block.heading && <h2 className="h2" style={{ marginTop: 16, whiteSpace: 'pre-line' }}>{block.heading}</h2>}
-            {block.body && <p className="lead muted">{block.body}</p>}
-            <div className="loc-grid">
-              {block.items?.map((l: any, i: number) => (
-                <div key={i} className="loc-card">
-                  {mediaUrl(l.image) && <div className="loc-img"><img src={mediaUrl(l.image)!} alt={mediaAlt(l.image)} /></div>}
-                  {l.region && <div className="kick" style={{ color: 'var(--muted)' }}>{l.region}</div>}
-                  <h3 style={{ fontSize: 22, fontWeight: 600, marginTop: 6 }}>{l.name}</h3>
-                  {l.address && <p className="muted" style={{ marginTop: 8, whiteSpace: 'pre-line', fontSize: 14 }}>{l.address}</p>}
-                  {l.cta && <a className="btn outline" style={{ marginTop: 14, height: 44 }} href="#">{l.cta}</a>}
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )
+    case 'locations': {
+      const items = (block.items || []).map((l: any) => ({
+        name: l.name,
+        address: l.address,
+        miles: l.miles,
+        hours: l.hours,
+        earliest: l.earliest,
+        image: mediaUrl(l.image),
+        alt: mediaAlt(l.image),
+        x: typeof l.x === 'number' ? l.x : undefined,
+        y: typeof l.y === 'number' ? l.y : undefined,
+        viewHref: l.viewHref,
+        bookHref: l.bookHref,
+      }))
+      return <LocationsMap eyebrow={block.eyebrow} heading={block.heading} body={block.body} items={items} />
+    }
     case 'richText':
       return (
         <section className={`sec ${block.theme || 'paper'}`}>
