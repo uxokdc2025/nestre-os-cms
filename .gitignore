@@ -10,3 +10,7 @@ dist
 .env*
 .credentials.local.md
 tsconfig.tsbuildinfo
+
+# raw image drops (used copies live in public/img)
+src/Locations/
+src/app/images/
