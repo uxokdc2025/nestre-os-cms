@@ -104,12 +104,7 @@ export function LocationsMap({
               />
             ))}
             <span className="loc2-map-veil" aria-hidden />
-            <span className="loc2-mappin" aria-hidden>
-              <span className="loc2-mappin-pulse" />
-              <span className="loc2-mappin-pulse d2" />
-              <span className="loc2-mappin-dot" />
-            </span>
-            <span className="loc2-map-tag" aria-live="polite">{current.name}</span>
+            <span className="loc2-map-name" aria-live="polite">{current.name}</span>
             <a
               className="loc2-map-open"
               href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${current.name} NESTRE ${current.address || ''}`)}`}
