@@ -52,27 +52,8 @@ export function Reveal() {
       })
     }
 
-    // Reveal via IntersectionObserver — adds `.in` (CSS transitions it into view).
-    // This survives Next.js soft-navigation; the old CSS scroll-timeline (view())
-    // silently failed to attach on the newly-rendered page, leaving whole sections
-    // stuck invisible until a hard refresh.
-    const io = new IntersectionObserver(
-      (entries, obs) => {
-        for (const e of entries) {
-          if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target) }
-        }
-      },
-      { rootMargin: '0px 0px -6% 0px', threshold: 0.02 },
-    )
-    const tagged = Array.from(document.querySelectorAll('.reveal-child')) as HTMLElement[]
-    const vh = window.innerHeight
-    for (const el of tagged) {
-      const r = el.getBoundingClientRect()
-      // already on-screen at load → show immediately (no flash), else observe
-      if (r.top < vh && r.bottom > 0) el.classList.add('in')
-      else io.observe(el)
-    }
-    return () => io.disconnect()
+    // Tagging alone triggers the CSS entrance (a finite, time-based animation that
+    // always finishes visible). No scroll observer — content can never get stuck.
   }, [pathname])
   return null
 }
