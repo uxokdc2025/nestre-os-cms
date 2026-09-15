@@ -167,7 +167,7 @@ export function Block({ block }: { block: any }) {
               {block.steps?.map((s: any, i: number) => {
                 const url = mediaUrl(s.image)
                 // graphic dashboards (the review scorecard) must fit whole, not crop
-                const fit = !!url && /ai-review|scorecard|readiness|motor/i.test(url)
+                const fit = !!url && /ai-review|home-review|scorecard|readiness|motor/i.test(url)
                 return (
                   <div key={i} className="step">
                     <div className={`thumb${fit ? ' fit' : ''}`}>{url && <img src={url} alt={mediaAlt(s.image)} />}</div>
