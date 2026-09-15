@@ -54,13 +54,13 @@ export function ConsultPopover({ label = 'Book a Consultation', className = 'btn
               <p className="consult-eyebrow">Book a Consultation</p>
               <h3 className="consult-title">Let&rsquo;s start the conversation.</h3>
               <label className="consult-field"><span>Your name</span>
-                <input name="name" type="text" required placeholder="Jane Smith" autoComplete="name" />
+                <input name="name" type="text" required placeholder="Full name" autoComplete="name" />
               </label>
               <label className="consult-field"><span>Your e-mail</span>
-                <input name="email" type="email" required placeholder="jane@email.com" autoComplete="email" />
+                <input name="email" type="email" required placeholder="you@example.com" autoComplete="email" />
               </label>
               <label className="consult-field"><span>Message</span>
-                <textarea name="message" required rows={3} placeholder="What would you like to work on?" />
+                <textarea name="message" required rows={3} placeholder="How can we help?" />
               </label>
               {/* honeypot — hidden from humans */}
               <input name="company" tabIndex={-1} autoComplete="off" aria-hidden className="consult-hp" />
