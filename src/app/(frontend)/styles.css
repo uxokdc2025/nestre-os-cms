@@ -404,8 +404,10 @@ main#main { position: relative; z-index: 1; background: var(--paper); box-shadow
 @media (prefers-reduced-motion: reduce) { .hero-more svg { animation: none; } }
 @keyframes heroBob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
 
-/* smooth in-page scroll for the hero "learn more" → #next anchor */
-html { scroll-behavior: smooth; }
+/* Instant scroll: page navigation must snap to the top (hero), not glide up from
+   the previous scroll position. In-page smooth scrolls (hero arrow, carousels) are
+   handled in JS with an explicit behavior:'smooth', so they're unaffected. */
+html { scroll-behavior: auto; }
 .scroll-anchor { position: relative; height: 0; scroll-margin-top: 76px; }
 
 /* stat number badges (count up on reveal) */
