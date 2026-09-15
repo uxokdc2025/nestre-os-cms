@@ -23,9 +23,9 @@ export type LocationItem = {
 }
 
 const DEFAULTS: LocationItem[] = [
-  { name: 'Lake Nona', address: '6775 Chopra Ter, Orlando, FL 32827', miles: '3.1 miles away', hours: 'Open now', earliest: '11:00am', image: '/img/locations/lake-nona.png', map: '/img/locations/lake-nona-map.png', mapPos: '50% 78%', viewHref: '#', bookHref: '/book-a-consultation' },
-  { name: 'Winter Park', address: '2200 Lee Rd, Winter Park, FL 32789', miles: '5.2 miles away', hours: 'Open now', earliest: '11:00am', image: '/img/locations/winter-park.png', map: '/img/locations/winter-park-map.png', mapPos: '90% 50%', viewHref: '#', bookHref: '/book-a-consultation' },
-  { name: 'Monterey', address: '5 Harris Ct Bldg. T, Suite 102, Monterey, CA 93940', miles: '3,010 miles away', hours: 'Open now', earliest: '11:00am', image: '/img/locations/monterey.png', map: '/img/locations/monterey-map.png', mapPos: '92% 50%', viewHref: '#', bookHref: '/book-a-consultation' },
+  { name: 'Lake Nona', address: '6775 Chopra Ter, Orlando, FL 32827', miles: '3.1 miles away', hours: 'Open now', earliest: '11:00am', image: '/img/locations/lake-nona.png', map: '/img/locations/lake-nona-map.png', mapPos: '50% 78%', bookHref: '/book-a-consultation' },
+  { name: 'Winter Park', address: '2200 Lee Rd, Winter Park, FL 32789', miles: '5.2 miles away', hours: 'Open now', earliest: '11:00am', image: '/img/locations/winter-park.png', map: '/img/locations/winter-park-map.png', mapPos: '90% 50%', bookHref: '/book-a-consultation' },
+  { name: 'Monterey', address: '5 Harris Ct Bldg. T, Suite 102, Monterey, CA 93940', miles: '3,010 miles away', hours: 'Open now', earliest: '11:00am', image: '/img/locations/monterey.png', map: '/img/locations/monterey-map.png', mapPos: '92% 50%', bookHref: '/book-a-consultation' },
 ]
 
 export function LocationsMap({
@@ -85,8 +85,14 @@ export function LocationsMap({
                       </div>
                     )}
                     <div className="loc2-btns">
-                      <a className="btn outline" href={l.viewHref || '#'} onClick={(e) => e.stopPropagation()}>View Location</a>
-                      <a className="btn solid" href={l.bookHref || '#'} onClick={(e) => e.stopPropagation()}>Book Training</a>
+                      <a
+                        className="btn outline"
+                        href={l.viewHref || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${l.name} NESTRE ${l.address || ''}`)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                      >View Location</a>
+                      <a className="btn solid" href={l.bookHref || '/book-a-consultation'} onClick={(e) => e.stopPropagation()}>Book Training</a>
                     </div>
                   </div>
                 </div>
