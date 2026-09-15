@@ -100,6 +100,9 @@ h1, h2, h3 { margin: 0; letter-spacing: -0.02em; line-height: 1.02; text-wrap: b
 /* graphic dashboards fit WHOLE (no crop) on a navy ground matching the artwork */
 .step .thumb.fit { background: #0c1a26; }
 .step .thumb.fit img { object-fit: contain !important; scale: 1 !important; }
+/* photos already cropped to the card ratio: fill the frame, no base zoom */
+.step .thumb.fill img { scale: 1 !important; }
+.step:hover .thumb.fill img { scale: 1.06 !important; }
 .step .kick { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--aqua); margin-top: 18px; }
 .step h3 { font-size: 22px; font-weight: 500; margin-top: 10px; }
 

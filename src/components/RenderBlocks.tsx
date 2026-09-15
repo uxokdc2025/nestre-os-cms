@@ -168,9 +168,11 @@ export function Block({ block }: { block: any }) {
                 const url = mediaUrl(s.image)
                 // graphic dashboards (the review scorecard) must fit whole, not crop
                 const fit = !!url && /ai-review|home-review|scorecard|readiness|motor/i.test(url)
+                // full-bleed photos already framed to the card ratio — no base zoom
+                const fill = !!url && /\/cards\/start/.test(url)
                 return (
                   <div key={i} className="step">
-                    <div className={`thumb${fit ? ' fit' : ''}`}>{url && <img src={url} alt={mediaAlt(s.image)} />}</div>
+                    <div className={`thumb${fit ? ' fit' : ''}${fill ? ' fill' : ''}`}>{url && <img src={url} alt={mediaAlt(s.image)} />}</div>
                     {s.kicker && <div className="kick">{s.kicker}</div>}
                     <h3>{s.title}</h3>
                     {s.body && <p className="muted" style={{ marginTop: 8 }}>{s.body}</p>}
