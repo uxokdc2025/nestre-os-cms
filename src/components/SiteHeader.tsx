@@ -10,7 +10,10 @@ import { ConsultPopover } from './ConsultPopover'
 // external, mailto, tel and anchors fall back to a plain <a>.
 const isInternal = (h?: string) => !!h && h.startsWith('/') && !h.startsWith('//')
 function A({ href, children, ...rest }: any) {
-  return isInternal(href) ? <Link href={href} {...rest}>{children}</Link> : <a href={href || '#'} {...rest}>{children}</a>
+  // prefetch={false}: the header renders ~8 nav links; prefetching them all at once
+  // fired a burst of RSC fetches at the force-dynamic pages, spiking the DB into
+  // 500s that broke the very page you then clicked. Fetch on click instead.
+  return isInternal(href) ? <Link href={href} prefetch={false} {...rest}>{children}</Link> : <a href={href || '#'} {...rest}>{children}</a>
 }
 
 export function SiteHeader({ items, cta, logoUrl }: { items: any[]; cta?: any; logoUrl?: string }) {
