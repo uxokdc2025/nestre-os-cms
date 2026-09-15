@@ -85,12 +85,15 @@ export function PhoneShowcase({ block }: { block: any }) {
               {phones.map((p, i) => {
                 const url = mediaUrl(p.image)
                 const alt = mediaAlt(p.image)
-                const isWater = !!url && /app-water\.png(\?|$)/.test(url)
+                // posters that play a looping clip over the phone screen (poster filename → video filename)
+                const VIDEO: Record<string, string> = { 'app-water.png': 'app-water.mp4', 'app-flower.png': 'app-bloom-loop.mp4' }
+                const clip = url ? Object.keys(VIDEO).find((k) => url.includes(k)) : undefined
+                const videoSrc = clip && url ? url.replace(clip, VIDEO[clip]) : null
                 return (
                   <div key={i} className="phone">
                     <img src={url || ''} alt={alt} />
-                    {isWater && (
-                      <video className="phone-video" src={url!.replace('app-water.png', 'app-water.mp4')} autoPlay muted loop playsInline preload="metadata" aria-hidden />
+                    {videoSrc && (
+                      <video className="phone-video" src={videoSrc} autoPlay muted loop playsInline preload="metadata" aria-hidden />
                     )}
                   </div>
                 )
