@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
+import { usePathname } from 'next/navigation'
 
 // Progressive enhancement: content ships visible (SSR/no-JS/SEO safe). On load,
 // JS tags each section's key elements — copy, buttons, cards, images — and staggers
@@ -15,6 +16,10 @@ const SEL = [
 ].join(',')
 
 export function Reveal() {
+  // Re-run on every route change: how-it-works / neuro-labs / our-story etc. share
+  // the one [[...slug]] route, so without a pathname dep the effect never re-fires
+  // on soft-nav between them — new content stays untagged and invisible.
+  const pathname = usePathname()
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
     // Skip sections that drive their own motion — the hero (heroRise) and the
@@ -68,6 +73,6 @@ export function Reveal() {
       else io.observe(el)
     }
     return () => io.disconnect()
-  }, [])
+  }, [pathname])
   return null
 }
