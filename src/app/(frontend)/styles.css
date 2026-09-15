@@ -736,12 +736,14 @@ html { scroll-behavior: smooth; }
 .closing-copy:not(.copy-right) .eyebrow { color: #fff; }
 /* copy on the right side (when the subject sits on the left of the image) —
    dark type so it reads against the lighter right side of the photo */
-.closing-copy.copy-right { text-align: right; padding-right: calc(6vw + 180px); }
-.closing-copy.copy-right h2, .closing-copy.copy-right .closing-body { margin-left: auto; margin-right: 0; }
-.closing-copy.copy-right .btns { justify-content: flex-end; }
+.closing-copy.copy-right { text-align: left; padding-right: calc(6vw + 180px); }
+/* right-side column, but left-justified inside so eyebrow/heading/body/button share one left edge */
+.closing-copy.copy-right .closing-copy-inner { width: max-content; max-width: 100%; margin-left: auto; margin-right: 0; }
+.closing-copy.copy-right h2, .closing-copy.copy-right .closing-body { margin-left: 0; margin-right: 0; }
+.closing-copy.copy-right .btns { justify-content: flex-start; }
 .closing-copy.copy-right h2 { color: var(--navy); }
 .closing-copy.copy-right .closing-body { color: rgba(8,28,38,.82); }
-.closing-copy.copy-right .eyebrow { color: var(--aqua-ink); margin-left: auto; margin-right: 0; }
+.closing-copy.copy-right .eyebrow { color: var(--aqua-ink); margin-left: 0; margin-right: 0; }
 /* ---------- two-column split (copy | image) for image-only feature sections ---------- */
 /* copy column ~100px narrower than the media so the video fills the reclaimed space */
 .split { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 56px; align-items: center; }

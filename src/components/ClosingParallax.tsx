@@ -62,16 +62,18 @@ export function ClosingParallax({ image, alt, heading, body, accentLine, ctas, c
           {image && <img src={image} alt={alt || ''} />}
           <div ref={vignRef} className="closing-vign" aria-hidden />
           <div ref={copyRef} className={`closing-copy${copyRight ? ' copy-right' : ''}`}>
-            {accentLine && <p className="eyebrow">{accentLine}</p>}
-            {heading && <h2 style={{ whiteSpace: 'pre-line' }}>{heading}</h2>}
-            {body && <p className="closing-body">{body}</p>}
-            {!!ctas?.length && (
-              <div className="btns">
-                {ctas.map((c, i) => (
-                  <a key={i} className={`btn ${c.style || 'aqua'}`} href={c.href || '#'} {...(/^https?:/.test(c.href || '') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>{c.label}</a>
-                ))}
-              </div>
-            )}
+            <div className="closing-copy-inner">
+              {accentLine && <p className="eyebrow">{accentLine}</p>}
+              {heading && <h2 style={{ whiteSpace: 'pre-line' }}>{heading}</h2>}
+              {body && <p className="closing-body">{body}</p>}
+              {!!ctas?.length && (
+                <div className="btns">
+                  {ctas.map((c, i) => (
+                    <a key={i} className={`btn ${c.style || 'aqua'}`} href={c.href || '#'} {...(/^https?:/.test(c.href || '') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>{c.label}</a>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
