@@ -28,6 +28,13 @@ const DEFAULTS: LocationItem[] = [
   { name: 'Monterey', address: '5 Harris Ct Bldg. T, Suite 102, Monterey, CA 93940', miles: '3,010 miles away', hours: 'Open now', earliest: '11:00am', image: '/img/locations/monterey.png', map: '/img/locations/monterey-map.png', mapPos: '92% 50%', viewHref: '#', bookHref: '/book-a-consultation' },
 ]
 
+// Known locations keyed by name, so CMS-driven blocks that omit map/image data
+// still get the shipped assets the home page uses.
+const DEFAULT_BY_NAME: Record<string, LocationItem> = DEFAULTS.reduce(
+  (acc, d) => ({ ...acc, [d.name.toLowerCase()]: d }),
+  {} as Record<string, LocationItem>,
+)
+
 export function LocationsMap({
   eyebrow,
   heading,
@@ -39,7 +46,13 @@ export function LocationsMap({
   body?: string
   items?: LocationItem[]
 }) {
-  const locs = items && items.length ? items : DEFAULTS
+  // Merge each item over its known default (by name) so a CMS location missing
+  // map/image/mapPos falls back to the shipped asset instead of a blank panel —
+  // this is why the home page renders the map but /neuro-labs (CMS data) did not.
+  const locs = (items && items.length ? items : DEFAULTS).map((l) => {
+    const d = DEFAULT_BY_NAME[(l.name || '').toLowerCase()]
+    return d ? { ...l, map: l.map || d.map, mapPos: l.mapPos || d.mapPos, image: l.image || d.image } : l
+  })
   const [active, setActive] = useState(0)
   const current = locs[Math.min(active, locs.length - 1)]
 
