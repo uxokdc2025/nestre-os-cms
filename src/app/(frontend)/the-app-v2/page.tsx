@@ -92,9 +92,9 @@ const blocks: Record<string, any> = {
     eyebrow: 'Your practice, your pace',
     heading: 'Start with today.\nKeep making room.',
     steps: [
-      { image: img(`${A}/appshots/appshot-2.png`), kicker: '01 · Check in', title: 'Get to know your mind.', body: 'Begin with your NESTRE Score and see where you are today — your starting point, not your limit.' },
-      { image: img(`${A}/appshots/appshot-5.png`), kicker: '02 · Train', title: "Meet the moment you're in.", body: 'A short daily practice, matched to how you are reading right now, keeps momentum going.' },
-      { image: img(`${A}/appshots/appshot-3.png`), kicker: '03 · Return', title: 'Make it part of your life.', body: 'Come back tomorrow — and watch your Mindset Profile become unmistakably yours.' },
+      { image: img(`${A}/cards/start01.jpg`), kicker: '01 · Check in', title: 'Get to know your mind.', body: 'Begin with your NESTRE Score and see where you are today — your starting point, not your limit.' },
+      { image: img(`${A}/cards/start02.jpg`), kicker: '02 · Train', title: "Meet the moment you're in.", body: 'A short daily practice, matched to how you are reading right now, keeps momentum going.' },
+      { image: img(`${A}/cards/start03.jpg`), kicker: '03 · Return', title: 'Make it part of your life.', body: 'Come back tomorrow — and watch your Mindset Profile become unmistakably yours.' },
     ],
   },
 
