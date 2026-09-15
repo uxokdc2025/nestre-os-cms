@@ -122,9 +122,9 @@ h1, h2, h3 { margin: 0; letter-spacing: -0.02em; line-height: 1.02; text-wrap: b
 .app-pin-inner { align-items: center; gap: 16px; grid-template-columns: 0.8fr 1.2fr; }
 .app-pin-inner .app-copy { max-width: 440px; }
 .phone-stage { position: relative; min-width: 0; }
-.phone-track { display: flex; gap: 18px; align-items: center; justify-content: flex-start; min-width: 0; }
+.phone-track { display: flex; gap: 10px; align-items: center; justify-content: flex-start; min-width: 0; }
 .phone-track .phone {
-  position: relative; flex: 0 0 clamp(150px, 14.5vw, 190px);
+  position: relative; flex: 0 0 clamp(180px, 17.4vw, 228px);
   will-change: transform, opacity;
 }
 .phone-track .phone > img { width: 100%; height: auto; display: block; }
