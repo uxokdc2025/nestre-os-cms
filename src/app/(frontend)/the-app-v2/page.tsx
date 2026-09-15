@@ -104,10 +104,13 @@ const blocks: Record<string, any> = {
     eyebrow: 'Before you download',
     heading: 'Questions, answered.',
     items: [
-      { q: 'Can I use the app without a coach?', a: 'Yes. The app is built to guide you on its own — your daily practice, Frames, and Mindset Profile are all self-serve. A NeuroTrainer is there when you want more.' },
-      { q: 'Is the training I do a class?', a: "No — it's a personal practice. A few minutes a day, on your schedule, built around your own performance data rather than a fixed curriculum." },
-      { q: 'Does the app sync across my devices?', a: 'Your progress and Mindset Profile follow you across iOS and Android, so you can pick up wherever you are.' },
-      { q: 'Where can I see my performance?', a: 'Everything lives in your profile — your NESTRE Score, history, and the Mindset Profile that reshapes as you train.' },
+      { q: 'What is a NESTRE Consultation?', a: 'A NESTRE Consultation is a personalized experience designed to help you better understand how your brain processes the world around you. You’ll review your individual data, cognitive strengths, potential training opportunities for better cognitive performance, and recommended next steps to maintain your cognitive fitness through our NESTRE training programs.' },
+      { q: 'How to prepare for your NESTRE consultation', a: 'Plan for 1 hour and arrive 5–10 minutes early to check in and get settled. Complete your intake forms at least 48 hours before your session and be detailed with your responses. Wear comfortable clothing and come with your hair down or in a low ponytail; a qEEG cap and conductive gel will be used during your consultation. Bring a baseball cap or headwear if you have longer hair, as the gel may leave it slightly damp. Remove all earrings before your session, and please note that photography, videography, and voice recording are not permitted in NESTRE training rooms or the facility.' },
+      { q: 'What is Neuro-Strength Training?', a: 'We strengthen your mind and brain to perform at its highest level through consistent cognitive fitness training based on the data we collect during your consultation. Neuro-Strength Training is NESTRE’s personalized approach to strengthening mental and cognitive performance. It is informed by neuroplasticity, which refers to the brain’s ability to learn, adapt, and grow.' },
+      { q: 'How much does the initial consultation cost?', a: 'The regular price is $300. For a limited time, new clients can schedule an initial consultation for $250 — a savings of $50.' },
+      { q: 'What is NESTRE?', a: 'NESTRE is a neuro-strength company that specializes in neck-up fitness. We help individuals train their brains the same way they train their bodies. NESTRE combines the science of neuroplasticity, cognitive performance data, personalized training, and technology to help people get better, feel better, and perform better from the neck up.' },
+      { q: 'Does NESTRE take insurance?', a: 'No, we don’t currently take insurance.' },
+      { q: 'What happens after my consultation?', a: 'Following your NESTRE consultation, you will receive your consultation report that will outline your cognitive data. You’ll then have the opportunity to schedule your first NESTRE Training session based on your personalized training recommendations and performance goals established during your consultation visit.' },
     ],
   },
 
