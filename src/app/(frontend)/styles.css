@@ -290,16 +290,13 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px soli
 @media (prefers-reduced-motion: no-preference) {
   /* SCROLL-DRIVEN reveal — animation is tied to the element's own scroll position,
      so it is inherently smooth and can NEVER get stuck invisible. No-support = visible. */
-  @supports (animation-timeline: view()) {
-    /* --i (set per element in Reveal.tsx) offsets each element's range so they
-       CASCADE in one after another instead of arriving as one block. */
-    /* start the reveal LATER — around entry 40% (element ~40% up from the bottom
-       edge) through cover, so the movement plays where it's actually visible
-       instead of finishing while the element is still at the very bottom. */
-    /* elastic entrance (overshoot easing) — NO blur; content springs into frame */
-    .reveal-child { animation: revIn cubic-bezier(.34, 1.4, .5, 1) both; animation-timeline: view(); animation-range: entry calc(40% + min(var(--i,0), 7) * 8%) cover calc(18% + min(var(--i,0), 7) * 8%); }
-    .reveal-card { animation: revCardIn cubic-bezier(.34, 1.4, .5, 1) both; animation-timeline: view(); animation-range: entry calc(34% + min(var(--i,0), 5) * 10%) cover calc(24% + min(var(--i,0), 5) * 10%); }
-  }
+  /* Reveal is driven by an IntersectionObserver (Reveal.tsx) that adds `.in` when
+     an element scrolls into view. Transition-based so it CANNOT get stuck hidden —
+     scroll-timelines silently fail to attach after Next soft-navigation, which left
+     content invisible until a hard refresh. --i staggers the cascade. */
+  .reveal-child { opacity: 0; transform: translateY(34px); transition: opacity .7s cubic-bezier(.34,1.4,.5,1), transform .7s cubic-bezier(.34,1.4,.5,1); transition-delay: calc(min(var(--i,0), 12) * 55ms); }
+  .reveal-card { transform: translateY(56px) scale(.94); transition-delay: calc(min(var(--i,0), 5) * 90ms); }
+  .reveal-child.in { opacity: 1; transform: none; }
   @keyframes revIn { from { opacity: 0; transform: translateY(34px); } to { opacity: 1; transform: none; } }
   @keyframes revCardIn { from { opacity: 0; transform: translateY(56px) scale(.94); } to { opacity: 1; transform: none; } }
   .hero .inner > * { animation: heroRise .8s cubic-bezier(.22,1,.36,1) both; }
@@ -676,11 +673,8 @@ html { scroll-behavior: auto; }
 .sec.navy .sticky-list > .feature-card h3 { color: #fff; }
 .sec.navy .sticky-list > .feature-card + .feature-card { border-top-color: rgba(255,255,255,.14) !important; }
 .sticky-list .feature-step { font-size: 14px; }
-@media (prefers-reduced-motion: no-preference) { @supports (animation-timeline: view()) {
-  /* each callout rises in from below as it enters */
-  .sticky-list > .feature-card { animation: revTimelineIn cubic-bezier(.34, 1.4, .5, 1) both; animation-timeline: view(); animation-range: entry calc(34% + min(var(--i,0), 5) * 10%) cover calc(24% + min(var(--i,0), 5) * 10%); }
-}}
-@keyframes revTimelineIn { from { opacity: 0; transform: translateY(48px); } to { opacity: 1; transform: none; } }
+/* sticky-list cards reveal via the shared IntersectionObserver reveal (reveal-child),
+   not a scroll-timeline — a stuck timeline used to leave the whole right column blank. */
 .sticky-list > .scorecard-card { position: relative; padding: 26px; background: var(--navy) !important; border: 1px solid rgba(255,255,255,.1) !important; }
 /* (runner scorecard "wait for the left" is handled by the .stat-scroll opacity gate
    above — the whole right column is hidden until .stat-sticky.framed.) */
