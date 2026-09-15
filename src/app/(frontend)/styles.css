@@ -141,10 +141,18 @@ h1, h2, h3 { margin: 0; letter-spacing: -0.02em; line-height: 1.02; text-wrap: b
   .app-pin { min-height: 0; }
   .app-pin-sticky { position: static; min-height: 0; }
   .app-pin-inner { grid-template-columns: 1fr; }
+  .app-showcase { padding-bottom: 72px; }
+  .phone-stage { overflow: hidden; }
   .phone-track { overflow-x: auto; scrollbar-width: none; }
   .phone-track::-webkit-scrollbar { display: none; }
-  .phone-track .phone { opacity: 1 !important; transform: none !important; }
+  .phone-track .phone { opacity: 1 !important; }
+  /* phones glide left as the section scrolls through view (smooth, scroll-linked) */
+  @supports (animation-timeline: view()) {
+    .phone-track { overflow: visible; animation: phoneSlideM linear both; animation-timeline: view(); animation-range: entry 6% exit 40%; }
+    .phone-track .phone { transform: none !important; }
+  }
 }
+@keyframes phoneSlideM { from { transform: translateX(10%); } to { transform: translateX(-46%); } }
 @media (max-width: 860px) {
   .app-showcase .wrap.cols { grid-template-columns: 1fr; }
 }
