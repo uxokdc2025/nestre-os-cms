@@ -130,6 +130,26 @@ export function GetStartedBody({ location, acuityType }: { location: string; acu
         </div>
       </section>
 
+      {/* FAQ */}
+      <section className="sec paper">
+        <div className="wrap" style={{ maxWidth: 820 }}>
+          <p className="eyebrow">FAQ</p>
+          <h2 className="h2" style={{ marginTop: 16, marginBottom: 24 }}>Before you book.</h2>
+          {[
+            { q: 'What is a NESTRE Consultation?', a: 'A NESTRE Consultation is a personalized experience designed to help you better understand how your brain processes the world around you. You’ll review your individual data, cognitive strengths, potential training opportunities for better cognitive performance, and recommended next steps to maintain your cognitive fitness through our NESTRE training programs.' },
+            { q: 'What is Neuro-Strength Training?', a: 'We strengthen your mind and brain to perform at its highest level through consistent cognitive fitness training based on the data we collect during your consultation. Neuro-Strength Training is NESTRE’s personalized approach to strengthening mental and cognitive performance, informed by neuroplasticity — the brain’s ability to learn, adapt, and grow.' },
+            { q: 'How much does the initial consultation cost?', a: 'The regular price is $300. For a limited time, new clients can schedule an initial consultation for $250 — a savings of $50.' },
+            { q: 'What is NESTRE?', a: 'NESTRE is a neuro-strength company that specializes in neck-up fitness. We help individuals train their brains the same way they train their bodies — combining the science of neuroplasticity, cognitive performance data, personalized training, and technology to help people get better, feel better, and perform better from the neck up.' },
+            { q: 'Does NESTRE take insurance?', a: 'No, we don’t currently take insurance.' },
+          ].map((it, i) => (
+            <details key={i} className="faq-item">
+              <summary>{it.q}</summary>
+              <p className="muted">{it.a}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+
       {/* Closing CTA */}
       <section className="sec paper">
         <div className="wrap" style={{ textAlign: 'center' }}>
