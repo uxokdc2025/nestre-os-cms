@@ -83,7 +83,7 @@ const blocks: Record<string, any> = {
     eyebrow: 'A moment to pause',
     heading: 'Room to reset\nyour attention.',
     body: 'Guided Mindset Frames make space to come back to yourself — a small, unhurried reset you can take at the edge of the day.',
-    image: img(`${A}/img/water.jpg`, 'Still water'),
+    image: img('/api/media/file/app-water.mp4', 'Calm water'),
   },
 
   start: {
