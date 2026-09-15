@@ -368,8 +368,8 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px soli
 /* mobile menu — app download + contact block */
 .nav-mobile-apps { margin-top: 30px; }
 .nav-mobile-h { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.5); font-weight: 600; margin: 0 0 12px; }
-.nav-app-row { display: flex; gap: 12px; }
-.nav-app { display: inline-flex; align-items: center; gap: 8px; color: #fff; font-size: 15px; font-weight: 500; padding: 12px 20px; border: 1px solid rgba(255,255,255,.22); border-radius: 999px; transition: border-color .2s, color .2s; }
+.nav-app-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.nav-app { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 52px; color: #fff; font-size: 15px; font-weight: 500; padding: 0 18px; border: 1px solid rgba(255,255,255,.22); border-radius: 999px; transition: border-color .2s, color .2s; }
 .nav-app:hover { border-color: var(--aqua); color: var(--aqua); }
 .nav-mobile-foot { margin-top: auto; padding-top: 30px; display: flex; flex-direction: column; gap: 10px; }
 .nav-mobile-foot a { color: rgba(255,255,255,.6); font-size: 14px; transition: color .2s; }
