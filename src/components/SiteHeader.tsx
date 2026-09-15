@@ -86,7 +86,7 @@ export function SiteHeader({ items, cta, logoUrl }: { items: any[]; cta?: any; l
           </div>
 
           <div className="nav-mobile-foot">
-            <a href="mailto:info@nestreperformance.com">info@nestreperformance.com</a>
+            <a href="mailto:clayton@nestreperformance.com">clayton@nestreperformance.com</a>
             <a href="tel:6897103260">689-710-3260</a>
             <A href="/privacy" onClick={() => setOpen(false)}>Privacy Policy</A>
           </div>
