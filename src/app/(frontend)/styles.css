@@ -266,6 +266,12 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px soli
 @media (min-width: 940px) { .mobile-cta, .consult-mobile { display: none; } }
 /* menu instance sits in the full-screen overlay like the old CTA button */
 .nav-mobile .consult-menu { margin-top: 20px; align-self: flex-start; }
+/* label switching (the .nav-cta rules only cover the desktop instance):
+   mobile header button shows the short "Book now"; the menu button shows the full label */
+.consult-mobile .cta-full { display: none; }
+.consult-mobile .cta-short { display: inline; }
+.consult-menu .cta-short { display: none; }
+.consult-menu .cta-full { display: inline; }
 /* full-screen mobile menu overlay (sits below the fixed header bar) */
 /* full-screen overlay that fits without scrolling. viewport units (not inset:0)
    dodge the header's backdrop-filter containing block; sits below the header bar. */
