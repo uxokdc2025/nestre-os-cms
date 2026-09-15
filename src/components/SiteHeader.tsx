@@ -59,7 +59,7 @@ export function SiteHeader({ items, cta, logoUrl }: { items: any[]; cta?: any; l
         <div className="nav-right">
           {cta?.label && <ConsultPopover label={cta.label} />}
         </div>
-        {cta?.label && <A className="btn aqua mobile-cta" href={cta.href || '#'}>Book now</A>}
+        {cta?.label && <button type="button" className="btn aqua mobile-cta" onClick={() => window.dispatchEvent(new CustomEvent('nestre:open-consult'))}>Book now</button>}
       </div>
 
       {open && (
@@ -69,7 +69,7 @@ export function SiteHeader({ items, cta, logoUrl }: { items: any[]; cta?: any; l
               {it.label}
             </A>
           ))}
-          {cta?.label && <A className="btn aqua" href={cta.href || '#'} onClick={() => setOpen(false)}>{cta.label}</A>}
+          {cta?.label && <button type="button" className="btn aqua" onClick={() => { setOpen(false); window.dispatchEvent(new CustomEvent('nestre:open-consult')) }}>{cta.label}</button>}
 
           <div className="nav-mobile-apps">
             <p className="nav-mobile-h">Get the app</p>

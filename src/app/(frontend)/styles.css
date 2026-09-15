@@ -264,7 +264,8 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px soli
 @media (max-width: 939px) {
   .nav .links { display: none; }
   .nav-cta { display: none; }
-  .nav-right { display: none; }
+  /* keep the popover mounted (its drawer + open-consult listener) but collapse the wrapper */
+  .nav-right { display: contents; }
   .nav-toggle { display: inline-flex; }
   .mobile-cta { display: inline-flex; }
   .nav .brand-left { flex: 0 0 auto; } /* logo stays left, by the hamburger */
