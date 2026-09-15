@@ -860,3 +860,21 @@ html { scroll-behavior: auto; }
   .loc2-media { width: 100px; min-height: 128px; }
   .loc2-head h3 { font-size: 19px; }
 }
+
+/* ===== Get Started / ad landing pages (legacy WP rebuild) ===== */
+.btn.outline.light { color: #fff; border-color: rgba(255,255,255,.5); }
+.btn.outline.light:hover { border-color: #fff; }
+.get-price { display: flex; align-items: baseline; gap: 14px; margin-top: 26px; }
+.get-price-now { font-size: clamp(2.4rem, 5vw, 3.4rem); font-weight: 600; color: var(--aqua); line-height: 1; }
+.get-price-was { font-size: 16px; color: rgba(255,255,255,.55); text-decoration: line-through; }
+.get-hero .btns { margin-top: 20px; }
+.get-features { list-style: none; margin: 30px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; }
+.get-features li { font-size: 13px; font-weight: 500; color: rgba(255,255,255,.9); border: 1px solid rgba(255,255,255,.22); border-radius: 999px; padding: 8px 16px; }
+.get-logos { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: clamp(24px, 5vw, 56px); margin-top: 40px; }
+.get-logos img { height: 30px; width: auto; object-fit: contain; opacity: .55; filter: grayscale(1); transition: opacity .2s ease; }
+.get-logos img:hover { opacity: .85; }
+.get-two { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 44px; }
+.get-col { border: 1px solid var(--line); border-radius: 20px; padding: 32px; background: #fff; }
+.get-col h3 { font-size: clamp(1.8rem, 3vw, 2.4rem); font-weight: 600; letter-spacing: .02em; margin: 12px 0 0; }
+.get-col-lead { font-size: 18px; font-weight: 600; color: var(--ink); margin: 14px 0 10px; }
+@media (max-width: 720px) { .get-two { grid-template-columns: 1fr; } }
