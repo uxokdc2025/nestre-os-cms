@@ -4,7 +4,17 @@ import { useEffect, useRef, useState } from 'react'
 
 // "Book a Consultation" button that opens a small dropdown form from the top-right.
 // Submits to /api/consult, which emails the lead via Resend. Closes on Esc / outside click.
-export function ConsultPopover({ label = 'Book a Consultation', className = 'btn aqua nav-cta' }: { label?: string; className?: string }) {
+export function ConsultPopover({
+  label = 'Book a Consultation',
+  className = 'btn aqua nav-cta',
+  wrapClassName = '',
+  onOpen,
+}: {
+  label?: string
+  className?: string
+  wrapClassName?: string
+  onOpen?: () => void
+}) {
   const [open, setOpen] = useState(false)
   const [state, setState] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
   const wrapRef = useRef<HTMLDivElement>(null)
@@ -35,13 +45,21 @@ export function ConsultPopover({ label = 'Book a Consultation', className = 'btn
   }
 
   return (
-    <div className="consult-wrap" ref={wrapRef}>
-      <button type="button" className={className} aria-haspopup="dialog" aria-expanded={open} onClick={() => { setOpen((o) => !o); setState('idle') }}>
+    <div className={`consult-wrap ${wrapClassName}`.trim()} ref={wrapRef}>
+      <button
+        type="button"
+        className={className}
+        aria-haspopup="dialog"
+        aria-expanded={open}
+        onClick={() => { setOpen((o) => { const next = !o; if (next) onOpen?.(); return next }); setState('idle') }}
+      >
         <span className="cta-full">{label}</span>
         <span className="cta-short">Book now</span>
       </button>
+      {open && <div className="consult-backdrop" aria-hidden onClick={() => setOpen(false)} />}
       {open && (
-        <div className="consult-pop" role="dialog" aria-label="Book a consultation">
+        <div className="consult-pop" role="dialog" aria-modal="true" aria-label="Book a consultation">
+          <button type="button" className="consult-close" aria-label="Close" onClick={() => setOpen(false)}>×</button>
           {state === 'sent' ? (
             <div className="consult-done">
               <p className="consult-eyebrow">Thank you</p>
