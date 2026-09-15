@@ -900,3 +900,7 @@ html { scroll-behavior: auto; }
 .pkg-card .btn { margin-top: 18px; align-self: flex-start; height: 44px; }
 @media (max-width: 900px) { .pkg-grid { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 620px) { .pkg-grid { grid-template-columns: 1fr; } }
+
+/* scheduling page: slim promo strip + figure reset for framed videos */
+.sched-promo-strip { padding: 44px 0 !important; border-bottom: 1px solid var(--line); }
+figure.sched-video { margin: 28px 0 0; }

@@ -10,13 +10,25 @@ export const metadata: Metadata = {
 
 const cfg: ScheduleConfig = {
   location: 'Monterey',
+  address: 'Terrapin Physical Therapy · 5 Harris Ct. Bld. T, Ste 102, Monterey, CA 93940',
   consultationId: '2113000',
   jumpstartId: '2011825',
-  video: '/api/media/file/sched-monterey.mp4',
-  videoHeading: 'How to schedule a consultation.',
   hours: '7:30am – 3:00pm (PST)',
   zoom: 'https://us06web.zoom.us/j/85207285505?pwd=Sn4N07xrxEb1G2cypiZeJGBCnpYyTb.1',
   consultPrice: '$500',
+  videos: {
+    consultation: '/api/media/file/sched-monterey.mp4',
+    whatToExpect: '/api/media/file/sched-what-to-expect.mp4',
+    everydayPerformer: '/api/media/file/sched-edp.mp4',
+    signature: '/api/media/file/sched-signature.mp4',
+    signup: '/api/media/file/sched-signup.mp4',
+  },
+  programs: [
+    { name: 'Intensive Strength Training Program', sub: '2 sessions per day for 5 days', id: '2107882', tier: 'Advanced' },
+    { name: 'Launch Training Program', sub: '2 sessions per day for 3 days', id: '2108656', tier: 'Advanced' },
+    { name: 'Jump Start Training Program', sub: '1 session per day for 5 days', id: '2011825', tier: 'Base' },
+    { name: 'Spark Training Program', sub: '1 session per day for 3 days', id: '2108655', tier: 'Base' },
+  ],
   packages: [
     { name: 'Better with Age', id: '2108566' }, { name: 'Copy That!', id: '2108569' },
     { name: 'Head in the Game', id: '2108578' }, { name: 'PIT Stop', id: '2108581' },

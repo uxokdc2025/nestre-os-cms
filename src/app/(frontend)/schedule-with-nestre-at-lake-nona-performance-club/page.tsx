@@ -10,12 +10,18 @@ export const metadata: Metadata = {
 
 const cfg: ScheduleConfig = {
   location: 'Lake Nona Performance Club',
+  address: 'Lake Nona Performance Club · 6775 Chopra Ter, Orlando, FL 32827',
   consultationId: '2112997',
   jumpstartId: '2108854',
-  video: '/api/media/file/sched-what-to-expect.mp4',
-  videoHeading: 'What to expect during your consultation.',
   hours: '10:00am – 5:00pm (EST)',
   consultPrice: '$300',
+  videos: { whatToExpect: '/api/media/file/sched-what-to-expect.mp4', signup: '/api/media/file/sched-signup.mp4' },
+  programs: [
+    { name: 'Intensive Strength Training Program', sub: '2 sessions per day for 5 days', id: '2108844', tier: 'Advanced' },
+    { name: 'Launch Training Program', sub: '2 sessions per day for 3 days', id: '2108857', tier: 'Advanced' },
+    { name: 'Jump Start Training Program', sub: '1 session per day for 5 days', id: '2108854', tier: 'Base' },
+    { name: 'Spark Training Program', sub: '1 session per day for 3 days', id: '2108863', tier: 'Base' },
+  ],
   packages: [
     { name: 'Better with Age', id: '2112539' }, { name: 'Copy That!', id: '2112546' },
     { name: 'Head in the Game', id: '2112549' }, { name: 'PIT Stop', id: '2112550' },
