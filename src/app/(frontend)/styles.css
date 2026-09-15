@@ -142,7 +142,7 @@ h1, h2, h3 { margin: 0; letter-spacing: -0.02em; line-height: 1.02; text-wrap: b
   .app-pin-sticky { position: static; min-height: 0; }
   .app-pin-inner { grid-template-columns: 1fr; }
   .app-showcase { padding-bottom: 72px; }
-  .phone-stage { overflow: hidden; }
+  .phone-stage { overflow: clip; } /* clip (not hidden) so it isn't a scroll container — keeps view() tied to the page */
   .phone-track { overflow-x: auto; scrollbar-width: none; }
   .phone-track::-webkit-scrollbar { display: none; }
   .phone-track .phone { opacity: 1 !important; }
