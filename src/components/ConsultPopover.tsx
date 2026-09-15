@@ -18,6 +18,13 @@ export function ConsultPopover({ label = 'Book a Consultation', className = 'btn
     return () => { document.removeEventListener('keydown', onKey); document.removeEventListener('mousedown', onClick) }
   }, [open])
 
+  // Any "Book Training" / book CTA on the page opens this same drawer.
+  useEffect(() => {
+    const openIt = () => { setOpen(true); setState('idle') }
+    window.addEventListener('nestre:open-consult', openIt)
+    return () => window.removeEventListener('nestre:open-consult', openIt)
+  }, [])
+
   const submit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const f = new FormData(e.currentTarget)
@@ -27,7 +34,8 @@ export function ConsultPopover({ label = 'Book a Consultation', className = 'btn
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          name: f.get('name'), email: f.get('email'), message: f.get('message'), company: f.get('company'),
+          name: f.get('name'), email: f.get('email'), phone: f.get('phone'),
+          days: f.getAll('days'), times: f.getAll('times'), company: f.get('company'),
         }),
       })
       setState(r.ok ? 'sent' : 'error')
@@ -54,18 +62,31 @@ export function ConsultPopover({ label = 'Book a Consultation', className = 'btn
               <p className="consult-eyebrow">Book a Consultation</p>
               <h3 className="consult-title">Let&rsquo;s start the conversation.</h3>
               <label className="consult-field"><span>Your name</span>
-                <input name="name" type="text" required placeholder="Jane Smith" autoComplete="name" />
+                <input name="name" type="text" required placeholder="Full name" autoComplete="name" />
               </label>
-              <label className="consult-field"><span>Your e-mail</span>
-                <input name="email" type="email" required placeholder="jane@email.com" autoComplete="email" />
+              <label className="consult-field"><span>Your email</span>
+                <input name="email" type="email" required placeholder="Email address" autoComplete="email" />
               </label>
-              <label className="consult-field"><span>Message</span>
-                <textarea name="message" required rows={3} placeholder="What would you like to work on?" />
+              <label className="consult-field"><span>Your phone</span>
+                <input name="phone" type="tel" required placeholder="Phone number" autoComplete="tel" />
               </label>
+              <fieldset className="consult-avail">
+                <legend>Preferred availability</legend>
+                <div className="consult-checks">
+                  {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'].map((d) => (
+                    <label key={d} className="consult-check"><input type="checkbox" name="days" value={d} /><span>{d.slice(0, 3)}</span></label>
+                  ))}
+                </div>
+                <div className="consult-checks">
+                  {['Morning', 'Afternoon', 'Evening'].map((t) => (
+                    <label key={t} className="consult-check"><input type="checkbox" name="times" value={t} /><span>{t}</span></label>
+                  ))}
+                </div>
+              </fieldset>
               {/* honeypot — hidden from humans */}
               <input name="company" tabIndex={-1} autoComplete="off" aria-hidden className="consult-hp" />
               <button type="submit" className="btn aqua consult-send" disabled={state === 'sending'}>
-                {state === 'sending' ? 'Sending…' : 'Send message'}
+                {state === 'sending' ? 'Sending…' : 'Send request'}
               </button>
               {state === 'error' && <p className="consult-err">Something went wrong. Email us at info@nestreperformance.com.</p>}
             </form>

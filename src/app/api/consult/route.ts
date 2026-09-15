@@ -11,11 +11,14 @@ export async function POST(req: Request) {
 
   const name = String(body?.name || '').trim().slice(0, 120)
   const email = String(body?.email || '').trim().slice(0, 160)
-  const message = String(body?.message || '').trim().slice(0, 4000)
+  const phone = String(body?.phone || '').trim().slice(0, 40)
+  const clean = (v: unknown) => (Array.isArray(v) ? v : [v]).map((s) => String(s || '').trim()).filter(Boolean).slice(0, 7)
+  const days = clean(body?.days)
+  const times = clean(body?.times)
   const honeypot = String(body?.company || '').trim()
 
   if (honeypot) return NextResponse.json({ ok: true }) // silently drop bots
-  if (!name || !message || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+  if (!name || !phone || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
     return NextResponse.json({ error: 'invalid' }, { status: 422 })
   }
 
@@ -31,8 +34,10 @@ export async function POST(req: Request) {
     <table style="font-size:15px;line-height:1.6;color:#384a51;border-collapse:collapse">
       <tr><td style="padding:4px 14px 4px 0;color:#52666d">Name</td><td><b>${esc(name)}</b></td></tr>
       <tr><td style="padding:4px 14px 4px 0;color:#52666d">Email</td><td><a href="mailto:${esc(email)}">${esc(email)}</a></td></tr>
+      <tr><td style="padding:4px 14px 4px 0;color:#52666d">Phone</td><td><a href="tel:${esc(phone)}">${esc(phone)}</a></td></tr>
+      <tr><td style="padding:4px 14px 4px 0;color:#52666d">Days</td><td>${days.length ? esc(days.join(', ')) : '—'}</td></tr>
+      <tr><td style="padding:4px 14px 4px 0;color:#52666d">Times</td><td>${times.length ? esc(times.join(', ')) : '—'}</td></tr>
     </table>
-    <p style="font-size:15px;line-height:1.7;color:#10212a;margin-top:18px;white-space:pre-wrap;border-left:3px solid #98d6d3;padding-left:14px">${esc(message)}</p>
   </div>`
 
   try {

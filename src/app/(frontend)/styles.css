@@ -56,7 +56,7 @@ h1, h2, h3 { margin: 0; letter-spacing: -0.02em; line-height: 1.02; text-wrap: b
 
 /* buttons */
 .btns { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
-.btn { display: inline-flex; align-items: center; height: 52px; padding: 0 26px; border-radius: 999px; font-size: 15px; font-weight: 500; border: 1px solid transparent; transition: all .2s; }
+.btn { display: inline-flex; align-items: center; height: 52px; padding: 0 26px; border-radius: 999px; font-size: 15px; font-weight: 500; font-family: inherit; cursor: pointer; border: 1px solid transparent; transition: all .2s; }
 .btn.aqua { background: var(--aqua); color: var(--ink); }
 .btn.aqua:hover { background: var(--aqua-deep); }
 .btn.solid { background: var(--ink); color: #fff; }
@@ -543,6 +543,15 @@ html { scroll-behavior: smooth; }
 }
 .consult-field input:focus, .consult-field textarea:focus { outline: none; border-color: var(--aqua-deep); box-shadow: 0 0 0 3px rgba(107,189,185,.22); background: #fff; }
 .consult-hp { position: absolute !important; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+.consult-avail { border: 0; padding: 0; margin: 0 0 16px; }
+.consult-avail legend { padding: 0; font-size: 13px; color: var(--muted); margin-bottom: 8px; }
+.consult-checks { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
+.consult-checks:last-child { margin-bottom: 0; }
+.consult-check input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.consult-check span { display: inline-flex; align-items: center; justify-content: center; min-height: 40px; padding: 0 15px; border: 1px solid var(--line); border-radius: 999px; font-size: 13px; color: var(--ink); background: var(--paper); cursor: pointer; transition: background .15s ease, border-color .15s ease, color .15s ease; }
+.consult-check span:hover { border-color: var(--aqua-deep); }
+.consult-check input:checked + span { background: var(--aqua); border-color: var(--aqua-deep); color: var(--ink); font-weight: 600; }
+.consult-check input:focus-visible + span { outline: none; box-shadow: 0 0 0 3px rgba(107,189,185,.3); }
 .consult-send { width: 100%; justify-content: center; margin-top: 6px; }
 .consult-err { color: #b23b3b; font-size: 13px; margin-top: 10px; }
 .consult-done { text-align: left; }

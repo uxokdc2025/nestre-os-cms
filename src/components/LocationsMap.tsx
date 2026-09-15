@@ -92,7 +92,7 @@ export function LocationsMap({
                         rel="noopener noreferrer"
                         onClick={(e) => e.stopPropagation()}
                       >View Location</a>
-                      <a className="btn solid" href={l.bookHref || '/book-a-consultation'} onClick={(e) => e.stopPropagation()}>Book Training</a>
+                      <button type="button" className="btn solid" onClick={(e) => { e.stopPropagation(); window.dispatchEvent(new CustomEvent('nestre:open-consult')) }}>Book Training</button>
                     </div>
                   </div>
                 </div>
