@@ -290,15 +290,14 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px soli
 @media (prefers-reduced-motion: no-preference) {
   /* SCROLL-DRIVEN reveal — animation is tied to the element's own scroll position,
      so it is inherently smooth and can NEVER get stuck invisible. No-support = visible. */
-  /* Reveal = a time-based CSS entrance that ALWAYS completes to visible (fill:both,
-     finite duration) — it can never get stuck hidden. Default (no .reveal-child
-     class, e.g. JS didn't run) is fully visible. This replaces the old scroll-timeline
-     / IntersectionObserver reveal, which left whole sections invisible after Next
-     soft-navigation until a hard refresh. --i staggers the cascade. */
-  .reveal-child { animation: revEnter .7s cubic-bezier(.34,1.4,.5,1) both; animation-delay: calc(min(var(--i,0), 12) * 55ms); }
-  .reveal-card { animation-name: revCardEnter; animation-delay: calc(min(var(--i,0), 5) * 90ms); }
-  @keyframes revEnter { from { opacity: 0; transform: translateY(34px); } to { opacity: 1; transform: none; } }
-  @keyframes revCardEnter { from { opacity: 0; transform: translateY(56px) scale(.94); } to { opacity: 1; transform: none; } }
+  /* Scroll-triggered reveal: elements start hidden and slide/fade in when they
+     enter the viewport (Reveal.tsx adds `.in` via IntersectionObserver, with a
+     safety timer that reveals everything after 2s so nothing can ever stay stuck).
+     Default (no .reveal-child class, e.g. JS/observer never ran) is fully visible.
+     --i staggers the cascade. */
+  .reveal-child { opacity: 0; transform: translateY(34px); transition: opacity .7s cubic-bezier(.34,1.4,.5,1), transform .7s cubic-bezier(.34,1.4,.5,1); transition-delay: calc(min(var(--i,0), 12) * 55ms); }
+  .reveal-card { transform: translateY(56px) scale(.94); transition-delay: calc(min(var(--i,0), 5) * 90ms); }
+  .reveal-child.in { opacity: 1; transform: none; }
   @keyframes revIn { from { opacity: 0; transform: translateY(34px); } to { opacity: 1; transform: none; } }
   @keyframes revCardIn { from { opacity: 0; transform: translateY(56px) scale(.94); } to { opacity: 1; transform: none; } }
   .hero .inner > * { animation: heroRise .8s cubic-bezier(.22,1,.36,1) both; }

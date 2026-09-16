@@ -4,11 +4,12 @@ import { useEffect } from 'react'
 import { usePathname } from 'next/navigation'
 
 // Progressive enhancement: content ships visible (SSR/no-JS/SEO safe). On load,
-// JS tags each section's key elements — copy, buttons, cards, images — and staggers
-// them in: above-the-fold animates immediately, the rest as they scroll into view.
-// Respects reduced motion.
+// JS tags each section's key elements — copy, buttons, cards — and reveals them as
+// they scroll into view (IntersectionObserver adds `.in`). A safety timer reveals
+// anything still hidden after 2s, so content can NEVER stay stuck invisible even if
+// the observer misbehaves after a Next soft-navigation. Respects reduced motion.
 // NB: 'img'/'video' are intentionally NOT here — images get a continuous scroll
-// PARALLAX (CSS, imgParallax) instead of a one-shot reveal, so they feel alive.
+// PARALLAX (Carousels.tsx) instead of a one-shot reveal, so they feel alive.
 const SEL = [
   '.eyebrow', '.kick', 'h1', 'h2', 'h3', 'h4', '.lead', 'p', '.btns', '.btn',
   '.statcard', '.step', '.panel', '.loc-card', '.row-item',
@@ -18,7 +19,7 @@ const SEL = [
 export function Reveal() {
   // Re-run on every route change: how-it-works / neuro-labs / our-story etc. share
   // the one [[...slug]] route, so without a pathname dep the effect never re-fires
-  // on soft-nav between them — new content stays untagged and invisible.
+  // on soft-nav between them — new content would stay untagged and never reveal.
   const pathname = usePathname()
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
@@ -52,8 +53,31 @@ export function Reveal() {
       })
     }
 
-    // Tagging alone triggers the CSS entrance (a finite, time-based animation that
-    // always finishes visible). No scroll observer — content can never get stuck.
+    // Reveal via IntersectionObserver — adds `.in` (CSS transitions it into view).
+    const io = new IntersectionObserver(
+      (entries, obs) => {
+        for (const e of entries) {
+          if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target) }
+        }
+      },
+      { rootMargin: '0px 0px -6% 0px', threshold: 0.02 },
+    )
+    const tagged = Array.from(document.querySelectorAll('.reveal-child')) as HTMLElement[]
+    const vh = window.innerHeight
+    for (const el of tagged) {
+      const r = el.getBoundingClientRect()
+      // already on-screen at load → show immediately (no flash), else observe
+      if (r.top < vh && r.bottom > 0) el.classList.add('in')
+      else io.observe(el)
+    }
+
+    // SAFETY NET: whatever the observer hasn't revealed after 2s, reveal now. This
+    // guarantees no section can ever be left permanently invisible (the old bug).
+    const failsafe = window.setTimeout(() => {
+      for (const el of tagged) el.classList.add('in')
+    }, 2000)
+
+    return () => { io.disconnect(); window.clearTimeout(failsafe) }
   }, [pathname])
   return null
 }

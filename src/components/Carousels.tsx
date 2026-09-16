@@ -1,12 +1,18 @@
 'use client'
 
 import { useEffect } from 'react'
+import { usePathname } from 'next/navigation'
 
 // Restores the original home carousels: any horizontal rail (.panels, .phones)
 // gets prev/next arrow controls that scroll it by roughly one card. Arrows hide
 // when the rail doesn't overflow, and disable at each end. No-JS: rails still
 // scroll/swipe natively; arrows are pure enhancement.
 export function Carousels() {
+  // Re-run on route change: these pages share the one [[...slug]] route, so on
+  // soft-nav the effect must re-attach its scroll handlers to the NEW page's
+  // elements — otherwise stat bars, the sticky reveal, video autoplay and the
+  // bottom-blur toggle only ever initialise on the first page loaded.
+  const pathname = usePathname()
   useEffect(() => {
     // Global hero "learn more" → smooth-scroll to the section below the hero.
     const onScrollCta = (e: MouseEvent) => {
@@ -156,10 +162,15 @@ export function Carousels() {
           //    still overflowing the bottom (i.e. it fills the screen). Never fires
           //    while the column's top is still mid-viewport (the old bug).
           const inView = r.top < vh && r.bottom > 0
+          // Frame as a ONE-WAY latch once the left column has risen to the pin line.
+          // The old `r.bottom >= vh - 8` made a tiny (~30px) window that normal
+          // scrolling skipped whenever the column height was near the viewport
+          // height — leaving the right side hidden. Only require the column to still
+          // fill a good part of the screen, so the window is wide and un-skippable.
           const framed = (atBottom && inView)
             || (h <= vh - 88
               ? r.top >= -4 && r.bottom <= vh + 4
-              : r.top <= 104 && r.bottom >= vh - 8)
+              : r.top <= 104 && r.bottom >= vh * 0.4)
           if (framed) sec.classList.add('framed')
           else remaining = true
         }
@@ -266,6 +277,6 @@ export function Carousels() {
       cleanups.push(() => { rail.removeEventListener('scroll', update); window.removeEventListener('resize', update); nav.remove(); delete rail.dataset.railed })
     }
     return () => cleanups.forEach((c) => c())
-  }, [])
+  }, [pathname])
   return null
 }
