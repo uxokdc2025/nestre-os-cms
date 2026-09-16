@@ -155,7 +155,7 @@ export function GetStartedBody({ location, acuityType }: { location: string; acu
       {/* Step 1 | NEURO — consultation, split image + checklist */}
       <section className="sec paper">
         <div className="wrap get-split">
-          <div className="get-split-media"><img src={`${IMG}/landing-page-strength-background-03.webp`} alt="A NESTRE Neuro-Strength Trainer reviewing results with a client" loading="lazy" /></div>
+          <div className="get-split-media natural"><img src={`${IMG}/landing-page-strength-background-03.webp`} alt="A NESTRE Neuro-Strength Trainer reviewing results with a client" loading="lazy" /></div>
           <div className="get-split-copy">
             <span className="kick">Step 1 · NEURO</span>
             <h2 className="h2" style={{ marginTop: 12 }}>Schedule Your Consultation Today to Understand How You Process the World.</h2>
@@ -244,7 +244,7 @@ export function GetStartedBody({ location, acuityType }: { location: string; acu
           </div>
           <aside className="get-book-side">
             <div className="get-book-media">
-              <img src={`${IMG}/landing-page-contact-form-section.png`} alt="A NESTRE client during a cognitive performance data scan" loading="lazy" />
+              <img src={`${IMG}/ladyprofile.png`} alt="A NESTRE client with her cognitive performance data profile" loading="lazy" />
               <div className="get-book-why">
                 <p className="kick" style={{ color: 'var(--aqua)' }}>Why Clients Book</p>
                 <ul>

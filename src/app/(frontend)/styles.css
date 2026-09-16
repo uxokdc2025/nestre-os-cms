@@ -905,6 +905,9 @@ html { scroll-behavior: auto; }
 .get-split.reverse .get-split-media { order: 2; }
 .get-split-media { border-radius: 22px; overflow: hidden; aspect-ratio: 4/5; max-height: 620px; }
 .get-split-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* near-square source (the consultation photo of two people) — use its own ratio so
+   both people stay in frame instead of being cropped by the portrait default. */
+.get-split-media.natural { aspect-ratio: 62 / 52; max-height: none; }
 .get-split-copy .kick { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--aqua-ink); }
 .sec.navy .get-split-copy .kick { color: var(--aqua); }
 .get-checklist { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 10px; }
@@ -955,7 +958,7 @@ html { scroll-behavior: auto; }
 
 .get-book-side { display: grid; gap: 20px; }
 .get-book-media { position: relative; border-radius: 22px; overflow: hidden; }
-.get-book-media > img { width: 100%; display: block; aspect-ratio: 4/3; object-fit: cover; }
+.get-book-media > img { width: 100%; display: block; aspect-ratio: 19/10; object-fit: cover; }
 .get-book-why { padding: 20px 22px 22px; background: var(--navy); color: #fff; }
 .get-book-why ul { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 12px; }
 .get-book-why li { display: flex; align-items: center; gap: 12px; font-size: 14px; }
