@@ -53,31 +53,28 @@ export function Reveal() {
       })
     }
 
-    // Reveal via IntersectionObserver — adds `.in` (CSS transitions it into view).
-    const io = new IntersectionObserver(
-      (entries, obs) => {
-        for (const e of entries) {
-          if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target) }
-        }
-      },
-      { rootMargin: '0px 0px -6% 0px', threshold: 0.02 },
-    )
+    // Reveal on a plain scroll listener (rect check) rather than IntersectionObserver
+    // — the same reliable pattern the rest of the page uses (Carousels.tsx); IO proved
+    // flaky after Next soft-nav. Each element animates in (`.in` → CSS transition) once
+    // its top rises past ~92% of the viewport. Above-the-fold reveals immediately on
+    // load. Runs on every scroll, so nothing scrolled into view can stay hidden.
     const tagged = Array.from(document.querySelectorAll('.reveal-child')) as HTMLElement[]
-    const vh = window.innerHeight
-    for (const el of tagged) {
-      const r = el.getBoundingClientRect()
-      // already on-screen at load → show immediately (no flash), else observe
-      if (r.top < vh && r.bottom > 0) el.classList.add('in')
-      else io.observe(el)
+    const reveal = () => {
+      const vh = window.innerHeight
+      let remaining = false
+      for (const el of tagged) {
+        if (el.classList.contains('in')) continue
+        const r = el.getBoundingClientRect()
+        if (r.top < vh * 0.92 && r.bottom > -40) el.classList.add('in')
+        else remaining = true
+      }
+      if (!remaining) window.removeEventListener('scroll', reveal)
     }
+    reveal()
+    window.addEventListener('scroll', reveal, { passive: true })
+    window.addEventListener('resize', reveal)
 
-    // SAFETY NET: whatever the observer hasn't revealed after 2s, reveal now. This
-    // guarantees no section can ever be left permanently invisible (the old bug).
-    const failsafe = window.setTimeout(() => {
-      for (const el of tagged) el.classList.add('in')
-    }, 2000)
-
-    return () => { io.disconnect(); window.clearTimeout(failsafe) }
+    return () => { window.removeEventListener('scroll', reveal); window.removeEventListener('resize', reveal) }
   }, [pathname])
   return null
 }

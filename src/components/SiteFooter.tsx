@@ -1,5 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
+import { ConsultFooterLink } from './ConsultFooterLink'
 
 const isInternal = (h?: string) => !!h && h.startsWith('/') && !h.startsWith('//')
 function A({ href, children, ...rest }: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -85,9 +86,13 @@ export function SiteFooter({ logoUrl, footer }: { logoUrl?: string; footer?: any
             <div key={col.heading}>
               <p className="footer-h">{col.heading}</p>
               {col.links.map((l) => (
-                <A key={l.label} href={l.href} {...(('external' in l && l.external) ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
-                  {l.label}
-                </A>
+                l.href === '/book-a-consultation' ? (
+                  <ConsultFooterLink key={l.label}>{l.label}</ConsultFooterLink>
+                ) : (
+                  <A key={l.label} href={l.href} {...(('external' in l && l.external) ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
+                    {l.label}
+                  </A>
+                )
               ))}
             </div>
           ))}
