@@ -1,6 +1,5 @@
 import React from 'react'
 import { Reveal } from './Reveal'
-import { Tracking } from './Tracking'
 
 // Location scheduling page, rebuilt from the legacy WordPress pages on the NESTRE
 // design system — same section order, content and Acuity booking (owner 23912005),
@@ -66,7 +65,6 @@ export function SchedulePageBody({ cfg }: { cfg: ScheduleConfig }) {
 
   return (
     <main id="main">
-      <Tracking />
       {/* Consultation */}
       <section className="sec navy" id="consultation">
         <div className="wrap">

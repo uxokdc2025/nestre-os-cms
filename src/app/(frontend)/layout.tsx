@@ -8,6 +8,7 @@ import { getChrome } from '@/lib/chrome'
 import { brandCss } from '@/lib/brand-css'
 import { BottomBlur } from '@/components/BottomBlur'
 import { CustomCursor } from '@/components/CustomCursor'
+import { AnalyticsBase } from '@/components/Tracking'
 import './styles.css'
 
 const instrument = Instrument_Sans({
@@ -35,6 +36,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en" className={instrument.variable}>
       <body>
+        <AnalyticsBase />
         {fontHref && <link rel="stylesheet" href={fontHref} />}
         {brandStyle && <style id="brand-tokens" dangerouslySetInnerHTML={{ __html: brandStyle }} />}
         <a href="#main" className="skip-link">Skip to content</a>
