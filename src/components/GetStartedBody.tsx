@@ -65,7 +65,7 @@ export function GetStartedBody({ location, acuityType }: { location: string; acu
 
   const faqs = [
     { q: 'What is a NESTRE Consultation?', a: 'A NESTRE Consultation is a personalized experience designed to help you better understand how your brain processes the world around you. You’ll review your individual data, cognitive strengths, potential training opportunities for better cognitive performance, and recommended next steps to maintain your cognitive fitness through our NESTRE training programs.' },
-    { q: 'How to prepare for your NESTRE consultation', a: 'Plan for 1 hour and arrive 5–10 minutes early to check in and get settled. Complete your intake forms at least 48 hours before your session and be detailed with your responses. Wear comfortable clothing and come with your hair down or in a low ponytail; a qEEG cap and conductive gel will be used during your consultation. Bring a baseball cap or headwear if you have longer hair, as the gel may leave it slightly damp. Remove all earrings before your session, and please note that photography, videography, and voice recording are not permitted in NESTRE training rooms or the facility.' },
+    { q: 'How to prepare for your NESTRE consultation', a: 'Plan for 1 hour and arrive 5–10 minutes early to check in and get settled. Complete your intake forms at least 48 hours before your session and be detailed with your responses. Wear comfortable clothing and come with your hair down or in a low ponytail; a cognitive performance data scan cap and conductive gel will be used during your consultation. Bring a baseball cap or headwear if you have longer hair, as the gel may leave it slightly damp. Remove all earrings before your session, and please note that photography, videography, and voice recording are not permitted in NESTRE training rooms or the facility.' },
     { q: 'What is Neuro-Strength Training?', a: 'We strengthen your mind and brain to perform at its highest level through consistent cognitive fitness training based on the data we collect during your consultation. Neuro-Strength Training is NESTRE’s personalized approach to strengthening mental and cognitive performance. It is informed by neuroplasticity, which refers to the brain’s ability to learn, adapt, and grow.' },
     { q: 'How much does the initial consultation cost?', a: 'The regular price is $300. For a limited time, new clients can schedule an initial consultation for $250 — a savings of $50.' },
     { q: 'What is NESTRE?', a: 'NESTRE is a neuro-strength company that specializes in neck-up fitness. We help individuals train their brains the same way they train their bodies. NESTRE combines the science of neuroplasticity, cognitive performance data, personalized training, and technology to help people get better, feel better, and perform better from the neck up.' },
@@ -135,7 +135,7 @@ export function GetStartedBody({ location, acuityType }: { location: string; acu
           </p>
           <div className="get-ns">
             <article className="get-ns-card">
-              <div className="get-ns-media"><img src={`${IMG}/landing-page-neuro-background.png`} alt="A NESTRE client during a qEEG brain scan" loading="lazy" /></div>
+              <div className="get-ns-media"><img src={`${IMG}/landing-page-neuro-background.png`} alt="A NESTRE client during a cognitive performance data scan" loading="lazy" /></div>
               <div className="get-ns-body">
                 <span className="kick">Step 1 · Understanding</span>
                 <h3><img src={`${IMG}/landing-page-neuro-icon.png`} alt="" aria-hidden />NEURO</h3>
@@ -248,7 +248,7 @@ export function GetStartedBody({ location, acuityType }: { location: string; acu
           </div>
           <aside className="get-book-side">
             <div className="get-book-media">
-              <img src={`${IMG}/landing-page-contact-form-section.png`} alt="A NESTRE client during a qEEG brain scan" loading="lazy" />
+              <img src={`${IMG}/landing-page-contact-form-section.png`} alt="A NESTRE client during a cognitive performance data scan" loading="lazy" />
               <div className="get-book-why">
                 <p className="kick" style={{ color: 'var(--aqua)' }}>Why Clients Book</p>
                 <ul>
