@@ -765,6 +765,10 @@ html { scroll-behavior: auto; }
    pan never exposes an edge. */
 .split-media { border-radius: 20px; overflow: hidden; margin: 0; max-width: none; aspect-ratio: 4 / 3; }
 .split-media img, .split-media video { width: 100%; height: 100%; object-fit: cover; display: block; scale: 1.2; will-change: translate; }
+/* Our Story founders headshot — show the exact image as sent: match the frame to the
+   image's own ratio and drop the site-wide parallax crop/zoom/pan for this one. */
+.split-media:has(> img[src$="our-story-view-01.jpg"]) { aspect-ratio: 808 / 688; }
+.split-media img[src$="our-story-view-01.jpg"] { object-fit: contain; scale: 1; translate: none !important; will-change: auto; }
 @media (max-width: 860px) { .split { grid-template-columns: 1fr; gap: 28px; } .split.reverse .split-media { order: 0; } }
 @media (max-width: 760px) { .closing-copy.copy-right { text-align: left; } .closing-copy.copy-right h2, .closing-copy.copy-right .closing-body { margin-left: 0; } .closing-copy.copy-right .btns { justify-content: flex-start; } }
 .closing-copy h2 { font-size: clamp(2.4rem, 6vw, 5rem); font-weight: 600; line-height: 1.02; max-width: 12ch; text-wrap: balance; }
