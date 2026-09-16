@@ -17,8 +17,8 @@ const cfg: ScheduleConfig = {
   videos: { whatToExpect: '/api/media/file/sched-what-to-expect.mp4', signup: '/api/media/file/sched-signup.mp4' },
   programs: [
     { name: 'Intensive Strength Training Program', sub: '2 sessions per day for 5 days', id: '2108866', tier: 'Advanced' },
-    { name: 'Launch Training Program', sub: '2 sessions per day for 3 days', id: '2108869', tier: 'Advanced' },
     { name: 'Jump Start Training Program', sub: '1 session per day for 5 days', id: '2108867', tier: 'Base' },
+    { name: 'Launch Training Program', sub: '2 sessions per day for 3 days', id: '2108869', tier: 'Advanced' },
     { name: 'Spark Training Program', sub: '1 session per day for 3 days', id: '2108870', tier: 'Base' },
   ],
   packages: [

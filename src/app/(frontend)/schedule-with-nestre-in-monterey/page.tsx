@@ -25,8 +25,8 @@ const cfg: ScheduleConfig = {
   },
   programs: [
     { name: 'Intensive Strength Training Program', sub: '2 sessions per day for 5 days', id: '2107882', tier: 'Advanced' },
-    { name: 'Launch Training Program', sub: '2 sessions per day for 3 days', id: '2108656', tier: 'Advanced' },
     { name: 'Jump Start Training Program', sub: '1 session per day for 5 days', id: '2011825', tier: 'Base' },
+    { name: 'Launch Training Program', sub: '2 sessions per day for 3 days', id: '2108656', tier: 'Advanced' },
     { name: 'Spark Training Program', sub: '1 session per day for 3 days', id: '2108655', tier: 'Base' },
   ],
   packages: [

@@ -28,6 +28,8 @@ export type ScheduleConfig = {
   address?: string
   consultationId: string
   jumpstartId: string
+  // `packages` = the named Everyday Performer programs (grouped Advanced/Base by name
+  // below). `programs` = the Signature session-bundle packages (with a duration sub).
   packages: { name: string; id: string }[]
   programs: { name: string; sub: string; id: string; tier: 'Advanced' | 'Base' }[]
   videos: { consultation?: string; whatToExpect?: string; everydayPerformer?: string; signature?: string; signup?: string }
@@ -36,9 +38,17 @@ export type ScheduleConfig = {
   consultPrice: string
 }
 
-function Vid({ src, label }: { src: string; label?: string }) {
+// The Advanced/Base split of the Everyday Performer named programs is the same at
+// every location (only the Acuity ids differ), so it lives here, not in each config.
+// Re-Charge is in the Acuity catalog but not shown in the WP Everyday Performer grid.
+const EVERYDAY_TIERS: Record<'Advanced' | 'Base', string[]> = {
+  Advanced: ['Better with Age', 'Copy That!', 'Head in the Game', 'PIT Stop', 'Think Fast'],
+  Base: ['Decision Maker', 'Laser Focused', 'Memory Muscle', 'Movement Master', 'Quiet in the Storm'],
+}
+
+function Vid({ src, label, portrait }: { src: string; label?: string; portrait?: boolean }) {
   return (
-    <figure className="sched-video thumb-lg">
+    <figure className={`sched-video thumb-lg${portrait ? ' portrait' : ''}`}>
       <video src={src} controls playsInline preload="metadata" aria-label={label} />
     </figure>
   )
@@ -55,17 +65,6 @@ export function SchedulePageBody({ cfg }: { cfg: ScheduleConfig }) {
 
   return (
     <main id="main">
-      {/* Summer promo banner */}
-      <section className="sec paper sched-promo-strip">
-        <div className="wrap" style={{ textAlign: 'center' }}>
-          <p className="eyebrow" style={{ color: 'var(--aqua-ink)' }}>Summer Promo</p>
-          <h2 className="h2" style={{ marginTop: 8 }}>$250 off our Jumpstart Training.</h2>
-          <div className="btns" style={{ justifyContent: 'center', marginTop: 18 }}>
-            <a className="btn aqua" href="#jumpstart">Learn more</a>
-          </div>
-        </div>
-      </section>
-
       {/* Consultation */}
       <section className="sec navy" id="consultation">
         <div className="wrap">
@@ -77,7 +76,7 @@ export function SchedulePageBody({ cfg }: { cfg: ScheduleConfig }) {
             next step in training the brain. NESTRE Brain Training is the ongoing cognitive and mental
             strength program you follow after your consultation for lasting mind &amp; brain fitness.
           </p>
-          {v.consultation && <Vid src={v.consultation} label="How to schedule a consultation" />}
+          {v.consultation && <Vid src={v.consultation} label="How to schedule a consultation" portrait />}
           <div className="btns" style={{ marginTop: 22 }}>
             <a className="btn aqua" href={cart(cfg.consultationId)} target="_blank" rel="noopener noreferrer">Schedule consultation</a>
           </div>
@@ -90,6 +89,17 @@ export function SchedulePageBody({ cfg }: { cfg: ScheduleConfig }) {
                 Prefer video? <a href={cfg.zoom} target="_blank" rel="noopener noreferrer">Start a Zoom call with the scheduler</a> — choose “Join from Browser.”
               </p>
             )}
+          </div>
+        </div>
+      </section>
+
+      {/* Summer promo strip — sits below the consultation hero (matches WP order) */}
+      <section className="sec paper sched-promo-strip">
+        <div className="wrap" style={{ textAlign: 'center' }}>
+          <p className="eyebrow" style={{ color: 'var(--aqua-ink)' }}>Summer Promo</p>
+          <h2 className="h2" style={{ marginTop: 8 }}>$250 off our Jumpstart Training.</h2>
+          <div className="btns" style={{ justifyContent: 'center', marginTop: 18 }}>
+            <a className="btn aqua" href="#jumpstart">Learn more</a>
           </div>
         </div>
       </section>
@@ -133,17 +143,17 @@ export function SchedulePageBody({ cfg }: { cfg: ScheduleConfig }) {
         </div>
       </section>
 
-      {/* Everyday Performer packages */}
+      {/* Everyday Performer packages — the named programs, grouped Advanced / Base */}
       <section className="sec paper" id="everyday-performer">
         <div className="wrap">
           <p className="eyebrow">Everyday Performer</p>
           <h2 className="h2" style={{ marginTop: 14 }}>Everyday Performer packages.</h2>
-          <p className="lead muted" style={{ maxWidth: '58ch', marginTop: 12 }}>
-            Short, focused blocks of Neuro-Strength Training to jump-start your practice.
-          </p>
+          <p className="sched-required">** A consultation is required before scheduling an Everyday Performer package. **</p>
           {v.everydayPerformer && <Vid src={v.everydayPerformer} label="How to schedule an Everyday Performer package" />}
           {(['Advanced', 'Base'] as const).map((tier) => {
-            const rows = cfg.programs.filter((p) => p.tier === tier)
+            const rows = EVERYDAY_TIERS[tier]
+              .map((name) => cfg.packages.find((p) => p.name === name))
+              .filter(Boolean) as { name: string; id: string }[]
             if (!rows.length) return null
             return (
               <div key={tier} style={{ marginTop: 28 }}>
@@ -152,8 +162,8 @@ export function SchedulePageBody({ cfg }: { cfg: ScheduleConfig }) {
                   {rows.map((p) => (
                     <div key={p.name} className="pkg-card">
                       <h3>{p.name}</h3>
-                      <p className="muted">{p.sub}</p>
-                      <a className="btn outline" href={cart(p.id)} target="_blank" rel="noopener noreferrer">Purchase program</a>
+                      <p className="muted">{PACKAGE_COPY[p.name]}</p>
+                      <a className="btn outline" href={cart(p.id)} target="_blank" rel="noopener noreferrer">Purchase package</a>
                     </div>
                   ))}
                 </div>
@@ -163,22 +173,19 @@ export function SchedulePageBody({ cfg }: { cfg: ScheduleConfig }) {
         </div>
       </section>
 
-      {/* Signature packages */}
+      {/* Signature packages — the session-bundle programs */}
       <section className="sec paper" id="signature-packages">
         <div className="wrap">
           <p className="eyebrow">Signature</p>
           <h2 className="h2" style={{ marginTop: 14 }}>Signature packages.</h2>
-          <p className="lead muted" style={{ maxWidth: '58ch', marginTop: 12 }}>
-            Targeted programs that build on your consultation — each a personalized block of
-            Neuro-Strength Training focused on a specific area of performance.
-          </p>
-          {v.signature && <Vid src={v.signature} label="Signature packages" />}
+          <p className="sched-required">** A consultation is required before scheduling a Signature Package. **</p>
+          {v.signature && <Vid src={v.signature} label="How to schedule a Signature package" />}
           <div className="pkg-grid" style={{ marginTop: 28 }}>
-            {cfg.packages.map((p) => (
+            {cfg.programs.map((p) => (
               <div key={p.name} className="pkg-card">
                 <h3>{p.name}</h3>
-                <p className="muted">{PACKAGE_COPY[p.name]}</p>
-                <a className="btn outline" href={cart(p.id)} target="_blank" rel="noopener noreferrer">Purchase package</a>
+                <p className="muted">{p.sub}</p>
+                <a className="btn outline" href={cart(p.id)} target="_blank" rel="noopener noreferrer">Purchase program</a>
               </div>
             ))}
           </div>
@@ -191,7 +198,7 @@ export function SchedulePageBody({ cfg }: { cfg: ScheduleConfig }) {
           <div className="wrap">
             <p className="eyebrow">Getting started</p>
             <h2 className="h2" style={{ marginTop: 14, color: '#fff' }}>How to sign up on the NESTRE App.</h2>
-            <Vid src={v.signup} label="How to sign up on the NESTRE App" />
+            <Vid src={v.signup} label="How to sign up on the NESTRE App" portrait />
           </div>
         </section>
       )}
@@ -214,7 +221,7 @@ export function SchedulePageBody({ cfg }: { cfg: ScheduleConfig }) {
       <section className="sec navy">
         <div className="wrap" style={{ textAlign: 'center' }}>
           <h2 className="h2" style={{ color: '#fff', maxWidth: '20ch', marginInline: 'auto' }}>Questions before you book?</h2>
-          <p className="lead" style={{ color: 'rgba(255,255,255,.78)', marginTop: 14 }}>
+          <p className="lead" style={{ color: 'rgba(255,255,255,.78)', marginTop: 14, marginInline: 'auto', maxWidth: 'none' }}>
             Call the NESTRE Scheduler at <a href={PHONE_HREF} style={{ color: 'var(--aqua)' }}>{PHONE_DISPLAY}</a> · {cfg.hours}
           </p>
           <div className="btns" style={{ justifyContent: 'center', marginTop: 22 }}>

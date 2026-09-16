@@ -9,12 +9,17 @@ export async function POST(req: Request) {
   let body: any // eslint-disable-line @typescript-eslint/no-explicit-any
   try { body = await req.json() } catch { return NextResponse.json({ error: 'bad_request' }, { status: 400 }) }
 
-  const name = String(body?.name || '').trim().slice(0, 120)
+  const nameFromParts = [body?.firstName, body?.lastName].map((s) => String(s || '').trim()).filter(Boolean).join(' ')
+  const name = (String(body?.name || '').trim() || nameFromParts).slice(0, 120)
   const email = String(body?.email || '').trim().slice(0, 160)
   const phone = String(body?.phone || '').trim().slice(0, 40)
   const clean = (v: unknown) => (Array.isArray(v) ? v : [v]).map((s) => String(s || '').trim()).filter(Boolean).slice(0, 7)
   const days = clean(body?.days)
   const times = clean(body?.times)
+  // Get-started landing form adds these; the popover omits them.
+  const location = String(body?.location || '').trim().slice(0, 120)
+  const date = String(body?.date || '').trim().slice(0, 60)
+  const message = String(body?.message || '').trim().slice(0, 1200)
   const honeypot = String(body?.company || '').trim()
 
   if (honeypot) return NextResponse.json({ ok: true }) // silently drop bots
@@ -35,9 +40,12 @@ export async function POST(req: Request) {
       <tr><td style="padding:4px 14px 4px 0;color:#52666d">Name</td><td><b>${esc(name)}</b></td></tr>
       <tr><td style="padding:4px 14px 4px 0;color:#52666d">Email</td><td><a href="mailto:${esc(email)}">${esc(email)}</a></td></tr>
       <tr><td style="padding:4px 14px 4px 0;color:#52666d">Phone</td><td><a href="tel:${esc(phone)}">${esc(phone)}</a></td></tr>
-      <tr><td style="padding:4px 14px 4px 0;color:#52666d">Days</td><td>${days.length ? esc(days.join(', ')) : '—'}</td></tr>
-      <tr><td style="padding:4px 14px 4px 0;color:#52666d">Times</td><td>${times.length ? esc(times.join(', ')) : '—'}</td></tr>
+      ${location ? `<tr><td style="padding:4px 14px 4px 0;color:#52666d">Location</td><td>${esc(location)}</td></tr>` : ''}
+      ${date ? `<tr><td style="padding:4px 14px 4px 0;color:#52666d">Preferred date</td><td>${esc(date)}</td></tr>` : ''}
+      ${days.length ? `<tr><td style="padding:4px 14px 4px 0;color:#52666d">Days</td><td>${esc(days.join(', '))}</td></tr>` : ''}
+      ${times.length ? `<tr><td style="padding:4px 14px 4px 0;color:#52666d">Times</td><td>${esc(times.join(', '))}</td></tr>` : ''}
     </table>
+    ${message ? `<p style="margin:16px 0 0;color:#52666d;font-size:13px">Wants to train most</p><p style="margin:4px 0 0;font-size:15px;line-height:1.6;color:#10212a">${esc(message)}</p>` : ''}
   </div>`
 
   try {
