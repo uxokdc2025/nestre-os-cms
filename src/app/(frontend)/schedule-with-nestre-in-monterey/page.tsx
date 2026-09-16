@@ -19,8 +19,6 @@ const cfg: ScheduleConfig = {
   videos: {
     consultation: '/api/media/file/sched-monterey.mp4',
     whatToExpect: '/api/media/file/sched-what-to-expect.mp4',
-    everydayPerformer: '/api/media/file/sched-edp.mp4',
-    signature: '/api/media/file/sched-signature.mp4',
     signup: '/api/media/file/sched-signup.mp4',
   },
   programs: [
