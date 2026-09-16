@@ -17,7 +17,6 @@ const cfg: ScheduleConfig = {
   zoom: 'https://us06web.zoom.us/j/85207285505?pwd=Sn4N07xrxEb1G2cypiZeJGBCnpYyTb.1',
   consultPrice: '$500',
   videos: {
-    consultation: '/api/media/file/sched-monterey.mp4',
     whatToExpect: '/api/media/file/sched-what-to-expect.mp4',
     signup: '/api/media/file/sched-signup.mp4',
   },
