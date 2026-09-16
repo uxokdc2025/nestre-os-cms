@@ -1,7 +1,7 @@
 import React from 'react'
 import { Reveal } from './Reveal'
 import { GetStartedForm } from './GetStartedForm'
-import { AnalyticsBase, GtmTag } from './Tracking'
+import { GtmTag } from './Tracking'
 
 // Ad landing page ("Get Started at …") rebuilt faithfully from the legacy WordPress
 // pages on the NESTRE design system — same sections, copy, images, icons and the
@@ -71,7 +71,6 @@ export function GetStartedBody({ location, acuityType }: { location: string; acu
 
   return (
     <main id="main">
-      <AnalyticsBase />
       <GtmTag />
       {/* Hero */}
       <section className="sec navy get-hero">
