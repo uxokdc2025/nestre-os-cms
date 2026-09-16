@@ -12,13 +12,9 @@ const PHONE_DISPLAY = '(689) 710-3260'
 const PHONE_HREF = 'tel:+16897103260'
 const IMG = '/legacy/getstarted'
 
-const LOGOS = [
-  { src: '/legacy/logos/grey-bloomberg.png', alt: 'Bloomberg' },
-  { src: '/legacy/logos/grey-sports-illustrated.png', alt: 'Sports Illustrated' },
-  { src: '/legacy/logos/grey-espn.png', alt: 'ESPN' },
-  { src: '/legacy/logos/grey-havard-medical-school.png', alt: 'Harvard Medical School' },
-  { src: '/legacy/logos/grey-bleacher-report.png', alt: 'Bleacher Report' },
-]
+// Our colour partner/press logo strip (same asset as the home page).
+const LOGO_STRIP = '/legacy/logos/logos-color.png'
+const LOGO_ALT = 'Featured by Bleacher Report, Harvard Medical School, Bloomberg, Sports Illustrated, the U.S. Department of Veterans Affairs, and ESPN'
 
 // Maps the route's location label to the form's Preferred-Location option.
 const PREFERRED: Record<string, string> = {
@@ -119,7 +115,7 @@ export function GetStartedBody({ location, acuityType }: { location: string; acu
             individuals seeking to better understand and strengthen their mental and cognitive performance.
           </p>
           <div className="get-logos">
-            {LOGOS.map((l) => <img key={l.alt} src={l.src} alt={l.alt} loading="lazy" />)}
+            <img src={LOGO_STRIP} alt={LOGO_ALT} loading="lazy" />
           </div>
         </div>
       </section>
