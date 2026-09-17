@@ -779,8 +779,31 @@ html { scroll-behavior: auto; }
 .split-media:has(> img[src$="our-story-view-01.jpg"]) { aspect-ratio: 808 / 688; max-width: 80%; margin-inline: auto; align-self: center; }
 .split-media img[src$="our-story-view-01.jpg"] { object-fit: contain; scale: 1; translate: none !important; will-change: auto; }
 /* Our Story founder NESTRE Mindset Profile ring — bigger card, centered in the row */
-.founder-ring-slot { align-self: center; display: flex; align-items: center; justify-content: center; }
+.founder-ring-slot { position: relative; align-self: center; display: flex; align-items: center; justify-content: center; }
 .founder-ring-card { height: auto !important; width: 100%; max-width: 432px; aspect-ratio: 1 / 1.02; margin-inline: auto; }
+/* small Dr. Tommy Shavers photo tucked at the card's left edge; grows 20% on hover */
+.founder-photo {
+  position: absolute;
+  left: -44px;
+  top: 50%;
+  z-index: 3;
+  width: 108px;
+  aspect-ratio: 4 / 5;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(152, 214, 211, 0.28);
+  box-shadow: 0 22px 55px -20px rgba(0, 0, 0, 0.85);
+  transform: translateY(-50%);
+  transform-origin: center;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s ease;
+  will-change: transform;
+}
+.founder-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 22%; display: block; }
+.founder-photo:hover { transform: translateY(-50%) scale(1.2); box-shadow: 0 30px 70px -18px rgba(0, 0, 0, 0.9); }
+@media (max-width: 860px) {
+  .founder-photo { position: static; transform: none; margin: 0 auto 16px; }
+  .founder-photo:hover { transform: scale(1.2); }
+}
 @media (max-width: 860px) { .split { grid-template-columns: 1fr; gap: 28px; } .split.reverse .split-media { order: 0; } }
 @media (max-width: 760px) { .closing-copy.copy-right { text-align: left; } .closing-copy.copy-right h2, .closing-copy.copy-right .closing-body { margin-left: 0; } .closing-copy.copy-right .btns { justify-content: flex-start; } }
 .closing-copy h2 { font-size: clamp(2.4rem, 6vw, 5rem); font-weight: 600; line-height: 1.02; max-width: 12ch; text-wrap: balance; }

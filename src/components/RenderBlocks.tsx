@@ -317,7 +317,13 @@ export function Block({ block }: { block: any }) {
               </div>
               {founderProfile ? (
                 <div className="founder-ring-slot">
-                  <MindsetRingCard values={FOUNDER_PROFILE} className="founder-ring-card" />
+                  {img && (
+                    <div className="founder-photo">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={img} alt={mediaAlt(block.image) || 'Dr. Tommy Shavers'} />
+                    </div>
+                  )}
+                  <MindsetRingCard values={FOUNDER_PROFILE} className="founder-ring-card" animateIn />
                 </div>
               ) : (
                 <div className="split-media thumb-lg"><Visual url={img} alt={mediaAlt(block.image)} /></div>
