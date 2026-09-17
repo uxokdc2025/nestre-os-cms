@@ -667,7 +667,7 @@ html { scroll-behavior: auto; }
    driven by Carousels.tsx. Only the timeline right-columns use the opacity gate.) */
 /* right column: stacked callouts separated by a VERY THIN horizontal rule — no
    vertical line, no dots. Each callout still rises in as it enters view. */
-.sticky-list > .feature-card { min-height: 0; padding: 34px 0; background: none !important; border: 0 !important; box-shadow: none !important; }
+.sticky-list > .feature-card { min-height: 0; padding: 34px 0; background: none !important; border: 0 !important; box-shadow: none !important; animation: none !important; }
 .sticky-list > .feature-card + .feature-card { border-top: 1px solid var(--line) !important; }
 .sticky-list > .feature-card h3 { color: var(--ink); }
 /* navy sticky sections: white titles + a light divider so they read on the band. */
