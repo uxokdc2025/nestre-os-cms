@@ -780,7 +780,7 @@ html { scroll-behavior: auto; }
 .split-media img[src$="our-story-view-01.jpg"] { object-fit: contain; scale: 1; translate: none !important; will-change: auto; }
 /* Our Story founder NESTRE Mindset Profile ring — bigger card, centered in the row */
 .founder-ring-slot { align-self: center; display: flex; align-items: center; justify-content: center; }
-.founder-ring-card { height: auto !important; width: 100%; max-width: 540px; aspect-ratio: 1 / 1.02; margin-inline: auto; }
+.founder-ring-card { height: auto !important; width: 100%; max-width: 432px; aspect-ratio: 1 / 1.02; margin-inline: auto; }
 @media (max-width: 860px) { .split { grid-template-columns: 1fr; gap: 28px; } .split.reverse .split-media { order: 0; } }
 @media (max-width: 760px) { .closing-copy.copy-right { text-align: left; } .closing-copy.copy-right h2, .closing-copy.copy-right .closing-body { margin-left: 0; } .closing-copy.copy-right .btns { justify-content: flex-start; } }
 .closing-copy h2 { font-size: clamp(2.4rem, 6vw, 5rem); font-weight: 600; line-height: 1.02; max-width: 12ch; text-wrap: balance; }
