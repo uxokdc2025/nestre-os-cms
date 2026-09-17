@@ -28,51 +28,9 @@ const CX = 180
 const CY = 188
 const R = 118
 const LBLR = 150
-const GAP = 0 // segments run edge-to-edge (dot to dot) so colours fade continuously with no dark gap
+const GAP = 12 // dark gap at each node — segments fade out to black at both ends
 
 const color = (k: keyof MindsetValues) => DIMENSIONS.find((d) => d.key === k)!.color
-
-// ── colour helpers: blend two neon colours around the HUE WHEEL so transitions
-// stay bright (a straight RGB blend of near-complementary colours goes through
-// muddy grey/black — this routes magenta→green via blue instead). ──────────────
-const hexToHsl = (hex: string): [number, number, number] => {
-  const r = parseInt(hex.slice(1, 3), 16) / 255
-  const g = parseInt(hex.slice(3, 5), 16) / 255
-  const b = parseInt(hex.slice(5, 7), 16) / 255
-  const max = Math.max(r, g, b)
-  const min = Math.min(r, g, b)
-  const d = max - min
-  let h = 0
-  if (d !== 0) {
-    if (max === r) h = ((g - b) / d) % 6
-    else if (max === g) h = (b - r) / d + 2
-    else h = (r - g) / d + 4
-    h *= 60
-    if (h < 0) h += 360
-  }
-  const l = (max + min) / 2
-  const s = d === 0 ? 0 : d / (1 - Math.abs(2 * l - 1))
-  return [h, s, l]
-}
-// interpolate between two hex colours in HSL, taking the SHORTEST way round the hue wheel
-const mixHsl = (a: string, b: string, t: number): string => {
-  const [h1, s1, l1] = hexToHsl(a)
-  const [h2, s2, l2] = hexToHsl(b)
-  let dh = h2 - h1
-  if (dh > 180) dh -= 360
-  if (dh < -180) dh += 360
-  const h = (h1 + dh * t + 360) % 360
-  const s = (s1 + (s2 - s1) * t) * 100
-  const l = (l1 + (l2 - l1) * t) * 100
-  return `hsl(${h.toFixed(1)}, ${s.toFixed(1)}%, ${l.toFixed(1)}%)`
-}
-// evenly-spaced gradient stops that fade self→next through the hue wheel (stays bright)
-const STOP_N = 8
-const gradientStops = (self: string, next: string) =>
-  Array.from({ length: STOP_N + 1 }, (_, i) => {
-    const t = i / STOP_N
-    return { offset: `${(t * 100).toFixed(0)}%`, color: mixHsl(self, next, t) }
-  })
 // muted label-name tints, matched to the source
 const NAME_TINT: Record<keyof MindsetValues, string> = {
   cerebral: '#d59ce0',
@@ -295,9 +253,12 @@ export function MindsetRing({
                       x2={arc.end.x}
                       y2={arc.end.y}
                     >
-                      {gradientStops(arc.self, arc.next).map((st, i) => (
-                        <stop key={i} offset={st.offset} stopColor={st.color} />
-                      ))}
+                      {/* each segment glows brightest mid-arc and fades to black at both tail ends */}
+                      <stop offset="0%" stopColor={arc.self} stopOpacity="0" />
+                      <stop offset="18%" stopColor={arc.self} stopOpacity="0.55" />
+                      <stop offset="50%" stopColor={arc.self} stopOpacity="1" />
+                      <stop offset="82%" stopColor={arc.self} stopOpacity="0.55" />
+                      <stop offset="100%" stopColor={arc.self} stopOpacity="0" />
                     </linearGradient>
                   ))}
                 </defs>
