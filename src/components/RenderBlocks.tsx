@@ -101,7 +101,7 @@ export function Block({ block }: { block: any }) {
       const scorecard = block.stats?.length ? (
         <div className="statcard">
           {block.stats.map((s: any, i: number) => (
-            <div key={i} className={`statrow ${s.accent ? 'accent' : ''}`}>
+            <div key={i} className={`statrow ${s.accent ? 'accent' : ''} ${s.score < 90 ? 'low' : ''}`}>
               <div className="lab">{s.label}</div>
               <div className="statrow-line">
                 <div className="bar"><i style={{ ['--w' as string]: `${s.score}%`, ['--r' as string]: i } as React.CSSProperties} /></div>
@@ -275,7 +275,7 @@ export function Block({ block }: { block: any }) {
                       {r.title && <h3>{r.title}</h3>}
                       <div className="scorecard-bars">
                         {metrics.map((m, j) => (
-                          <div key={j} className={`statrow ${m.accent ? 'accent' : ''}`}>
+                          <div key={j} className={`statrow ${m.accent ? 'accent' : ''} ${m.score < 90 ? 'low' : ''}`}>
                             <div className="score-head"><span>{m.label}</span><span className="score-pct">{m.score}%</span></div>
                             <div className="bar"><i style={{ ['--w' as string]: `${m.score}%`, ['--r' as string]: j } as React.CSSProperties} /></div>
                           </div>
