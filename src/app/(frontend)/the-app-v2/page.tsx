@@ -134,7 +134,6 @@ export function TheAppBody() {
       <MindsetRing eyebrow="Your NESTRE Mindset Profile" heading="No two minds read the same." />
       <Block block={blocks.reset} />
       <Block block={blocks.start} />
-      <Block block={blocks.faq} />
       <Block block={blocks.closing} />
       <Reveal />
       <ReadingReveal />
