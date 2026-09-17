@@ -43,7 +43,7 @@ const blocks: Record<string, any> = {
     blockType: 'appShowcase',
     eyebrow: 'On every screen',
     heading: 'The whole method,\nin your pocket.',
-    body: 'Frames, training and your Mindset Profile — the full NESTRE method, wherever the day takes you.',
+    body: 'Frames, training and your NESTRE Mindset Profile — the full NESTRE method, wherever the day takes you.',
     tags: [{ label: 'Everyday Life' }, { label: 'Performance' }, { label: 'Health & Wellness' }],
     phones: [
       { image: img(`${A}/appshots/appshot-1.png`, 'Frames — Everyday Life') },
@@ -94,7 +94,7 @@ const blocks: Record<string, any> = {
     steps: [
       { image: img(`${A}/cards/start01.jpg`), kicker: '01 · Check in', title: 'Get to know your mind.', body: 'Begin with your NESTRE Score and see where you are today — your starting point, not your limit.' },
       { image: img(`${A}/cards/start02.jpg`), kicker: '02 · Train', title: "Meet the moment you're in.", body: 'A short daily practice, matched to how you are reading right now, keeps momentum going.' },
-      { image: img(`${A}/cards/start03.jpg`), kicker: '03 · Return', title: 'Make it part of your life.', body: 'Come back tomorrow — and watch your Mindset Profile become unmistakably yours.' },
+      { image: img(`${A}/cards/start03.jpg`), kicker: '03 · Return', title: 'Make it part of your life.', body: 'Come back tomorrow — and watch your NESTRE Mindset Profile become unmistakably yours.' },
     ],
   },
 
@@ -124,14 +124,14 @@ const blocks: Record<string, any> = {
 }
 
 // Shared body so /the-app and /the-app-v2 render the identical, refined layout.
-// The Mindset Profile ring sits directly UNDER the app (phone) showcase.
+// The NESTRE Mindset Profile ring sits directly UNDER the app (phone) showcase.
 export function TheAppBody() {
   return (
     <main id="main">
       <Block block={blocks.hero} />
       <div id="next" className="scroll-anchor" aria-hidden />
       <Block block={blocks.showcase} />
-      <MindsetRing eyebrow="Your Mindset Profile" heading="No two minds read the same." />
+      <MindsetRing eyebrow="Your NESTRE Mindset Profile" heading="No two minds read the same." />
       <Block block={blocks.reset} />
       <Block block={blocks.start} />
       <Block block={blocks.faq} />

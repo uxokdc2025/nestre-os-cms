@@ -1,11 +1,11 @@
 'use client'
 
 /**
- * MindsetRing (V2) — scroll-driven "Mindset Profile" section, card-pair layout.
+ * MindsetRing (V2) — scroll-driven "NESTRE Mindset Profile" section, card-pair layout.
  *
  * A tall pinned section. Centered heading on top; below it a side-by-side PAIR:
  * a persona card (portrait + type chip + first-person quote + name + role) on the
- * left, and a "Mindset Profile" ring card on the right. As the reader scrolls,
+ * left, and a "NESTRE Mindset Profile" ring card on the right. As the reader scrolls,
  * the active persona advances (Baseline → Executive → Athlete → Deep-Thinker):
  * the persona card cross-fades (blur + slide), the ring re-tweens its three neon
  * arcs (Cerebral / Alpha / Prime) and the percentages recount, and the ambient
@@ -66,7 +66,7 @@ type Props = {
 }
 
 export function MindsetRing({
-  eyebrow = 'Your Mindset Profile',
+  eyebrow = 'Your NESTRE Mindset Profile',
   heading = 'No two minds read the same.',
   sequence = DEFAULT_SEQUENCE,
 }: Props) {
@@ -215,7 +215,7 @@ export function MindsetRing({
 
           {/* ring card */}
           <div className={styles.mcard}>
-            <div className={styles.mcardTitle}>Mindset Profile</div>
+            <div className={styles.mcardTitle}>NESTRE Mindset Profile</div>
             <div className={styles.mcardRule} />
             <div className={styles.ringbox}>
               <svg
