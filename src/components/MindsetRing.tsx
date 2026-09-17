@@ -253,9 +253,13 @@ export function MindsetRing({
               return (
                 <div key={p.key} className={cls} aria-hidden={i === active ? undefined : true}>
                   <div className={styles.pcard}>
-                    <span className={styles.ptype}>{p.label}</span>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={p.image} alt={i === active ? p.imageAlt : ''} loading="lazy" />
+                    <img
+                      src={p.image}
+                      alt={i === active ? p.imageAlt : ''}
+                      loading="lazy"
+                      style={p.imagePos ? { objectPosition: p.imagePos } : undefined}
+                    />
                     <div className={styles.pgrad} />
                     <div className={styles.pov}>
                       <p className={styles.pquote}>{p.quote}</p>
