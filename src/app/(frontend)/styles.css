@@ -91,6 +91,8 @@ h1, h2, h3 { margin: 0; letter-spacing: -0.02em; line-height: 1.02; text-wrap: b
    Scroll-timeline view() was unreliable — it jumped bars to full on load. */
 .statrow .bar > i { position: absolute; inset: 0 auto 0 0; border-radius: 3px; background: var(--aqua); width: 0; transition: width .9s cubic-bezier(.22,1,.36,1); }
 .statrow.accent .bar > i { background: #b57ae6; }
+/* plain (>=90, non-accent) rows: brighter cyan, evened out beside the green + purple */
+.statrow:not(.accent):not(.low) .bar > i { background: #22d3ee; }
 /* scores under 90 get a green line (and matching badge) */
 .statrow.low .bar > i { background: #4ade80; }
 @media (prefers-reduced-motion: reduce) { .statrow .bar > i { transition: none; } }
@@ -424,6 +426,7 @@ html { scroll-behavior: auto; }
 .statrow-line .bar { flex: 1; }
 .stat-num { flex: 0 0 auto; width: 46px; height: 46px; border-radius: 999px; display: grid; place-items: center; font-size: 15px; font-weight: 500; color: #fff; border: 1.5px solid var(--aqua); font-variant-numeric: tabular-nums; }
 .statrow.accent .stat-num { border-color: #b57ae6; }
+.statrow:not(.accent):not(.low) .stat-num { border-color: #22d3ee; }
 .statrow.low .stat-num { border-color: #4ade80; }
 
 /* logo strip — full grid width, bigger */
