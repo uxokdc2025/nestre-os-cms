@@ -42,8 +42,8 @@ const blocks: Record<string, any> = {
   showcase: {
     blockType: 'appShowcase',
     eyebrow: 'On every screen',
-    heading: 'The whole method,\nin your pocket.',
-    body: 'Frames, training and your NESTRE Mindset Profile — the full NESTRE method, wherever the day takes you.',
+    heading: 'Keep training, wherever life takes you.',
+    body: 'Daily mind and brain training, mindset tools, and your NESTRE Mindset Profile — designed to keep you connected to NESTRE beyond the Lab.',
     tags: [{ label: 'Everyday Life' }, { label: 'Performance' }, { label: 'Health & Wellness' }],
     phones: [
       { image: img(`${A}/appshots/appshot-1.png`, 'Frames — Everyday Life') },

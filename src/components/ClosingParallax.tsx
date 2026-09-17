@@ -6,8 +6,8 @@ type CTA = { label?: string; href?: string | null; style?: string }
 
 // Scroll-driven closing: the framed image scales to full-bleed as you scroll,
 // a vignette darkens it, the copy rises from the bottom, then the footer reveals.
-export function ClosingParallax({ image, alt, heading, body, accentLine, ctas, copyRight }: {
-  image?: string; alt?: string; heading?: string; body?: string; accentLine?: string; ctas?: CTA[]; copyRight?: boolean
+export function ClosingParallax({ image, mobileImage, alt, heading, body, accentLine, ctas, copyRight }: {
+  image?: string; mobileImage?: string; alt?: string; heading?: string; body?: string; accentLine?: string; ctas?: CTA[]; copyRight?: boolean
 }) {
   const sectionRef = useRef<HTMLElement>(null)
   const frameRef = useRef<HTMLDivElement>(null)
@@ -59,7 +59,12 @@ export function ClosingParallax({ image, alt, heading, body, accentLine, ctas, c
     <section ref={sectionRef} className="closing-px">
       <div className="closing-sticky">
         <div ref={frameRef} className="closing-frame">
-          {image && <img src={image} alt={alt || ''} />}
+          {image && (
+            <picture>
+              {mobileImage && <source media="(max-width: 700px)" srcSet={mobileImage} />}
+              <img src={image} alt={alt || ''} />
+            </picture>
+          )}
           <div ref={vignRef} className="closing-vign" aria-hidden />
           <div ref={copyRef} className={`closing-copy${copyRight ? ' copy-right' : ''}`}>
             <div className="closing-copy-inner">

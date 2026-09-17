@@ -215,10 +215,20 @@ export function Block({ block }: { block: any }) {
           </div>
         </section>
       )
-    case 'closingCta':
-      return mediaUrl(block.background) ? (
+    case 'closingCta': {
+      // Portrait end-screen images for mobile (≤700px), keyed by the desktop bg file
+      // so each closing section shows a version that fits a phone. Desktop unchanged.
+      const MOBILE_END: Record<string, string> = {
+        'footer.png': '/legacy/mobile-end/home.png',
+        'pages-supplied-16.jpeg': '/legacy/mobile-end/how.png',
+        'forest-breath.jpg': '/legacy/mobile-end/neuro.png',
+      }
+      const bgUrl = mediaUrl(block.background)
+      const mobileEnd = bgUrl ? MOBILE_END[bgUrl.split('/').pop()!.split('?')[0]] : undefined
+      return bgUrl ? (
         <ClosingParallax
-          image={mediaUrl(block.background)!}
+          image={bgUrl}
+          mobileImage={mobileEnd}
           alt={mediaAlt(block.background)}
           heading={block.heading}
           body={block.body}
@@ -236,6 +246,7 @@ export function Block({ block }: { block: any }) {
           </div>
         </section>
       )
+    }
     case 'featureRows': {
       const img = mediaUrl(block.image)
       // Sticky-scroll layout when there's an image + rows: the image pins while
