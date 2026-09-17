@@ -221,7 +221,7 @@
   stroke-width: 7;
 }
 .dot {
-  stroke-width: 7;
+  stroke-width: 6;
 }
 .lblVal {
   font-family: var(--font-instrument), ui-sans-serif, system-ui, sans-serif;
