@@ -269,7 +269,7 @@ export function MindsetRing({
                     className={styles.arc}
                     d={arc.d}
                     stroke={`url(#mr-grad-${arc.key})`}
-                    style={{ filter: `drop-shadow(0 0 12px ${arc.self}d9)` }}
+                    style={{ filter: `drop-shadow(0 0 6px ${arc.self}b3)` }}
                   />
                 ))}
                 {arcs.map((arc) => (
@@ -278,10 +278,9 @@ export function MindsetRing({
                     className={styles.dot}
                     cx={arc.dot.x}
                     cy={arc.dot.y}
-                    r={10.5}
+                    r={13.5}
                     fill="#0b1016"
                     stroke={color(arc.key)}
-                    style={{ filter: `drop-shadow(0 0 9px ${color(arc.key)})` }}
                   />
                 ))}
                 {SEG.map((s) => {
