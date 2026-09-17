@@ -27,7 +27,6 @@ import styles from './MindsetRing.module.css'
 const CX = 180
 const CY = 188
 const R = 118
-const LBLR = 150
 const GAP = 12 // dark gap at each node — segments fade out to black at both ends
 
 const color = (k: keyof MindsetValues) => DIMENSIONS.find((d) => d.key === k)!.color
@@ -57,6 +56,26 @@ const arcPath = (r: number, a0: number, a1: number) => {
   const [x1, y1] = polar(r, a1)
   const large = a1 - a0 > 180 ? 1 : 0
   return `M ${x0} ${y0} A ${r} ${r} 0 ${large} 1 ${x1} ${y1}`
+}
+
+// Build one arc as many small tiled sub-segments whose opacity ramps 0→1 over a
+// FIXED number of degrees at each tail — so the colour is full through the middle
+// (even on a big, "extreme" arc) and only the very ends fade to black. Following
+// the curve avoids the wash-out a single chord-linear gradient causes on long arcs.
+const FADE_DEG = 18
+const STEP_DEG = 4
+const subStroke = (start: number, stop: number) => {
+  const span = stop - start
+  const n = Math.max(1, Math.ceil(span / STEP_DEG))
+  const segs: { d: string; op: number }[] = []
+  for (let i = 0; i < n; i++) {
+    const a0 = start + (i / n) * span
+    const a1 = start + ((i + 1) / n) * span
+    const mid = (a0 + a1) / 2
+    const distFromTail = Math.min(mid - start, stop - mid)
+    segs.push({ d: arcPath(R, a0, a1), op: Math.min(1, Math.max(0, distFromTail / FADE_DEG)) })
+  }
+  return segs
 }
 
 type Props = {
@@ -161,25 +180,19 @@ export function MindsetRing({
   // build arcs sequentially (source math): sweeps proportional, small gaps
   const avail = 360 - SEG.length * GAP
   let a = 0
-  const n = SEG.length
-  const arcs = SEG.map((s, i) => {
+  const arcs = SEG.map((s) => {
     const sweep = (vals[s.key] / total) * avail
     const startDeg = a + GAP / 2
     const endDeg = startDeg + sweep
     a = endDeg + GAP / 2
+    const stop = Math.max(startDeg + 0.001, endDeg)
     const [dx, dy] = polar(R, startDeg)
-    const [ex, ey] = polar(R, Math.max(startDeg + 0.001, endDeg))
-    // colour of this arc, and of the next arc round the ring (so the stroke can
-    // fade toward its neighbour and blend seamlessly at the shared node/dot)
-    const self = color(s.key)
-    const next = color(SEG[(i + 1) % n].key)
     return {
       ...s,
-      d: arcPath(R, startDeg, Math.max(startDeg + 0.001, endDeg)),
+      start: startDeg,
+      stop,
       dot: { x: dx, y: dy },
-      end: { x: ex, y: ey },
-      self,
-      next,
+      self: color(s.key),
     }
   })
 
@@ -233,44 +246,27 @@ export function MindsetRing({
           {/* ring card */}
           <div className={styles.mcard}>
             <div className={styles.mcardTitle}>NESTRE Mindset Profile</div>
-            <div className={styles.mcardRule} />
             <div className={styles.ringbox}>
               <svg
                 className={styles.ring}
-                viewBox="0 0 360 400"
+                viewBox="0 46 360 286"
                 preserveAspectRatio="xMidYMid meet"
                 role="img"
                 aria-label={ariaLabel}
               >
-                <defs>
-                  {arcs.map((arc) => (
-                    <linearGradient
-                      key={`grad-${arc.key}`}
-                      id={`mr-grad-${arc.key}`}
-                      gradientUnits="userSpaceOnUse"
-                      x1={arc.dot.x}
-                      y1={arc.dot.y}
-                      x2={arc.end.x}
-                      y2={arc.end.y}
-                    >
-                      {/* each segment glows brightest mid-arc and fades to black at both tail ends */}
-                      <stop offset="0%" stopColor={arc.self} stopOpacity="0" />
-                      <stop offset="18%" stopColor={arc.self} stopOpacity="0.55" />
-                      <stop offset="50%" stopColor={arc.self} stopOpacity="1" />
-                      <stop offset="82%" stopColor={arc.self} stopOpacity="0.55" />
-                      <stop offset="100%" stopColor={arc.self} stopOpacity="0" />
-                    </linearGradient>
-                  ))}
-                </defs>
                 <circle className={styles.track} cx={CX} cy={CY} r={R} />
                 {arcs.map((arc) => (
-                  <path
-                    key={`arc-${arc.key}`}
-                    className={styles.arc}
-                    d={arc.d}
-                    stroke={`url(#mr-grad-${arc.key})`}
-                    style={{ filter: `drop-shadow(0 0 6px ${arc.self}b3)` }}
-                  />
+                  <g key={`arc-${arc.key}`} style={{ filter: `drop-shadow(0 0 5px ${arc.self}80)` }}>
+                    {subStroke(arc.start, arc.stop).map((sg, i) => (
+                      <path
+                        key={i}
+                        className={styles.arc}
+                        d={sg.d}
+                        stroke={arc.self}
+                        strokeOpacity={sg.op}
+                      />
+                    ))}
+                  </g>
                 ))}
                 {arcs.map((arc) => (
                   <circle
@@ -283,32 +279,6 @@ export function MindsetRing({
                     stroke={color(arc.key)}
                   />
                 ))}
-                {SEG.map((s) => {
-                  const [lx, ly] = polar(LBLR, s.deg)
-                  const anchor = s.deg === 90 ? 'start' : s.deg === 270 ? 'end' : 'middle'
-                  return (
-                    <g key={`lbl-${s.key}`}>
-                      <text
-                        className={styles.lblVal}
-                        x={lx}
-                        y={s.deg === 180 ? ly + 6 : ly - 2}
-                        textAnchor={anchor}
-                        fill={color(s.key)}
-                      >
-                        {pct[s.key]}%
-                      </text>
-                      <text
-                        className={styles.lblName}
-                        x={lx}
-                        y={s.deg === 180 ? ly + 22 : ly + 14}
-                        textAnchor={anchor}
-                        fill={NAME_TINT[s.key]}
-                      >
-                        {s.name}
-                      </text>
-                    </g>
-                  )
-                })}
                 {/* NESTRE brand mark (from white-n.svg, viewBox 1000×1000; centred on the ring) */}
                 <g className={styles.nlogo} transform={`translate(${CX},${CY}) scale(0.086) translate(-496,-480)`}>
                   <path d="M861.78,146.37c-1.74-24.56-21.68-44.5-46.24-46.24-19.38-1.37-36.62,8.31-46.05,23.37-2.64,4.22-7.29,6.76-12.28,6.76h-29.61s-39.5,0-39.5,0v304.73c0,4.98-2.54,9.63-6.76,12.28-15.06,9.44-24.75,26.67-23.37,46.05,1.75,24.72,21.93,44.72,46.66,46.27,29.09,1.83,53.24-21.22,53.24-49.91,0-17.94-9.44-33.66-23.63-42.49-4.19-2.61-6.64-7.27-6.64-12.2V169.77s29.61,0,29.61,0c4.94,0,9.6,2.47,12.22,6.66,4.05,6.51,9.56,12.01,16.06,16.06,4.19,2.61,6.66,7.28,6.66,12.22v655.79s-64.29,0-64.29,0l-250.43-309.77c-3.18-3.93-4.15-9.26-2.39-14,2.2-5.94,3.3-12.41,3.06-19.17-.94-26.03-22.32-47.33-48.36-48.15-29.64-.94-53.72,23.92-51.49,53.82,1.81,24.32,21.46,44.07,45.77,46.02,3.15.25,6.24.21,9.26-.1,4.81-.49,9.52,1.58,12.56,5.34l263.15,325.51.04-.03v.03h122.62V204.7c0-4.98,2.54-9.63,6.76-12.28,15.07-9.44,24.75-26.67,23.37-46.05Z" />
@@ -316,6 +286,18 @@ export function MindsetRing({
                   <path d="M208.71,383.12v-176.54c0-5.02,2.57-9.7,6.84-12.33,15.5-9.53,25.51-27.13,24.15-46.95-1.72-25.19-22.27-45.61-47.47-47.18-29.57-1.85-54.14,21.59-54.14,50.76,0,18.4,9.77,34.52,24.4,43.45,4.24,2.58,6.71,7.29,6.71,12.25v176.54c0,5.02-2.57,9.7-6.84,12.33-15.5,9.53-25.51,27.13-24.15,46.95,1.72,25.19,22.27,45.61,47.47,47.18,29.57,1.85,54.14-21.59,54.14-50.76,0-18.4-9.77-34.52-24.4-43.45-4.24-2.58-6.71-7.29-6.71-12.25Z" />
                 </g>
               </svg>
+            </div>
+            <div className={styles.stats}>
+              {(['cerebral', 'prime', 'alpha'] as (keyof MindsetValues)[]).map((k) => (
+                <div key={k} className={styles.statCol}>
+                  <div className={styles.statNum} style={{ color: color(k) }}>
+                    {pct[k]}%
+                  </div>
+                  <div className={styles.statName} style={{ color: NAME_TINT[k] }}>
+                    {k.charAt(0).toUpperCase() + k.slice(1)}
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>

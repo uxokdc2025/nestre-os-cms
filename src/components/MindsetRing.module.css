@@ -240,6 +240,34 @@
   filter: drop-shadow(0 0 7px rgba(255, 255, 255, 0.35));
 }
 
+/* bottom number row — Cerebral · Prime · Alpha */
+.stats {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 8px 2px;
+}
+.statCol {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+}
+.statNum {
+  font-family: var(--font-instrument), ui-sans-serif, system-ui, sans-serif;
+  font-weight: 800;
+  font-size: clamp(18px, 2.5vw, 25px);
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+.statName {
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  font-weight: 500;
+}
+
 /* progress dots */
 .prog {
   margin-top: clamp(22px, 3.2vh, 38px);
