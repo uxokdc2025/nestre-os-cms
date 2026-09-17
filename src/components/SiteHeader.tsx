@@ -38,12 +38,13 @@ export function SiteHeader({ items, cta, logoUrl }: { items: any[]; cta?: any; l
     return pathname === href || (href !== '/' && pathname.startsWith(href))
   }
 
-  const Logo = () =>
-    logoUrl ? (
-      <Link href="/" className="brand-left" aria-label="NESTRE — home"><img className="nav-logo-img" src={logoUrl} alt="NESTRE" /></Link>
-    ) : (
-      <Link href="/" className="brand-left logo" aria-label="NESTRE — home">NESTRE</Link>
-    )
+  // Brand wordmark — the vector logo (crisp at any size); logoUrl (CMS PNG) is the fallback.
+  const Logo = () => (
+    <Link href="/" className="brand-left" aria-label="NESTRE — home">
+      <img className="nav-logo-img" src="/nestre-logo.svg" alt="NESTRE" />
+    </Link>
+  )
+  void logoUrl
 
   return (
     <header className={`nav${scrolled ? ' scrolled' : ''}`}>

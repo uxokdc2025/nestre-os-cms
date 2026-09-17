@@ -181,7 +181,7 @@ h1, h2, h3 { margin: 0; letter-spacing: -0.02em; line-height: 1.02; text-wrap: b
   transition: background .3s ease;
 }
 .nav .inner { position: relative; z-index: 2; display: flex; align-items: center; gap: 16px; height: 76px; } /* stays above the menu overlay */
-.nav-logo-img { height: 30px; width: auto; }
+.nav-logo-img { height: 36px; width: auto; }
 /* header stays one constant size on scroll — only the scrim darkens for contrast
    (see .nav.scrolled background rule); no height/logo/CTA resizing on scroll */
 .nav .logo { font-size: 20px; font-weight: 700; color: #fff; }
@@ -329,7 +329,7 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px soli
 }
 @media (min-width: 820px) { .site-footer .footer-top { grid-template-columns: 1.4fr 2fr; gap: 64px; } }
 .footer-brand { max-width: 360px; }
-.footer-logo { height: 30px; width: auto; }
+.footer-logo { height: 36px; width: auto; }
 .footer-tag { margin-top: 18px; font-size: 15px; line-height: 1.55; color: rgba(255,255,255,.62); }
 .socials { display: flex; gap: 10px; list-style: none; padding: 0; margin: 24px 0 0; }
 .socials a {

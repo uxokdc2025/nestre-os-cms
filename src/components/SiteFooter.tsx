@@ -57,6 +57,7 @@ function Icon({ name }: { name: string }) {
 }
 
 export function SiteFooter({ logoUrl, footer }: { logoUrl?: string; footer?: any }) { // eslint-disable-line @typescript-eslint/no-explicit-any
+  void logoUrl
   const year = new Date().getFullYear()
   const tagline = footer?.tagline || 'Cognitive performance, made personal. Understand your mind, then train it.'
   const email = footer?.contactEmail || 'tshavers@nestreperformance.com'
@@ -68,7 +69,7 @@ export function SiteFooter({ logoUrl, footer }: { logoUrl?: string; footer?: any
       <div className="wrap footer-top">
         <div className="footer-brand">
           <Link href="/" aria-label="NESTRE — home">
-            {logoUrl ? <img className="footer-logo" src={logoUrl} alt="NESTRE" /> : <span className="logo">NESTRE</span>}
+            <img className="footer-logo" src="/nestre-logo.svg" alt="NESTRE" />
           </Link>
           <p className="footer-tag">{tagline}</p>
           <ul className="socials" aria-label="NESTRE on social media">
