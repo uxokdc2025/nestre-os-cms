@@ -134,7 +134,7 @@ h1, h2, h3 { margin: 0; letter-spacing: -0.02em; line-height: 1.02; text-wrap: b
 /* the water screen: a looping video inside the mockup's screen area. A <video> is
    a replaced element, so it needs explicit width/height — 75% × 88.6% = the screen. */
 .phone .phone-video {
-  position: absolute; left: 12.5%; top: 6%; width: 75%; height: 87%;
+  position: absolute; left: 12.5%; top: 8.5%; width: 75%; height: 82%;
   object-fit: cover; border-radius: 18px; z-index: 1;
 }
 @media (max-width: 900px) {
