@@ -211,17 +211,16 @@
 }
 .track {
   fill: none;
-  stroke: rgba(120, 145, 185, 0.12);
-  stroke-width: 8;
+  stroke: rgba(120, 145, 185, 0.14);
+  stroke-width: 13;
 }
 .arc {
   fill: none;
   stroke-linecap: round;
-  stroke-width: 8.5;
+  stroke-width: 13;
 }
 .dot {
-  stroke: #fff;
-  stroke-width: 1.4;
+  stroke-width: 3;
 }
 .lblVal {
   font-family: var(--font-instrument), ui-sans-serif, system-ui, sans-serif;
@@ -235,17 +234,9 @@
   font-size: 10.5px;
   letter-spacing: 0.2em;
 }
-.nmark {
-  stroke: #fff;
-  stroke-width: 3.3;
-  fill: none;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.4));
-}
-.nmarkDot {
+.nlogo {
   fill: #fff;
-  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.6));
+  filter: drop-shadow(0 0 7px rgba(255, 255, 255, 0.35));
 }
 
 /* progress dots */
