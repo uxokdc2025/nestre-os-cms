@@ -58,25 +58,11 @@ const arcPath = (r: number, a0: number, a1: number) => {
   return `M ${x0} ${y0} A ${r} ${r} 0 ${large} 1 ${x1} ${y1}`
 }
 
-// Build one arc as many small tiled sub-segments whose opacity ramps 0→1 over a
-// FIXED number of degrees at each tail — so the colour is full through the middle
-// (even on a big, "extreme" arc) and only the very ends fade to black. Following
-// the curve avoids the wash-out a single chord-linear gradient causes on long arcs.
-const FADE_DEG = 18
-const STEP_DEG = 4
-const subStroke = (start: number, stop: number) => {
-  const span = stop - start
-  const n = Math.max(1, Math.ceil(span / STEP_DEG))
-  const segs: { d: string; op: number }[] = []
-  for (let i = 0; i < n; i++) {
-    const a0 = start + (i / n) * span
-    const a1 = start + ((i + 1) / n) * span
-    const mid = (a0 + a1) / 2
-    const distFromTail = Math.min(mid - start, stop - mid)
-    segs.push({ d: arcPath(R, a0, a1), op: Math.min(1, Math.max(0, distFromTail / FADE_DEG)) })
-  }
-  return segs
-}
+// Each arc = a SOLID full-colour middle plus a short gradient tail at each end that
+// fades to black over a FIXED number of degrees. The middle is one smooth path (no
+// stepping) and stays full colour on big/extreme arcs; the tails are short enough
+// (≤ FADE_DEG) that a plain chord-linear gradient reads as a smooth curve fade.
+const FADE_DEG = 26
 
 type Props = {
   eyebrow?: string
@@ -186,11 +172,24 @@ export function MindsetRing({
     const endDeg = startDeg + sweep
     a = endDeg + GAP / 2
     const stop = Math.max(startDeg + 0.001, endDeg)
+    const span = stop - startDeg
+    const fade = Math.min(FADE_DEG, span / 2)
+    const midStart = startDeg + fade
+    const midStop = stop - fade
     const [dx, dy] = polar(R, startDeg)
+    const [tax, tay] = polar(R, startDeg) // tail A outer (fades to black)
+    const [taix, taiy] = polar(R, midStart) // tail A inner (full colour)
+    const [tbix, tbiy] = polar(R, midStop) // tail B inner (full colour)
+    const [tbx, tby] = polar(R, stop) // tail B outer (fades to black)
     return {
       ...s,
       start: startDeg,
       stop,
+      midStart,
+      midStop,
+      hasMid: midStop - midStart > 0.4,
+      tailA: { d: arcPath(R, startDeg, midStart), x1: tax, y1: tay, x2: taix, y2: taiy },
+      tailB: { d: arcPath(R, midStop, stop), x1: tbix, y1: tbiy, x2: tbx, y2: tby },
       dot: { x: dx, y: dy },
       self: color(s.key),
     }
@@ -254,18 +253,46 @@ export function MindsetRing({
                 role="img"
                 aria-label={ariaLabel}
               >
+                <defs>
+                  {arcs.map((arc) => (
+                    <React.Fragment key={`grad-${arc.key}`}>
+                      <linearGradient
+                        id={`mr-ta-${arc.key}`}
+                        gradientUnits="userSpaceOnUse"
+                        x1={arc.tailA.x1}
+                        y1={arc.tailA.y1}
+                        x2={arc.tailA.x2}
+                        y2={arc.tailA.y2}
+                      >
+                        <stop offset="0%" stopColor={arc.self} stopOpacity="0" />
+                        <stop offset="100%" stopColor={arc.self} stopOpacity="1" />
+                      </linearGradient>
+                      <linearGradient
+                        id={`mr-tb-${arc.key}`}
+                        gradientUnits="userSpaceOnUse"
+                        x1={arc.tailB.x1}
+                        y1={arc.tailB.y1}
+                        x2={arc.tailB.x2}
+                        y2={arc.tailB.y2}
+                      >
+                        <stop offset="0%" stopColor={arc.self} stopOpacity="1" />
+                        <stop offset="100%" stopColor={arc.self} stopOpacity="0" />
+                      </linearGradient>
+                    </React.Fragment>
+                  ))}
+                </defs>
                 <circle className={styles.track} cx={CX} cy={CY} r={R} />
                 {arcs.map((arc) => (
                   <g key={`arc-${arc.key}`} style={{ filter: `drop-shadow(0 0 5px ${arc.self}80)` }}>
-                    {subStroke(arc.start, arc.stop).map((sg, i) => (
+                    {arc.hasMid && (
                       <path
-                        key={i}
                         className={styles.arc}
-                        d={sg.d}
+                        d={arcPath(R, arc.midStart, arc.midStop)}
                         stroke={arc.self}
-                        strokeOpacity={sg.op}
                       />
-                    ))}
+                    )}
+                    <path className={styles.arc} d={arc.tailA.d} stroke={`url(#mr-ta-${arc.key})`} />
+                    <path className={styles.arc} d={arc.tailB.d} stroke={`url(#mr-tb-${arc.key})`} />
                   </g>
                 ))}
                 {arcs.map((arc) => (
