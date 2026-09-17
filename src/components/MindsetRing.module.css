@@ -216,7 +216,7 @@
 }
 .arc {
   fill: none;
-  stroke-linecap: round;
+  stroke-linecap: butt;
   stroke-width: 9;
 }
 .dot {

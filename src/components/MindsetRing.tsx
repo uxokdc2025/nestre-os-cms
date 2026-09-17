@@ -28,17 +28,9 @@ const CX = 180
 const CY = 188
 const R = 118
 const LBLR = 150
-const GAP = 5
+const GAP = 0 // segments run edge-to-edge (dot to dot) so colours fade continuously with no dark gap
 
 const color = (k: keyof MindsetValues) => DIMENSIONS.find((d) => d.key === k)!.color
-// blend two hex colors (#rrggbb) — used to fade each arc toward its neighbour at the shared node
-const hexMix = (a: string, b: string, t: number) => {
-  const p = (h: string) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16))
-  const [r1, g1, b1] = p(a)
-  const [r2, g2, b2] = p(b)
-  const c = (x: number, y: number) => Math.round(x + (y - x) * t)
-  return `rgb(${c(r1, r2)}, ${c(g1, g2)}, ${c(b1, b2)})`
-}
 // muted label-name tints, matched to the source
 const NAME_TINT: Record<keyof MindsetValues, string> = {
   cerebral: '#d59ce0',
@@ -258,8 +250,8 @@ export function MindsetRing({
                       y2={arc.end.y}
                     >
                       <stop offset="0%" stopColor={arc.self} />
-                      <stop offset="52%" stopColor={arc.self} />
-                      <stop offset="100%" stopColor={hexMix(arc.self, arc.next, 0.9)} />
+                      <stop offset="46%" stopColor={arc.self} />
+                      <stop offset="100%" stopColor={arc.next} />
                     </linearGradient>
                   ))}
                 </defs>
