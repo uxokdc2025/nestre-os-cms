@@ -299,7 +299,7 @@ export function MindsetRing({
                   <circle
                     key={`dot-${arc.key}`}
                     className={styles.dot}
-                    cx={arc.dot.x}
+                    cx={arc.dot.x - 2}
                     cy={arc.dot.y}
                     r={13.5}
                     fill="#0b1016"
