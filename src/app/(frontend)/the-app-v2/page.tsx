@@ -46,8 +46,8 @@ const blocks: Record<string, any> = {
     body: 'Daily mind and brain training, mindset tools, and your NESTRE Mindset Profile — designed to keep you connected to NESTRE beyond the Lab.',
     tags: [{ label: 'Everyday Life' }, { label: 'Performance' }, { label: 'Health & Wellness' }],
     phones: [
-      { image: img(`${A}/appshots/appshot-1.png`, 'Frames — Everyday Life') },
-      { image: img(`${A}/appshots/appshot-3.png`, 'Player — Trying Something New') },
+      { image: img(`${A}/appshots/app-showcase-1.png`, 'Frames — Everyday Life') },
+      { image: img(`${A}/appshots/app-showcase-2.png`, 'Player — Trying Something New') },
       { image: img(`${A}/appshots/appshot-5.png`, 'Frames — Health & Wellness') },
     ],
   },
