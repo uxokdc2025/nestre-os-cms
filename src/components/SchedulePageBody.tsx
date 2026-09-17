@@ -55,12 +55,6 @@ function Vid({ src, label, portrait }: { src: string; label?: string; portrait?:
 }
 
 export function SchedulePageBody({ cfg }: { cfg: ScheduleConfig }) {
-  const faq = [
-    { q: 'How do I reschedule my appointment?', a: 'Use the “Change/Cancel Appointment” link in your confirmation email. Choose a new date and time from the available options.' },
-    { q: 'How do I cancel my appointment?', a: 'You can cancel by clicking the “Change/Cancel Appointment” link found in your confirmation email. This takes you directly to the cancellation page.' },
-    { q: 'I can’t find my confirmation email. What should I do?', a: 'Check your spam or promotions folder. If you still can’t locate it, contact us and we can resend it.' },
-    { q: 'What hours is the NESTRE Scheduler available for assistance?', a: `Monday–Friday, ${cfg.hours}.` },
-  ]
   const v = cfg.videos
 
   return (
@@ -202,20 +196,6 @@ export function SchedulePageBody({ cfg }: { cfg: ScheduleConfig }) {
           </div>
         </section>
       )}
-
-      {/* FAQ */}
-      <section className="sec paper">
-        <div className="wrap" style={{ maxWidth: 820 }}>
-          <p className="eyebrow">FAQ</p>
-          <h2 className="h2" style={{ marginTop: 16, marginBottom: 24 }}>Before you book.</h2>
-          {faq.map((it, i) => (
-            <details key={i} className="faq-item">
-              <summary>{it.q}</summary>
-              <p className="muted">{it.a}</p>
-            </details>
-          ))}
-        </div>
-      </section>
 
       {/* Closing contact */}
       <section className="sec navy">

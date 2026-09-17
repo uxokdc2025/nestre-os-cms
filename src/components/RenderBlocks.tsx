@@ -336,20 +336,8 @@ export function Block({ block }: { block: any }) {
         </section>
       )
     case 'faq':
-      return (
-        <section className={`sec ${block.theme || 'paper'}`}>
-          <div className="wrap" style={{ maxWidth: 820 }}>
-            {block.eyebrow && <p className="eyebrow">{block.eyebrow}</p>}
-            {block.heading && <h2 className="h2" style={{ marginTop: 16, marginBottom: 24, whiteSpace: 'pre-line' }}>{block.heading}</h2>}
-            {block.items?.map((it: any, i: number) => (
-              <details key={i} className="faq-item">
-                <summary>{it.q}</summary>
-                <p className="muted">{it.a}</p>
-              </details>
-            ))}
-          </div>
-        </section>
-      )
+      // FAQs removed site-wide (per request) — skip rendering the block.
+      return null
     case 'locations':
       return <LocationsMap eyebrow={block.eyebrow} heading={block.heading} body={block.body} />
     case 'richText':
