@@ -156,7 +156,7 @@ export function MindsetRingCard({
               className={styles.dot}
               cx={arc.dot.x - 2}
               cy={arc.dot.y}
-              r={12.5}
+              r={10.5}
               fill="#0b1016"
               stroke={color(arc.key)}
             />

@@ -315,13 +315,13 @@ export function Block({ block }: { block: any }) {
                 {block.body && <p className="lead muted" style={{ whiteSpace: 'pre-line' }}>{block.body}</p>}
                 <Buttons ctas={block.ctas} />
               </div>
-              <div className="split-media">
-                {founderProfile ? (
-                  <MindsetRingCard values={FOUNDER_PROFILE} />
-                ) : (
-                  <div className="thumb-lg"><Visual url={img} alt={mediaAlt(block.image)} /></div>
-                )}
-              </div>
+              {founderProfile ? (
+                <div className="founder-ring-slot">
+                  <MindsetRingCard values={FOUNDER_PROFILE} className="founder-ring-card" />
+                </div>
+              ) : (
+                <div className="split-media thumb-lg"><Visual url={img} alt={mediaAlt(block.image)} /></div>
+              )}
             </div>
           </section>
         )
