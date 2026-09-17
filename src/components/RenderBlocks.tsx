@@ -4,6 +4,11 @@ import { PodcastPlayer } from './PodcastPlayer'
 import { ClosingParallax } from './ClosingParallax'
 import { PhoneShowcase } from './PhoneShowcase'
 import { LocationsMap } from './LocationsMap'
+import { MindsetRingCard } from './MindsetRingCard'
+
+// Founder (Dr. Tommy Shavers) NESTRE Mindset Profile — shown in place of his photo
+// in the Our Story "A different view…" section.
+const FOUNDER_PROFILE = { cerebral: 0, alpha: 80, prime: 20 }
 
 type Media = { url?: string | null; alt?: string | null } | string | null | undefined
 type CTA = { label?: string; href?: string | null; style?: string }
@@ -298,6 +303,9 @@ export function Block({ block }: { block: any }) {
       }
       // image + no rows → two-column split (copy left, image right; reverse flips it)
       if (img && !(block.rows?.length)) {
+        // Our Story founder section: show Dr. Tommy Shavers' NESTRE Mindset Profile
+        // ring in place of his photo.
+        const founderProfile = /different view/i.test(block.heading || '')
         return (
           <section className={`sec ${block.theme || 'paper'}`}>
             <div className={`wrap split${block.reverse ? ' reverse' : ''}`}>
@@ -307,7 +315,13 @@ export function Block({ block }: { block: any }) {
                 {block.body && <p className="lead muted" style={{ whiteSpace: 'pre-line' }}>{block.body}</p>}
                 <Buttons ctas={block.ctas} />
               </div>
-              <div className="split-media thumb-lg"><Visual url={img} alt={mediaAlt(block.image)} /></div>
+              <div className="split-media">
+                {founderProfile ? (
+                  <MindsetRingCard values={FOUNDER_PROFILE} />
+                ) : (
+                  <div className="thumb-lg"><Visual url={img} alt={mediaAlt(block.image)} /></div>
+                )}
+              </div>
             </div>
           </section>
         )
