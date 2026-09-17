@@ -677,8 +677,8 @@ html { scroll-behavior: auto; }
 /* sticky-list cards reveal via the shared IntersectionObserver reveal (reveal-child),
    not a scroll-timeline — a stuck timeline used to leave the whole right column blank. */
 .sticky-list > .scorecard-card { position: relative; padding: 26px; background: var(--navy) !important; border: 1px solid rgba(255,255,255,.1) !important; }
-/* Mobile: hide the "Your results / Cognitive readiness score" scorecard */
-@media (max-width: 640px) { .sticky-list > .scorecard-card, .scorecard-card { display: none; } }
+/* Hide the "Your results / Cognitive readiness score" scorecard (data kept in CMS). */
+.sticky-list > .scorecard-card, .scorecard-card { display: none !important; }
 /* (runner scorecard "wait for the left" is handled by the .stat-scroll opacity gate
    above — the whole right column is hidden until .stat-sticky.framed.) */
 
