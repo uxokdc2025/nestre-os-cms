@@ -279,7 +279,7 @@ export function MindsetRing({
                     className={styles.dot}
                     cx={arc.dot.x}
                     cy={arc.dot.y}
-                    r={6.5}
+                    r={10.5}
                     fill="#0b1016"
                     stroke={color(arc.key)}
                     style={{ filter: `drop-shadow(0 0 9px ${color(arc.key)})` }}

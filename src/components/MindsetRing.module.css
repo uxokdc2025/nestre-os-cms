@@ -212,12 +212,12 @@
 .track {
   fill: none;
   stroke: rgba(120, 145, 185, 0.14);
-  stroke-width: 13;
+  stroke-width: 9;
 }
 .arc {
   fill: none;
   stroke-linecap: round;
-  stroke-width: 13;
+  stroke-width: 9;
 }
 .dot {
   stroke-width: 3;
