@@ -55,7 +55,7 @@ export const SEQUENCE: Persona[] = [
   {
     key: 'calvin',
     label: 'Hall of Famer',
-    values: { cerebral: 30, alpha: 40, prime: 30 }, // placeholder
+    values: { cerebral: 32, alpha: 44, prime: 25 }, // David: 44 Alpha / 32 Cerebral / 25 Prime
     name: 'Calvin Johnson Jr.',
     role: '1st Ballot Pro Football Hall of Fame\nNFL Record Holder',
     quote: '“NESTRE Neuro-Strength training is the future of health, wellness, and performance.”',
@@ -67,7 +67,7 @@ export const SEQUENCE: Persona[] = [
   {
     key: 'vonda',
     label: 'Orthopedic Surgeon',
-    values: { cerebral: 45, alpha: 25, prime: 30 }, // placeholder
+    values: { cerebral: 20, alpha: 80, prime: 0 }, // David: 20 Cerebral / 80 Alpha / 0 Prime
     name: 'Vonda Wright, MD',
     role: 'Orthopedic Surgeon\nPresident of Hughston Orthopedics Southeast\nInaugural Medical Director of the University of Pittsburgh (UPMC) Lemieux Sports Center',
     quote: '“Keeping my brain at its highest capacity is a priority and NESTRE works my physical brain to peak performance.”',
@@ -79,7 +79,7 @@ export const SEQUENCE: Persona[] = [
   {
     key: 'malcolm',
     label: 'Super Bowl Champion',
-    values: { cerebral: 38, alpha: 34, prime: 28 }, // placeholder
+    values: { cerebral: 20, alpha: 72, prime: 8 }, // David: 20 Cerebral / 72 Alpha / 8 Prime
     name: 'Malcolm Jenkins',
     role: '2x NFL Super Bowl Champion\nFounder, Broad St Ventures & Malcolm Inc.',
     quote: '“Having invested in and experienced firsthand, high-level innovations in human wellness and sports performance; NESTRE is truly pioneering the future of health, wellness, and performance.”',
@@ -91,7 +91,7 @@ export const SEQUENCE: Persona[] = [
   {
     key: 'michael',
     label: 'Olympic Gold Medalist',
-    values: { cerebral: 22, alpha: 30, prime: 48 }, // placeholder
+    values: { cerebral: 20, alpha: 32, prime: 48 }, // David: 20 Cerebral / 32 Alpha / 48 Prime
     name: 'Michael Cherry',
     role: 'Olympic Gold Medalist\nUSA Track & Field\nWorld Top Five 400 Runner',
     quote: '“NESTRE has really made me a better athlete, allowing me get the most out of my abilities both mentally and physically!”',
@@ -103,7 +103,7 @@ export const SEQUENCE: Persona[] = [
   {
     key: 'emil',
     label: 'Collegiate Athlete',
-    values: { cerebral: 34, alpha: 30, prime: 36 }, // placeholder
+    values: { cerebral: 64, alpha: 28, prime: 8 }, // David: 64 Cerebral / 28 Alpha / 8 Prime
     name: 'Emil Ekiyor Jr.',
     role: 'University of Alabama',
     quote:
