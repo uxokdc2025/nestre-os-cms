@@ -169,7 +169,7 @@ export function MindsetRing({
           </div>
 
           {/* ring card (shared component, fed the tweened values) */}
-          <MindsetRingCard values={vals} ariaLabel={ariaLabel} />
+          <MindsetRingCard values={vals} ariaLabel={ariaLabel} className={styles.mcardApp} />
         </div>
 
         {!reduced && (

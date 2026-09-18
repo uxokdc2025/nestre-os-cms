@@ -89,25 +89,13 @@ export const SEQUENCE: Persona[] = [
     imageAlt: 'Malcolm Jenkins, 2x NFL Super Bowl champion',
   },
   {
-    key: 'michael',
-    label: 'Olympic Gold Medalist',
-    values: { cerebral: 20, alpha: 32, prime: 48 }, // David: 20 Cerebral / 32 Alpha / 48 Prime
-    name: 'Michael Cherry',
-    role: 'Olympic Gold Medalist\nUSA Track & Field\nWorld Top Five 400 Runner',
-    quote: '“NESTRE has really made me a better athlete, allowing me get the most out of my abilities both mentally and physically!”',
-    accent: '#18c8ff',
-    image: `${P}/michael.jpg`,
-    imagePos: '50% 26%',
-    imageAlt: 'Michael Cherry, Olympic gold medalist, USA Track & Field',
-  },
-  {
     key: 'emil',
     label: 'Collegiate Athlete',
     values: { cerebral: 64, alpha: 28, prime: 8 }, // David: 64 Cerebral / 28 Alpha / 8 Prime
     name: 'Emil Ekiyor Jr.',
     role: 'University of Alabama',
     quote:
-      '“Like most college athletes I have invested a lot of time, energy, and resources to train and develop my body so I can perform at the highest level in collegiate sports. I never thought about training my brain, nor did I even think it was even possible to train your brain to not only perform at a high level, but to help you through the grind of a football season.\n\nThen I met Dr. Tommy Shavers and NESTRE. NESTRE has allowed me to lock in on my preparation and performance in practice, training and game day. The ability to control how you stay locked through the ups and downs and grind of a season is powerful.”',
+      '“Like most college athletes I have invested a lot of time, energy, and resources to train and develop my body so I can perform at the highest level in collegiate sports. I never thought about training my brain, nor did I even think it was even possible to train your brain to not only perform at a high level, but to help you through the grind of a football season.”',
     accent: '#c774ff',
     image: `${P}/emil.jpg`,
     imagePos: '50% 42%',
