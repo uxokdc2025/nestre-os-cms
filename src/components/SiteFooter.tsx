@@ -104,7 +104,6 @@ export function SiteFooter({ logoUrl, footer }: { logoUrl?: string; footer?: any
         <div className="footer-legal">
           <Link href="/privacy">Privacy Policy</Link>
           <Link href="/terms">Terms &amp; Conditions</Link>
-          <Link href="/help">Help</Link>
           <a href={`mailto:${email}`}>{email}</a>
           <a href={`tel:${tel}`}>{phone}</a>
         </div>
