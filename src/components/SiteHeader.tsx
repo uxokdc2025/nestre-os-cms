@@ -46,8 +46,12 @@ export function SiteHeader({ items, cta, logoUrl }: { items: any[]; cta?: any; l
   )
   void logoUrl
 
+  // The header scrim is a dark→transparent gradient built for dark hero images; on
+  // the light Privacy page it smears over the copy, so use a solid navy block there.
+  const solid = pathname === '/privacy'
+
   return (
-    <header className={`nav${scrolled ? ' scrolled' : ''}`}>
+    <header className={`nav${scrolled ? ' scrolled' : ''}${solid ? ' nav-solid' : ''}`}>
       <div className="wrap inner">
         <button className={`nav-toggle${open ? ' open' : ''}`} aria-label={open ? 'Close menu' : 'Open menu'} aria-expanded={open} onClick={() => setOpen((o) => !o)}>
           <span /><span /><span />

@@ -257,6 +257,8 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px soli
 .btn.aqua:hover { filter: brightness(1.04); }
 
 .nav.scrolled { background: linear-gradient(180deg, rgba(5,18,25,.98) 0%, rgba(5,18,25,.95) 65%, rgba(5,18,25,.82) 100%); box-shadow: 0 8px 28px rgba(0,0,0,.22); }
+/* Privacy (light page): solid navy header block instead of the fading scrim */
+.nav.nav-solid, .nav.nav-solid.scrolled { background: var(--navy); backdrop-filter: none; box-shadow: 0 10px 30px rgba(0,0,0,.18); }
 .nav-right { display: flex; align-items: center; gap: 12px; }
 .nav-cta { white-space: nowrap; }
 .nav-cta .cta-short { display: none; }
