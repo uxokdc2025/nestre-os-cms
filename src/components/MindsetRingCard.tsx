@@ -10,7 +10,7 @@
  * carousel (fed its tweened values) and as a static card elsewhere (e.g. Our Story).
  */
 
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useId, useRef, useState } from 'react'
 import { DIMENSIONS, type MindsetValues } from '@/lib/mindset-personas'
 import styles from './MindsetRing.module.css'
 
@@ -69,6 +69,9 @@ export function MindsetRingCard({
   className,
   animateIn = false,
 }: Props) {
+  // Unique per-instance id prefix so multiple cards on one page don't collide on
+  // their gradient ids (SVG resolves url(#id) to the first match in the document).
+  const uid = useId().replace(/:/g, '')
   // Intro animation: p goes 0→1 when the card scrolls into view (draw-on + count-up).
   const rootRef = useRef<HTMLDivElement | null>(null)
   const [p, setP] = useState(animateIn ? 0 : 1)
@@ -169,7 +172,7 @@ export function MindsetRingCard({
             {arcs.map((arc) => (
               <React.Fragment key={`grad-${arc.key}`}>
                 <linearGradient
-                  id={`mrc-ta-${arc.key}`}
+                  id={`mrc-${uid}-ta-${arc.key}`}
                   gradientUnits="userSpaceOnUse"
                   x1={arc.tailA.x1}
                   y1={arc.tailA.y1}
@@ -180,7 +183,7 @@ export function MindsetRingCard({
                   <stop offset="100%" stopColor={arc.self} stopOpacity="1" />
                 </linearGradient>
                 <linearGradient
-                  id={`mrc-tb-${arc.key}`}
+                  id={`mrc-${uid}-tb-${arc.key}`}
                   gradientUnits="userSpaceOnUse"
                   x1={arc.tailB.x1}
                   y1={arc.tailB.y1}
@@ -199,8 +202,8 @@ export function MindsetRingCard({
               {arc.hasMid && (
                 <path className={styles.arc} d={arcPath(R, arc.midStart, arc.midStop)} stroke={arc.self} {...dashProps} />
               )}
-              <path className={styles.arc} d={arc.tailA.d} stroke={`url(#mrc-ta-${arc.key})`} {...dashProps} />
-              <path className={styles.arc} d={arc.tailB.d} stroke={`url(#mrc-tb-${arc.key})`} {...dashProps} />
+              <path className={styles.arc} d={arc.tailA.d} stroke={`url(#mrc-${uid}-ta-${arc.key})`} {...dashProps} />
+              <path className={styles.arc} d={arc.tailB.d} stroke={`url(#mrc-${uid}-tb-${arc.key})`} {...dashProps} />
             </g>
           ))}
           {arcs.map((arc) => (
