@@ -568,15 +568,31 @@ export interface News {
   id: number;
   title: string;
   /**
+   * Events float their date, time & location.
+   */
+  type?: ('news' | 'event') | null;
+  /**
+   * Badge, e.g. Partnership, Research, Event
+   */
+  category?: string | null;
+  /**
    * Publication / partner name, e.g. AdventHealth
    */
   source?: string | null;
   date: string;
+  /**
+   * Event start (date & time)
+   */
+  startsAt?: string | null;
+  /**
+   * Event location
+   */
+  venue?: string | null;
   summary?: string | null;
   /**
-   * External article URL
+   * External article / event link
    */
-  url: string;
+  url?: string | null;
   image?: (number | null) | Media;
   published?: boolean | null;
   updatedAt: string;
@@ -1069,8 +1085,12 @@ export interface RichTextBlockSelect<T extends boolean = true> {
  */
 export interface NewsSelect<T extends boolean = true> {
   title?: T;
+  type?: T;
+  category?: T;
   source?: T;
   date?: T;
+  startsAt?: T;
+  venue?: T;
   summary?: T;
   url?: T;
   image?: T;
@@ -1162,6 +1182,8 @@ export interface Nav {
 export interface Footer {
   id: number;
   tagline?: string | null;
+  contactEmail?: string | null;
+  contactPhone?: string | null;
   legalNote?: string | null;
   columns?:
     | {
@@ -1202,6 +1224,15 @@ export interface Brand {
         id?: string | null;
       }[]
     | null;
+  /**
+   * e.g. 999px (pill), 14px, 4px
+   */
+  radius?: string | null;
+  /**
+   * e.g. Instrument Sans, Fraunces
+   */
+  headingFont?: string | null;
+  bodyFont?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1233,6 +1264,8 @@ export interface NavSelect<T extends boolean = true> {
  */
 export interface FooterSelect<T extends boolean = true> {
   tagline?: T;
+  contactEmail?: T;
+  contactPhone?: T;
   legalNote?: T;
   columns?:
     | T
@@ -1267,6 +1300,9 @@ export interface BrandSelect<T extends boolean = true> {
         value?: T;
         id?: T;
       };
+  radius?: T;
+  headingFont?: T;
+  bodyFont?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

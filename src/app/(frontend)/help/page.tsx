@@ -3,6 +3,8 @@ import React from 'react'
 import { Reveal } from '@/components/Reveal'
 import { HELP } from '@/lib/help-content'
 import { SITE_URL, webPageGraph } from '@/lib/seo'
+import { Prose } from '@/components/Prose'
+import { getDocPage } from '@/lib/get-doc'
 
 export const dynamic = 'force-dynamic'
 
@@ -36,6 +38,7 @@ function renderBody() {
 }
 
 export default async function HelpPage() {
+  const cms = await getDocPage('help')
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageGraph('Help & Support', '/help', 'Get help with the NESTRE app — contact support, manage your subscription, or delete your account.')) }} />
@@ -43,8 +46,8 @@ export default async function HelpPage() {
         <section className="sec paper">
           <div className="wrap legal">
             <p className="eyebrow">Support</p>
-            <h1 className="h2" style={{ marginTop: 12 }}>Help &amp; Support</h1>
-            <div className="legal-body">{renderBody()}</div>
+            <h1 className="h2" style={{ marginTop: 12 }}>{cms?.title || 'Help & Support'}</h1>
+            <div className="legal-body">{cms?.content ? <Prose value={cms.content} /> : renderBody()}</div>
           </div>
         </section>
       </main>

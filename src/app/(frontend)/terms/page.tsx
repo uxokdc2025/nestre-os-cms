@@ -3,6 +3,8 @@ import React from 'react'
 import { Reveal } from '@/components/Reveal'
 import { TERMS, TERMS_UPDATED } from '@/lib/terms-content'
 import { SITE_URL, webPageGraph } from '@/lib/seo'
+import { Prose } from '@/components/Prose'
+import { getDocPage } from '@/lib/get-doc'
 
 export const dynamic = 'force-dynamic'
 
@@ -36,6 +38,8 @@ function renderBody() {
 }
 
 export default async function TermsPage() {
+  // Body comes from the CMS (editable in the Studio); falls back to shipped content.
+  const cms = await getDocPage('terms')
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageGraph('Terms & Conditions', '/terms', 'The terms and conditions governing your use of the NESTRE app and services.')) }} />
@@ -43,9 +47,9 @@ export default async function TermsPage() {
         <section className="sec paper">
           <div className="wrap legal">
             <p className="eyebrow">Legal</p>
-            <h1 className="h2" style={{ marginTop: 12 }}>Terms &amp; Conditions</h1>
+            <h1 className="h2" style={{ marginTop: 12 }}>{cms?.title || 'Terms & Conditions'}</h1>
             <p className="muted" style={{ marginTop: 10 }}>Last updated: {TERMS_UPDATED}</p>
-            <div className="legal-body">{renderBody()}</div>
+            <div className="legal-body">{cms?.content ? <Prose value={cms.content} /> : renderBody()}</div>
           </div>
         </section>
       </main>

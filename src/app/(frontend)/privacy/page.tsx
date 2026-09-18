@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import { Reveal } from '@/components/Reveal'
 import { PRIVACY, PRIVACY_UPDATED } from '@/lib/privacy-content'
 import { SITE_URL, webPageGraph } from '@/lib/seo'
+import { Prose } from '@/components/Prose'
+import { getDocPage } from '@/lib/get-doc'
 
 export const dynamic = 'force-dynamic'
 
@@ -36,6 +38,7 @@ function renderBody() {
 }
 
 export default async function PrivacyPage() {
+  const cms = await getDocPage('privacy')
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageGraph('Privacy Policy', '/privacy', 'How NESTRE Health & Performance collects, uses, and protects your personal information.')) }} />
@@ -43,9 +46,9 @@ export default async function PrivacyPage() {
         <section className="sec paper">
           <div className="wrap legal">
             <p className="eyebrow">Legal</p>
-            <h1 className="h2" style={{ marginTop: 12 }}>Privacy Policy</h1>
+            <h1 className="h2" style={{ marginTop: 12 }}>{cms?.title || 'Privacy Policy'}</h1>
             <p className="muted" style={{ marginTop: 10 }}>Last updated: {PRIVACY_UPDATED}</p>
-            <div className="legal-body">{renderBody()}</div>
+            <div className="legal-body">{cms?.content ? <Prose value={cms.content} /> : renderBody()}</div>
           </div>
         </section>
       </main>
