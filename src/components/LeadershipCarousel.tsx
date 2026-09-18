@@ -1,27 +1,23 @@
 'use client'
 
 /**
- * LeadershipCarousel — "Your NESTRE Mindset Team" section for Our Story v2.
+ * LeadershipCarousel — "Your NESTRE Mindset Team" for Our Story v2.
  *
- * A horizontal, snap-scrolling carousel of leadership cards. Each card reuses the
- * shared <MindsetRingCard/> (so the ring is identical to the rest of the site) with
- * a custom header: the person's photo (or a branded initials avatar when we don't
- * have one yet) + name + title. Prev/next arrows and progress dots.
+ * A PINNED, scroll-driven horizontal carousel: the section pins while vertical
+ * scroll translates the row of leader cards to the right; once the row reaches its
+ * end the pin releases and the page scrolls on. Each card reuses the shared
+ * <MindsetRingCard/> with a custom header (photo — or a branded initials avatar —
+ * + name + title). Left/right edge fade masks so cards ease in and out.
  *
- * NOTE: the mindset `values` below are PLACEHOLDERS until NESTRE supplies each
- * leader's real Cerebral/Alpha/Prime split. Real photos: Goldberg only so far.
+ * NOTE: mindset `values` are PLACEHOLDERS until NESTRE supplies each leader's real
+ * Cerebral/Alpha/Prime split. Real photo: Goldberg only so far.
  */
 
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import type { MindsetValues } from '@/lib/mindset-personas'
 import { MindsetRingCard } from './MindsetRingCard'
 
-type Leader = {
-  name: string
-  title: string
-  photo?: string
-  values: MindsetValues // placeholder until real profiles arrive
-}
+type Leader = { name: string; title: string; photo?: string; values: MindsetValues }
 
 const LEADERS: Leader[] = [
   { name: 'Dr. Elkhonon Goldberg', title: 'Chief Scientific Officer', photo: '/app-v2/leaders/goldberg.jpg', values: { cerebral: 50, alpha: 21, prime: 29 } },
@@ -30,6 +26,8 @@ const LEADERS: Leader[] = [
   { name: 'Clayton Buckaloo', title: 'Chief Growth Officer', values: { cerebral: 28, alpha: 44, prime: 28 } },
   { name: 'Tomica Nelson-Shavers', title: 'President', values: { cerebral: 34, alpha: 40, prime: 26 } },
 ]
+
+const clamp = (n: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, n))
 
 const initials = (name: string) =>
   name
@@ -61,57 +59,79 @@ function LeaderHead({ leader }: { leader: Leader }) {
 }
 
 export function LeadershipCarousel() {
+  const sectionRef = useRef<HTMLElement | null>(null)
+  const viewportRef = useRef<HTMLDivElement | null>(null)
   const trackRef = useRef<HTMLDivElement | null>(null)
+  const raf = useRef<number | null>(null)
+  const [maxX, setMaxX] = useState(0) // horizontal travel in px (0 = everything fits, no pin)
   const [active, setActive] = useState(0)
 
-  // track which card is centered for the dots
+  // measure travel + drive the transform from vertical scroll while pinned
   useEffect(() => {
-    const el = trackRef.current
-    if (!el) return
-    let raf = 0
-    const onScroll = () => {
-      if (raf) return
-      raf = requestAnimationFrame(() => {
-        raf = 0
-        const slides = Array.from(el.querySelectorAll<HTMLElement>('.leader-slide'))
-        const mid = el.scrollLeft + el.clientWidth / 2
-        let best = 0
-        let bestD = Infinity
-        slides.forEach((s, i) => {
-          const c = s.offsetLeft + s.offsetWidth / 2
-          const d = Math.abs(c - mid)
-          if (d < bestD) {
-            bestD = d
-            best = i
-          }
-        })
-        setActive(best)
-      })
+    const section = sectionRef.current
+    const track = trackRef.current
+    const viewport = viewportRef.current
+    if (!section || !track || !viewport) return
+
+    let travel = 0
+    const measure = () => {
+      travel = Math.max(0, track.scrollWidth - viewport.clientWidth)
+      setMaxX(travel)
+      section.style.height = travel > 0 ? `${window.innerHeight + travel}px` : ''
+      update()
     }
-    el.addEventListener('scroll', onScroll, { passive: true })
-    onScroll()
+    const update = () => {
+      raf.current = null
+      if (travel <= 0) {
+        track.style.transform = 'none'
+        setActive(0)
+        return
+      }
+      const rect = section.getBoundingClientRect()
+      const scrollable = section.offsetHeight - window.innerHeight
+      const progress = scrollable > 0 ? clamp(-rect.top / scrollable, 0, 1) : 0
+      track.style.transform = `translate3d(${-progress * travel}px,0,0)`
+      setActive(clamp(Math.round(progress * (LEADERS.length - 1)), 0, LEADERS.length - 1))
+    }
+    const onScroll = () => {
+      if (raf.current == null) raf.current = requestAnimationFrame(update)
+    }
+
+    measure()
+    const ro = new ResizeObserver(measure)
+    ro.observe(track)
+    ro.observe(viewport)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', measure)
     return () => {
-      el.removeEventListener('scroll', onScroll)
-      if (raf) cancelAnimationFrame(raf)
+      ro.disconnect()
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', measure)
+      if (raf.current != null) cancelAnimationFrame(raf.current)
+      section.style.height = ''
     }
   }, [])
 
-  const scrollTo = useCallback((i: number) => {
-    const el = trackRef.current
-    if (!el) return
-    const slide = el.querySelectorAll<HTMLElement>('.leader-slide')[i]
-    if (slide) el.scrollTo({ left: slide.offsetLeft - (el.clientWidth - slide.offsetWidth) / 2, behavior: 'smooth' })
-  }, [])
+  // jump to a card by scrolling the page to the matching pin position
+  const goTo = (i: number) => {
+    const section = sectionRef.current
+    if (!section || maxX <= 0) return
+    const top = section.getBoundingClientRect().top + window.scrollY
+    const scrollable = section.offsetHeight - window.innerHeight
+    window.scrollTo({ top: top + (i / (LEADERS.length - 1)) * scrollable, behavior: 'smooth' })
+  }
 
   return (
-    <section className="sec navy leaders-sec" aria-labelledby="leaders-heading">
-      <div className="wrap">
-        <p className="eyebrow" style={{ textAlign: 'center' }}>Your NESTRE Mindset Team</p>
-        <h2 id="leaders-heading" className="h2" style={{ textAlign: 'center', marginTop: 12 }}>
-          World-class leadership.
-        </h2>
+    <section className="sec navy leaders-sec" ref={sectionRef} aria-labelledby="leaders-heading">
+      <div className="leaders-sticky">
+        <div className="wrap leaders-headwrap">
+          <p className="eyebrow" style={{ textAlign: 'center' }}>Your NESTRE Mindset Team</p>
+          <h2 id="leaders-heading" className="h2" style={{ textAlign: 'center', marginTop: 12 }}>
+            World-class leadership.
+          </h2>
+        </div>
 
-        <div className="leaders-viewport">
+        <div className="leaders-viewport" ref={viewportRef}>
           <div className="leaders-track" ref={trackRef}>
             {LEADERS.map((l) => (
               <div className="leader-slide" key={l.name}>
@@ -133,7 +153,7 @@ export function LeadershipCarousel() {
               className={`leaders-dot ${i === active ? 'on' : ''}`}
               aria-label={l.name}
               aria-selected={i === active}
-              onClick={() => scrollTo(i)}
+              onClick={() => goTo(i)}
             />
           ))}
         </div>
