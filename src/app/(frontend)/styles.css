@@ -267,6 +267,8 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px soli
 .nav-toggle { display: none; width: 44px; height: 44px; border: none; background: transparent; cursor: pointer; flex-direction: column; gap: 4px; align-items: center; justify-content: center; flex: 0 0 auto; margin-left: -10px; }
 .nav-toggle span { display: block; width: 20px; height: 2px; background: #fff; border-radius: 2px; transition: transform .2s; }
 .mobile-cta { display: none; flex: 0 0 auto; }
+/* the mobile header CTA is now a ConsultPopover wrapper; control the wrapper */
+.consult-mobile { display: none; flex: 0 0 auto; }
 @media (max-width: 939px) {
   .nav .links { display: none; }
   .nav-cta { display: none; }
@@ -274,10 +276,20 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px soli
   .nav-right { display: contents; }
   .nav-toggle { display: inline-flex; }
   .mobile-cta { display: inline-flex; }
+  .consult-mobile { display: block; }
   .nav .brand-left { flex: 0 0 auto; } /* logo stays left, by the hamburger */
   .nav .mobile-cta { margin-left: auto; } /* Book now pushed to the far right */
+  .nav .consult-mobile { margin-left: auto; } /* wrapper pushed to the far right */
 }
-@media (min-width: 940px) { .mobile-cta { display: none; } }
+@media (min-width: 940px) { .mobile-cta, .consult-mobile { display: none; } }
+/* menu instance sits in the full-screen overlay like the old CTA button */
+.nav-mobile .consult-menu { margin-top: 20px; align-self: flex-start; }
+/* label switching (the .nav-cta rules only cover the desktop instance):
+   mobile header button shows the short "Book now"; the menu button shows the full label */
+.consult-mobile .cta-full { display: none; }
+.consult-mobile .cta-short { display: inline; }
+.consult-menu .cta-short { display: none; }
+.consult-menu .cta-full { display: inline; }
 /* full-screen mobile menu overlay (sits below the fixed header bar) */
 /* full-screen overlay that fits without scrolling. viewport units (not inset:0)
    dodge the header's backdrop-filter containing block; sits below the header bar. */
@@ -576,7 +588,33 @@ html { scroll-behavior: auto; }
 .consult-err { color: #b23b3b; font-size: 13px; margin-top: 10px; }
 .consult-done { text-align: left; }
 .consult-sub { color: var(--muted); font-size: 14px; line-height: 1.6; margin: -8px 0 18px; }
-@media (max-width: 620px) { .consult-pop { position: fixed; top: 76px; right: 12px; left: 12px; width: auto; } }
+/* desktop = anchored dropdown: no backdrop / close affordance */
+.consult-backdrop { display: none; }
+.consult-close { display: none; }
+
+/* mobile = bottom drawer (sheet) that slides up, with a dimmed backdrop */
+@media (max-width: 620px) {
+  .consult-backdrop {
+    display: block; position: fixed; inset: 0; z-index: 290;
+    background: rgba(8,28,38,.5); animation: consultFade .2s ease both;
+  }
+  .consult-pop {
+    position: fixed; left: 0; right: 0; bottom: 0; top: auto; width: auto;
+    border-radius: 22px 22px 0 0; padding: 22px 20px calc(22px + env(safe-area-inset-bottom));
+    max-height: 88vh; overflow-y: auto; -webkit-overflow-scrolling: touch;
+    animation: consultUp .28s cubic-bezier(.22,1,.36,1) both;
+  }
+  .consult-close {
+    display: flex; align-items: center; justify-content: center;
+    position: absolute; top: 12px; right: 12px; width: 40px; height: 40px;
+    border: none; background: var(--paper); color: var(--ink); border-radius: 999px;
+    font-size: 24px; line-height: 1; cursor: pointer;
+  }
+  /* a little breathing room so the × doesn't collide with the title */
+  .consult-pop .consult-eyebrow { padding-right: 40px; }
+}
+@keyframes consultUp { from { transform: translateY(100%); } to { transform: none; } }
+@keyframes consultFade { from { opacity: 0; } to { opacity: 1; } }
 
 /* extra space after the media-panels carousel before the next section */
 .sec:has(.panels) { padding-bottom: 128px; }
@@ -925,6 +963,7 @@ html { scroll-behavior: auto; }
 .ncard-more { margin-top: 14px; }
 /* +16px more breathing room between each story */
 .news-grid { gap: 94px; }
+
 /* ===== Locations (interactive: selectable cards + stylised brand map) ===== */
 .locations-sec .loc2-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 28px; margin-top: 44px; align-items: stretch; }
 .loc2-list { display: flex; flex-direction: column; gap: 16px; }

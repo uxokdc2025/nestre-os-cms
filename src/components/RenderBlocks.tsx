@@ -375,8 +375,22 @@ export function Block({ block }: { block: any }) {
           </div>
         </section>
       )
-    case 'locations':
-      return <LocationsMap eyebrow={block.eyebrow} heading={block.heading} body={block.body} />
+    case 'locations': {
+      const items = (block.items || []).map((l: any) => ({
+        name: l.name,
+        address: l.address,
+        miles: l.miles,
+        hours: l.hours,
+        earliest: l.earliest,
+        image: mediaUrl(l.image),
+        alt: mediaAlt(l.image),
+        x: typeof l.x === 'number' ? l.x : undefined,
+        y: typeof l.y === 'number' ? l.y : undefined,
+        viewHref: l.viewHref,
+        bookHref: l.bookHref,
+      }))
+      return <LocationsMap eyebrow={block.eyebrow} heading={block.heading} body={block.body} items={items} />
+    }
     case 'richText':
       return (
         <section className={`sec ${block.theme || 'paper'}`}>

@@ -23,10 +23,17 @@ export type LocationItem = {
 }
 
 const DEFAULTS: LocationItem[] = [
-  { name: 'Lake Nona', address: '6775 Chopra Ter, Orlando, FL 32827', miles: '3.1 miles away', hours: 'Open now', earliest: '11:00am', image: '/img/locations/lake-nona.png', map: '/img/locations/lake-nona-map.png', mapPos: '50% 78%', bookHref: '/book-a-consultation' },
-  { name: 'Winter Park', address: '2200 Lee Rd, Winter Park, FL 32789', miles: '5.2 miles away', hours: 'Open now', earliest: '11:00am', image: '/img/locations/winter-park.png', map: '/img/locations/winter-park-map.png', mapPos: '90% 50%', bookHref: '/book-a-consultation' },
-  { name: 'Monterey', address: '5 Harris Ct Bldg. T, Suite 102, Monterey, CA 93940', miles: '3,010 miles away', hours: 'Open now', earliest: '11:00am', image: '/img/locations/monterey.png', map: '/img/locations/monterey-map.png', mapPos: '92% 50%', bookHref: '/book-a-consultation' },
+  { name: 'Lake Nona', address: '6775 Chopra Ter, Orlando, FL 32827', miles: '3.1 miles away', hours: 'Open now', earliest: '11:00am', image: '/img/locations/lake-nona.png', map: '/img/locations/lake-nona-map.png', mapPos: '50% 78%', viewHref: '#', bookHref: '/book-a-consultation' },
+  { name: 'Winter Park', address: '2200 Lee Rd, Winter Park, FL 32789', miles: '5.2 miles away', hours: 'Open now', earliest: '11:00am', image: '/img/locations/winter-park.png', map: '/img/locations/winter-park-map.png', mapPos: '90% 50%', viewHref: '#', bookHref: '/book-a-consultation' },
+  { name: 'Monterey', address: '5 Harris Ct Bldg. T, Suite 102, Monterey, CA 93940', miles: '3,010 miles away', hours: 'Open now', earliest: '11:00am', image: '/img/locations/monterey.png', map: '/img/locations/monterey-map.png', mapPos: '92% 50%', viewHref: '#', bookHref: '/book-a-consultation' },
 ]
+
+// Known locations keyed by name, so CMS-driven blocks that omit map/image data
+// still get the shipped assets the home page uses.
+const DEFAULT_BY_NAME: Record<string, LocationItem> = DEFAULTS.reduce(
+  (acc, d) => ({ ...acc, [d.name.toLowerCase()]: d }),
+  {} as Record<string, LocationItem>,
+)
 
 export function LocationsMap({
   eyebrow,
@@ -39,7 +46,13 @@ export function LocationsMap({
   body?: string
   items?: LocationItem[]
 }) {
-  const locs = items && items.length ? items : DEFAULTS
+  // Merge each item over its known default (by name) so a CMS location missing
+  // map/image/mapPos falls back to the shipped asset instead of a blank panel —
+  // this is why the home page renders the map but /neuro-labs (CMS data) did not.
+  const locs = (items && items.length ? items : DEFAULTS).map((l) => {
+    const d = DEFAULT_BY_NAME[(l.name || '').toLowerCase()]
+    return d ? { ...l, map: l.map || d.map, mapPos: l.mapPos || d.mapPos, image: l.image || d.image } : l
+  })
   const [active, setActive] = useState(0)
   const current = locs[Math.min(active, locs.length - 1)]
 
@@ -85,14 +98,8 @@ export function LocationsMap({
                       </div>
                     )}
                     <div className="loc2-btns">
-                      <a
-                        className="btn outline"
-                        href={l.viewHref || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${l.name} NESTRE ${l.address || ''}`)}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                      >View Location</a>
-                      <button type="button" className="btn solid" onClick={(e) => { e.stopPropagation(); window.dispatchEvent(new CustomEvent('nestre:open-consult')) }}>Book Training</button>
+                      <a className="btn outline" href={l.viewHref || '#'} onClick={(e) => e.stopPropagation()}>View Location</a>
+                      <a className="btn solid" href={l.bookHref || '#'} onClick={(e) => e.stopPropagation()}>Book Training</a>
                     </div>
                   </div>
                 </div>

@@ -119,5 +119,29 @@ export const config: Config = {
       { heading: { type: 'textarea' }, body: { type: 'textarea' }, accentLine: { type: 'text' }, ctas: ctasField },
       'Closing CTA',
     ),
+    locations: comp(
+      'locations',
+      {
+        eyebrow: { type: 'text' },
+        heading: { type: 'textarea' },
+        body: { type: 'textarea' },
+        items: {
+          type: 'array',
+          arrayFields: {
+            name: { type: 'text' },
+            miles: { type: 'text' },
+            address: { type: 'textarea' },
+            hours: { type: 'text' },
+            earliest: { type: 'text' },
+            viewHref: { type: 'text' },
+            bookHref: { type: 'text' },
+            x: { type: 'number' },
+            y: { type: 'number' },
+          },
+          getItemSummary: (i: any) => i?.name || 'Location',
+        },
+      },
+      'Locations',
+    ),
   },
 }
