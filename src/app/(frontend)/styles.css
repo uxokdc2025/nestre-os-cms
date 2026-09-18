@@ -814,15 +814,25 @@ html { scroll-behavior: auto; }
   display: flex;
   flex-direction: column;
   justify-content: center;
-  overflow: hidden; /* clips off-screen cards horizontally; 100vh gives shadows vertical room */
+  overflow-x: clip; /* clip off-screen cards horizontally … */
+  overflow-y: visible; /* … but let card shadows overflow vertically (no hard edge) */
 }
+/* soft navy fade at the left & right edges — cards ease in/out (overlay, not a mask,
+   so it never crops the card shadows) */
+.leaders-sticky::before,
+.leaders-sticky::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: clamp(48px, 9%, 150px);
+  z-index: 3;
+  pointer-events: none;
+}
+.leaders-sticky::before { left: 0; background: linear-gradient(to right, var(--navy) 18%, transparent); }
+.leaders-sticky::after { right: 0; background: linear-gradient(to left, var(--navy) 18%, transparent); }
 .leaders-headwrap { max-width: 1180px; margin-bottom: clamp(24px, 4vh, 44px); }
-.leaders-viewport {
-  width: 100%;
-  /* fade cards in/out at the left & right edges */
-  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 7%, #000 93%, transparent 100%);
-  mask-image: linear-gradient(to right, transparent 0, #000 7%, #000 93%, transparent 100%);
-}
+.leaders-viewport { width: 100%; }
 .leaders-track {
   display: flex;
   gap: 30px;

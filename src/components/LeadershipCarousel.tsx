@@ -73,11 +73,12 @@ export function LeadershipCarousel() {
     const viewport = viewportRef.current
     if (!section || !track || !viewport) return
 
+    const DWELL = 200 // extra px at the end where the last card sits fully in view before release
     let travel = 0
     const measure = () => {
       travel = Math.max(0, track.scrollWidth - viewport.clientWidth)
       setMaxX(travel)
-      section.style.height = travel > 0 ? `${window.innerHeight + travel}px` : ''
+      section.style.height = travel > 0 ? `${window.innerHeight + travel + DWELL}px` : ''
       update()
     }
     const update = () => {
@@ -88,10 +89,10 @@ export function LeadershipCarousel() {
         return
       }
       const rect = section.getBoundingClientRect()
-      const scrollable = section.offsetHeight - window.innerHeight
-      const progress = scrollable > 0 ? clamp(-rect.top / scrollable, 0, 1) : 0
-      track.style.transform = `translate3d(${-progress * travel}px,0,0)`
-      setActive(clamp(Math.round(progress * (LEADERS.length - 1)), 0, LEADERS.length - 1))
+      // scrolled px into the pin; first `travel` px move the row, last DWELL px hold it
+      const scrolled = clamp(-rect.top, 0, travel)
+      track.style.transform = `translate3d(${-scrolled}px,0,0)`
+      setActive(clamp(Math.round((scrolled / travel) * (LEADERS.length - 1)), 0, LEADERS.length - 1))
     }
     const onScroll = () => {
       if (raf.current == null) raf.current = requestAnimationFrame(update)
@@ -117,8 +118,8 @@ export function LeadershipCarousel() {
     const section = sectionRef.current
     if (!section || maxX <= 0) return
     const top = section.getBoundingClientRect().top + window.scrollY
-    const scrollable = section.offsetHeight - window.innerHeight
-    window.scrollTo({ top: top + (i / (LEADERS.length - 1)) * scrollable, behavior: 'smooth' })
+    // map the dot to its position within the travel range (dwell excluded)
+    window.scrollTo({ top: top + (i / (LEADERS.length - 1)) * maxX, behavior: 'smooth' })
   }
 
   return (
