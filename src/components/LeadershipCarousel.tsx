@@ -103,8 +103,6 @@ export function LeadershipCarousel() {
     if (slide) el.scrollTo({ left: slide.offsetLeft - (el.clientWidth - slide.offsetWidth) / 2, behavior: 'smooth' })
   }, [])
 
-  const step = (dir: number) => scrollTo(Math.max(0, Math.min(LEADERS.length - 1, active + dir)))
-
   return (
     <section className="sec navy leaders-sec" aria-labelledby="leaders-heading">
       <div className="wrap">
@@ -114,9 +112,6 @@ export function LeadershipCarousel() {
         </h2>
 
         <div className="leaders-viewport">
-          <button className="leaders-arrow prev" aria-label="Previous" onClick={() => step(-1)} disabled={active === 0}>
-            ‹
-          </button>
           <div className="leaders-track" ref={trackRef}>
             {LEADERS.map((l) => (
               <div className="leader-slide" key={l.name}>
@@ -125,19 +120,10 @@ export function LeadershipCarousel() {
                   header={<LeaderHead leader={l} />}
                   ariaLabel={`${l.name}, ${l.title} — NESTRE Mindset Profile`}
                   className="leader-ringcard"
-                  animateIn
                 />
               </div>
             ))}
           </div>
-          <button
-            className="leaders-arrow next"
-            aria-label="Next"
-            onClick={() => step(1)}
-            disabled={active === LEADERS.length - 1}
-          >
-            ›
-          </button>
         </div>
 
         <div className="leaders-dots" role="tablist" aria-label="Leaders">
