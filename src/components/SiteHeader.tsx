@@ -47,8 +47,8 @@ export function SiteHeader({ items, cta, logoUrl }: { items: any[]; cta?: any; l
   void logoUrl
 
   // The header scrim is a dark→transparent gradient built for dark hero images; on
-  // the light Privacy page it smears over the copy, so use a solid navy block there.
-  const solid = pathname === '/privacy'
+  // the light legal/support pages it smears over the copy, so use a solid navy block.
+  const solid = ['/privacy', '/terms', '/help'].includes(pathname)
 
   return (
     <header className={`nav${scrolled ? ' scrolled' : ''}${solid ? ' nav-solid' : ''}`}>
