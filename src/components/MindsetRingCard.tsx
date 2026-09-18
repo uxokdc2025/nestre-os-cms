@@ -52,7 +52,9 @@ const arcPath = (r: number, a0: number, a1: number) => {
 
 type Props = {
   values: MindsetValues
-  title?: string
+  title?: string | null
+  /** Optional custom header (e.g. a person's photo + name + title) shown in place of the title. */
+  header?: React.ReactNode
   ariaLabel?: string
   className?: string
   /** When set, the ring draws itself on and the numbers count up once it scrolls into view. */
@@ -62,6 +64,7 @@ type Props = {
 export function MindsetRingCard({
   values,
   title = 'NESTRE Mindset Profile',
+  header,
   ariaLabel,
   className,
   animateIn = false,
@@ -153,7 +156,7 @@ export function MindsetRingCard({
 
   return (
     <div ref={rootRef} className={className ? `${styles.mcard} ${className}` : styles.mcard}>
-      <div className={styles.mcardTitle}>{title}</div>
+      {header ? header : title ? <div className={styles.mcardTitle}>{title}</div> : null}
       <div className={styles.ringbox}>
         <svg
           className={styles.ring}
