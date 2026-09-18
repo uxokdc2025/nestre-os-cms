@@ -144,3 +144,31 @@ export function faqGraph(layout: any[]): object | null { // eslint-disable-line 
     })),
   }
 }
+
+/** WebPage + Breadcrumb JSON-LD for a standalone page (legal/support). Ties the
+ *  page to the Organization/WebSite graph so answer engines place it in context. */
+export function webPageGraph(name: string, path: string, description?: string): object {
+  const url = abs(path)
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'WebPage',
+        '@id': `${url}#webpage`,
+        url,
+        name,
+        ...(description ? { description } : {}),
+        isPartOf: { '@id': SITE_ID },
+        about: { '@id': ORG_ID },
+        inLanguage: 'en-US',
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+          { '@type': 'ListItem', position: 2, name, item: url },
+        ],
+      },
+    ],
+  }
+}

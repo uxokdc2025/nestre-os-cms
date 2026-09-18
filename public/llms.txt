@@ -22,6 +22,12 @@ scan, interpret it with a human NeuroTrainer, then train with real-time neurofee
 - Our Story: https://nestre-os-cms.vercel.app/our-story
 - For Teams: https://nestre-os-cms.vercel.app/for-teams
 - Book a Consultation: https://nestre-os-cms.vercel.app/book-a-consultation
+- News: https://nestre-os-cms.vercel.app/news
+
+## Legal & support
+- Privacy Policy: https://nestre-os-cms.vercel.app/privacy
+- Terms & Conditions: https://nestre-os-cms.vercel.app/terms
+- Help & Support (app support, account deletion): https://nestre-os-cms.vercel.app/help
 
 ## Neuro Labs (in-person locations)
 - Lake Nona — inside Lake Nona Performance Club, Orlando, FL

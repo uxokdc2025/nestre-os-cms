@@ -74,8 +74,17 @@ export function LeadershipCarousel() {
     if (!section || !track || !viewport) return
 
     const DWELL = 200 // extra px at the end where the last card sits fully in view before release
+    // Reduced-motion: don't scroll-jack; fall back to a normal manually-scrollable row.
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     let travel = 0
     const measure = () => {
+      if (reduced) {
+        section.dataset.reduced = '1'
+        section.style.height = ''
+        track.style.transform = 'none'
+        setMaxX(0)
+        return
+      }
       travel = Math.max(0, track.scrollWidth - viewport.clientWidth)
       setMaxX(travel)
       section.style.height = travel > 0 ? `${window.innerHeight + travel + DWELL}px` : ''

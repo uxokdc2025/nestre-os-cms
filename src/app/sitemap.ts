@@ -18,9 +18,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: PRIORITY[p.slug] ?? 0.7,
     }))
     // Standalone routes (not CMS pages). /news is hidden from nav but indexed for SEO.
+    // Review builds (/the-app-v2, /our-story-v2) are noindex and intentionally omitted.
     const extra = [
       { url: `${SITE_URL}/news`, lastModified: new Date(), changeFrequency: 'weekly' as const, priority: 0.6 },
       { url: `${SITE_URL}/privacy`, lastModified: new Date(), changeFrequency: 'yearly' as const, priority: 0.2 },
+      { url: `${SITE_URL}/terms`, lastModified: new Date(), changeFrequency: 'yearly' as const, priority: 0.2 },
+      { url: `${SITE_URL}/help`, lastModified: new Date(), changeFrequency: 'yearly' as const, priority: 0.3 },
     ]
     return [...cms, ...extra]
   } catch {

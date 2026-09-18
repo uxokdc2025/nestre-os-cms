@@ -902,6 +902,13 @@ html { scroll-behavior: auto; }
 .leader-name { font-size: 15px; font-weight: 700; letter-spacing: -0.01em; color: #fff; line-height: 1.15; }
 .leader-title { font-size: 11.5px; color: #9fb4b3; margin-top: 2px; }
 
+/* reduced-motion: no scroll-jack — a normal manually-scrollable row */
+.leaders-sec[data-reduced="1"] { height: auto !important; }
+.leaders-sec[data-reduced="1"] .leaders-sticky { position: static; height: auto; overflow-x: auto; overflow-y: visible; padding: clamp(40px, 6vh, 72px) 0; scroll-snap-type: x mandatory; }
+.leaders-sec[data-reduced="1"] .leaders-sticky::before, .leaders-sec[data-reduced="1"] .leaders-sticky::after { display: none; }
+.leaders-sec[data-reduced="1"] .leaders-viewport { overflow: visible; }
+.leaders-sec[data-reduced="1"] .leader-slide { scroll-snap-align: center; }
+
 /* dots */
 .leaders-dots { display: flex; gap: 10px; justify-content: center; margin-top: clamp(18px, 3vh, 30px); }
 .leaders-dot { width: 8px; height: 8px; border-radius: 50%; border: 0; padding: 0; cursor: pointer; background: rgba(150, 170, 200, 0.3); transition: all 0.3s; }

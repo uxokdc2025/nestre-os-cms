@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { Reveal } from '@/components/Reveal'
 import { PRIVACY, PRIVACY_UPDATED } from '@/lib/privacy-content'
-import { SITE_URL } from '@/lib/seo'
+import { SITE_URL, webPageGraph } from '@/lib/seo'
 
 export const dynamic = 'force-dynamic'
 
@@ -38,6 +38,7 @@ function renderBody() {
 export default async function PrivacyPage() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageGraph('Privacy Policy', '/privacy', 'How NESTRE Health & Performance collects, uses, and protects your personal information.')) }} />
       <main id="main" className="legal-page">
         <section className="sec paper">
           <div className="wrap legal">

@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import React from 'react'
 import { Reveal } from '@/components/Reveal'
 import { TERMS, TERMS_UPDATED } from '@/lib/terms-content'
-import { SITE_URL } from '@/lib/seo'
+import { SITE_URL, webPageGraph } from '@/lib/seo'
 
 export const dynamic = 'force-dynamic'
 
@@ -38,6 +38,7 @@ function renderBody() {
 export default async function TermsPage() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageGraph('Terms & Conditions', '/terms', 'The terms and conditions governing your use of the NESTRE app and services.')) }} />
       <main id="main" className="legal-page">
         <section className="sec paper">
           <div className="wrap legal">

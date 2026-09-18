@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import React from 'react'
 import { Reveal } from '@/components/Reveal'
 import { HELP } from '@/lib/help-content'
-import { SITE_URL } from '@/lib/seo'
+import { SITE_URL, webPageGraph } from '@/lib/seo'
 
 export const dynamic = 'force-dynamic'
 
@@ -38,6 +38,7 @@ function renderBody() {
 export default async function HelpPage() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageGraph('Help & Support', '/help', 'Get help with the NESTRE app — contact support, manage your subscription, or delete your account.')) }} />
       <main id="main" className="legal-page">
         <section className="sec paper">
           <div className="wrap legal">
