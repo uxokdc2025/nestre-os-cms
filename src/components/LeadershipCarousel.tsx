@@ -156,13 +156,14 @@ export function LeadershipCarousel() {
           </div>
         </div>
 
-        <div className="leaders-dots" role="tablist" aria-label="Leaders">
+        <div className="leaders-dots" role="group" aria-label="Choose a leader">
           {LEADERS.map((l, i) => (
             <button
               key={l.name}
+              type="button"
               className={`leaders-dot ${i === active ? 'on' : ''}`}
-              aria-label={l.name}
-              aria-selected={i === active}
+              aria-label={`Show ${l.name}`}
+              aria-current={i === active ? 'true' : undefined}
               onClick={() => goTo(i)}
             />
           ))}

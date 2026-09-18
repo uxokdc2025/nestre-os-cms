@@ -65,21 +65,21 @@ export function LocationsMap({
 
         <div className="loc2-layout">
           {/* selectable location cards */}
-          <div className="loc2-list" role="listbox" aria-label="NESTRE locations">
+          <div className="loc2-list" role="group" aria-label="NESTRE locations">
             {locs.map((l, i) => {
               const on = i === active
               const initials = l.name.split(' ').map((w) => w[0]).slice(0, 2).join('')
               return (
+                // Selecting a card just moves the map focus — a convenience layer over
+                // the real actions (the two links). Click selects with the mouse;
+                // focusing either link inside selects it for keyboard users. No
+                // role="option"/tabindex so the card doesn't nest interactives.
                 <div
                   key={i}
                   className={`loc2-card${on ? ' on' : ''}`}
-                  role="option"
-                  aria-selected={on}
-                  tabIndex={0}
+                  aria-current={on ? 'true' : undefined}
                   onClick={() => setActive(i)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setActive(i) }
-                  }}
+                  onFocusCapture={() => setActive(i)}
                 >
                   <div className="loc2-media">
                     {l.image ? <img src={l.image} alt={l.alt || l.name} /> : <span className="loc2-media-ph" aria-hidden>{initials}</span>}

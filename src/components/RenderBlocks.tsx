@@ -196,7 +196,7 @@ export function Block({ block }: { block: any }) {
             {block.heading && <h2 className="h2" style={{ marginTop: 16, whiteSpace: 'pre-line' }}>{block.heading}</h2>}
             {block.body && <p className="lead muted" style={{ whiteSpace: 'pre-line' }}>{block.body}</p>}
             <Buttons ctas={block.ctas} />
-            <div className="panels">
+            <div className="panels" tabIndex={0} role="group" aria-label={block.heading || 'Panels'}>
               {block.panels?.map((p: any, i: number) => (
                 <div key={i} className="panel">
                   {mediaUrl(p.image) && <img src={mediaUrl(p.image)!} alt={mediaAlt(p.image)} />}
