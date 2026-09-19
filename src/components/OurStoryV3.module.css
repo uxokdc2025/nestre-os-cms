@@ -1,0 +1,215 @@
+/* Our Story V3 scrollytelling — one sticky stage, founder + leadership stages
+   layered and driven by scroll progress. Uses the site's tokens/typography. */
+
+.root {
+  position: relative;
+  background: var(--navy, #081c26);
+  color: #fff;
+}
+.sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+/* both stages occupy the same centered area and cross-fade/translate */
+.founder,
+.lead {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(72px, 12vh, 120px) 0;
+  will-change: transform, opacity;
+}
+
+/* ── founder story ─────────────────────────────────────────────────────────── */
+.intro {
+  text-align: center;
+  margin-bottom: clamp(36px, 7vh, 84px);
+  will-change: transform;
+}
+.introEyebrow {
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--aqua, #98d6d3);
+  margin: 0 0 14px;
+}
+.introH {
+  font-family: var(--font-instrument), ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(1.7rem, 3.6vw, 3rem);
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+.storyCols {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: clamp(28px, 4vw, 72px);
+  align-items: end;
+}
+.storyLead {
+  font-family: var(--font-instrument), ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(1.4rem, 2.9vw, 2.35rem);
+  font-weight: 600;
+  line-height: 1.22;
+  letter-spacing: -0.015em;
+  margin: 0;
+}
+.phrase {
+  opacity: 0.12;
+  will-change: opacity, transform;
+  transition: none;
+}
+.storyRight {
+  will-change: transform, opacity;
+  opacity: 0;
+}
+.storyRight p {
+  font-size: clamp(1rem, 1.3vw, 1.12rem);
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.74);
+  margin: 0;
+  max-width: 42ch;
+}
+
+/* ── leadership ────────────────────────────────────────────────────────────── */
+.lead {
+  opacity: 0;
+}
+.leadEyebrow {
+  text-align: center;
+}
+.leadH {
+  text-align: center;
+  margin-top: 12px;
+  margin-bottom: clamp(28px, 5vh, 56px);
+}
+.leadStage {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  gap: clamp(28px, 4vw, 64px);
+  align-items: center;
+}
+.leadLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+.leadRing {
+  height: auto !important;
+  width: 100%;
+  max-width: 360px;
+  aspect-ratio: 1 / 1.04;
+  margin: 0;
+}
+.bio {
+  max-width: 44ch;
+  animation: bioIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes bioIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.bioName {
+  font-size: 21px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.bioTitle {
+  font-size: 13px;
+  color: var(--aqua, #98d6d3);
+  margin-top: 3px;
+  letter-spacing: 0.02em;
+}
+.bioText {
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.72);
+  margin: 12px 0 0;
+}
+
+/* right team nav */
+.leadRight {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.person {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 12px 14px;
+  border: 0;
+  background: transparent;
+  border-radius: 14px;
+  cursor: pointer;
+  text-align: left;
+  opacity: 0.4;
+  filter: saturate(0.7);
+  transition: opacity 0.35s ease, background 0.35s ease, filter 0.35s ease;
+}
+.personOn {
+  opacity: 1;
+  filter: none;
+  background: rgba(152, 214, 211, 0.08);
+}
+.pAva {
+  flex: 0 0 auto;
+  width: 52px;
+  height: 52px;
+  border-radius: 13px;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(152, 214, 211, 0.25);
+  background: linear-gradient(135deg, #e930ff 0%, #18c8ff 52%, #25e979 100%);
+}
+.pAva img { width: 100%; height: 100%; object-fit: cover; object-position: center 22%; }
+.pAva span { font-family: var(--font-instrument), system-ui, sans-serif; font-weight: 800; font-size: 17px; color: #fff; text-shadow: 0 1px 2px rgba(8, 12, 20, 0.5); }
+.pMeta { min-width: 0; display: flex; flex-direction: column; }
+.pName { font-size: 16px; font-weight: 700; letter-spacing: -0.01em; line-height: 1.2; }
+.pTitle { font-size: 12.5px; color: #9fb4b3; margin-top: 2px; }
+.personOn .pTitle { color: var(--aqua, #98d6d3); }
+
+/* vertical progress dots */
+.progress {
+  position: absolute;
+  left: clamp(14px, 3vw, 40px);
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.pDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(150, 170, 200, 0.3);
+  transition: all 0.35s;
+}
+.pDotOn {
+  background: #fff;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.7);
+  transform: scale(1.35);
+}
+
+/* ── responsive: stack, keep story order ───────────────────────────────────── */
+@media (max-width: 900px) {
+  .storyCols { grid-template-columns: 1fr; gap: 22px; align-items: start; }
+  .leadStage { grid-template-columns: 1fr; gap: 26px; }
+  .leadLeft { align-items: center; }
+  .leadRing { max-width: 300px; }
+  .bio { text-align: center; margin-inline: auto; }
+  .progress { display: none; }
+  .person { padding: 10px; }
+}
