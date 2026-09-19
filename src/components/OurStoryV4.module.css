@@ -1,0 +1,286 @@
+/* Our Story V4 scrollytelling — one sticky stage, founder + leadership stages.
+   Same motion model as V3; leadership stage reworked: left = ring only (static,
+   morphing), right = a travelling name list whose active row reveals its title +
+   description underneath. Uses the site's tokens/typography. */
+
+.root {
+  position: relative;
+  background: var(--navy, #081c26);
+  color: #fff;
+}
+.sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+/* both stages occupy the same centered area; the founder travels up over the
+   leadership stage (opaque layers, no cross-fade) */
+.founder,
+.lead {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(72px, 12vh, 120px) 0;
+  will-change: transform;
+}
+
+/* ── founder story (paper / light) — sits ON TOP, slides up to reveal ──────── */
+.founder {
+  z-index: 2;
+  background: var(--paper, #f4f3ee);
+  color: var(--ink, #12232b);
+}
+.intro {
+  margin-bottom: clamp(26px, 4vh, 52px);
+  will-change: transform;
+}
+.introEyebrow {
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--muted, #55635f);
+  margin: 0 0 14px;
+}
+.introH {
+  /* same size + style as the story text below it */
+  font-family: var(--font-instrument), ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(1.5rem, 2.9vw, 2.35rem);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  margin: 0;
+  color: var(--ink, #12232b);
+}
+.storyCols {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: clamp(28px, 4vw, 72px);
+  align-items: end;
+}
+.storyLeft {
+  min-width: 0;
+}
+.storyLead {
+  font-family: var(--font-instrument), ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(1.5rem, 2.9vw, 2.35rem);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  margin: 0;
+  color: var(--ink, #12232b);
+}
+.phrase {
+  opacity: 0.12;
+  will-change: opacity, transform;
+  transition: none;
+}
+.storyRight {
+  will-change: transform, opacity;
+  opacity: 0;
+  padding-bottom: 6px;
+}
+.storyRight p {
+  font-size: clamp(0.95rem, 1.15vw, 1.05rem);
+  line-height: 1.65;
+  color: var(--muted, #55635f);
+  margin: 0;
+  max-width: 46ch;
+}
+
+/* ── leadership (navy) — sits BENEATH, opaque; revealed as founder slides up ── */
+.lead {
+  z-index: 1;
+  background: var(--navy, #081c26);
+}
+.leadStage {
+  display: grid;
+  grid-template-columns: minmax(0, 40%) minmax(0, 60%);
+  gap: clamp(28px, 5vw, 80px);
+  align-items: center;
+}
+
+/* left: ring only — vertically static (centered), morphs to active leader */
+.leadLeft {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.leadRing {
+  height: auto !important;
+  width: 100%;
+  max-width: 320px;
+  aspect-ratio: 1 / 1.04;
+  margin: 0;
+}
+
+/* right: heading + travelling name list */
+.leadRight {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.leadHead {
+  margin-bottom: clamp(16px, 3vh, 34px);
+}
+.leadHead :global(.eyebrow) {
+  color: var(--aqua, #98d6d3);
+}
+.leadHead :global(.h2) {
+  margin-top: 10px;
+  white-space: nowrap; /* one line; original global .h2 size */
+}
+/* keep full size; wrap (instead of spilling) once the column gets too narrow */
+@media (max-width: 1080px) {
+  .leadHead :global(.h2) {
+    white-space: normal;
+  }
+}
+
+/* the name list travels up so the active row stays centred; top/bottom fade */
+.leadNav {
+  position: relative;
+  height: clamp(340px, 58vh, 560px);
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(
+    180deg,
+    transparent 0,
+    #000 14%,
+    #000 86%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    180deg,
+    transparent 0,
+    #000 14%,
+    #000 86%,
+    transparent 100%
+  );
+}
+.leadNavInner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: transform 0.62s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+.person {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  width: 100%;
+  padding: 11px 8px;
+  border: 0;
+  background: transparent;
+  border-radius: 14px;
+  cursor: pointer;
+  text-align: left;
+  opacity: 0.14; /* inactive rows read faint */
+  transition: opacity 0.45s ease;
+}
+.personOn {
+  opacity: 1;
+}
+.pAva {
+  flex: 0 0 auto;
+  width: 58px;
+  height: 58px;
+  border-radius: 13px;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(152, 214, 211, 0.2);
+  background: linear-gradient(135deg, #e930ff 0%, #18c8ff 52%, #25e979 100%);
+  align-self: flex-start;
+}
+.pAva img { width: 100%; height: 100%; object-fit: cover; object-position: center 22%; }
+.pAva span { font-family: var(--font-instrument), system-ui, sans-serif; font-weight: 800; font-size: 18px; color: #fff; text-shadow: 0 1px 2px rgba(8, 12, 20, 0.5); }
+.pMeta { min-width: 0; display: flex; flex-direction: column; }
+.pName {
+  font-family: var(--font-instrument), ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(19px, 2.1vw, 27px);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.12;
+  color: #fff;
+  white-space: nowrap; /* keep full name (incl. ", MBA") on one line */
+}
+/* title flows in only on the active row */
+.pTitle {
+  font-size: 15px;
+  color: var(--aqua, #98d6d3);
+  font-weight: 500;
+  max-height: 0;
+  opacity: 0;
+  margin-top: 0;
+  overflow: hidden;
+  transition: max-height 0.45s ease, opacity 0.4s ease 0.05s, margin-top 0.4s ease;
+}
+.personOn .pTitle {
+  max-height: 1.8em;
+  opacity: 1;
+  margin-top: 3px;
+}
+/* description floats in underneath the name+title on the active row only */
+.pDesc {
+  display: block;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.55s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.45s ease 0.08s;
+}
+.personOn .pDesc {
+  max-height: 220px;
+  opacity: 1;
+}
+.pDescInner {
+  display: block;
+  padding-top: 10px;
+  font-size: 13.5px;
+  line-height: 1.62;
+  color: rgba(255, 255, 255, 0.62);
+  max-width: 42ch;
+}
+
+/* vertical progress dots */
+.progress {
+  position: absolute;
+  left: clamp(14px, 3vw, 40px);
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.pDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(150, 170, 200, 0.3);
+  transition: all 0.35s;
+}
+.pDotOn {
+  background: #fff;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.7);
+  transform: scale(1.35);
+}
+
+/* ── responsive: stack, keep story order ───────────────────────────────────── */
+@media (max-width: 900px) {
+  .storyCols { grid-template-columns: 1fr; gap: 22px; align-items: start; }
+  .leadStage { grid-template-columns: 1fr; gap: 26px; }
+  .leadLeft { align-items: center; }
+  .leadRing { max-width: 300px; }
+  .leadNav { height: clamp(320px, 52vh, 460px); }
+  .progress { display: none; }
+  .person { padding: 10px; }
+  .pDescInner { max-width: none; }
+}
