@@ -45,11 +45,12 @@
   margin: 0 0 14px;
 }
 .introH {
+  /* same size + style as the story text below it */
   font-family: var(--font-instrument), ui-sans-serif, system-ui, sans-serif;
-  font-size: clamp(1.5rem, 2.6vw, 2.1rem);
+  font-size: clamp(1.5rem, 2.9vw, 2.35rem);
   font-weight: 600;
-  line-height: 1.12;
-  letter-spacing: -0.02em;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
   margin: 0;
   color: var(--ink, #12232b);
 }

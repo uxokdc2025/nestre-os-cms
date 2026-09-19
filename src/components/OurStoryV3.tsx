@@ -35,9 +35,9 @@ const STORY = [
 
 // experience length + phase boundaries (fractions of scroll progress)
 const TOTAL_VH = 900
-const FOUNDER_END = 0.34 // founder story fully assembled by here
-const LEAD_START = 0.36 // leadership begins entering (slight overlap)
-const LEAD_ACTIVE_A = 0.44 // first leader active
+const FOUNDER_END = 0.18 // founder story fully assembled by here (fast reveal)
+const LEAD_START = 0.2 // leadership begins entering (slight overlap)
+const LEAD_ACTIVE_A = 0.28 // first leader active
 const LEAD_ACTIVE_B = 0.98 // last leader settled
 
 export function OurStoryV3() {
@@ -111,15 +111,15 @@ export function OurStoryV3() {
         const N = STORY.length
         phraseRefs.current.forEach((el, i) => {
           if (!el) return
-          const start = 0.05 + i * (0.20 / N)
-          const t = span(p, start, start + 0.14)
+          const start = 0.02 + i * (0.10 / N)
+          const t = span(p, start, start + 0.07)
           el.style.opacity = String(lerp(0.12, 1, t))
           el.style.transform = `translate3d(0, ${lerp(10, 0, t)}px, 0)`
         })
 
         // 3) right paragraph holds, then rises to "catch up" once left is ~80% done
         if (rightRef.current) {
-          const t = span(p, 0.24, 0.34)
+          const t = span(p, 0.11, 0.18)
           rightRef.current.style.opacity = String(t)
           rightRef.current.style.transform = `translate3d(0, ${lerp(110, 0, t)}px, 0)`
         }
