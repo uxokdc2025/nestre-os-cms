@@ -145,6 +145,8 @@
 .leadHead :global(.h2) {
   margin-top: 10px;
   white-space: nowrap;
+  /* sized to sit on one line within the right column without overflow */
+  font-size: clamp(1.5rem, 2.7vw, 2.15rem);
 }
 @media (max-width: 900px) {
   .leadHead :global(.h2) {
