@@ -27,7 +27,12 @@ export default async function OurStoryV3Page() {
   const layout: any[] = (pages.docs[0] as any)?.layout || []
   // Replace the founder "A different view" block with the scrollytelling.
   const fi = layout.findIndex((b) => b.blockType === 'featureRows' && /different view/i.test(b.heading || ''))
-  const before = fi >= 0 ? layout.slice(0, fi) : layout // hero + Possibility
+  const before = (fi >= 0 ? layout.slice(0, fi) : layout).map((b) =>
+    // reference puts the "Possibility" section on the navy theme (paper is the founder story)
+    b.blockType === 'featureRows' && /possibility|what we stand for/i.test(`${b.heading} ${b.eyebrow}`)
+      ? { ...b, theme: 'navy' }
+      : b,
+  )
   const after = fi >= 0 ? layout.slice(fi + 1) : [] // closing parallax
 
   return (
