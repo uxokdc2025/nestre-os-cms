@@ -27,10 +27,13 @@
   will-change: transform, opacity;
 }
 
-/* ── founder story ─────────────────────────────────────────────────────────── */
+/* ── founder story (paper / light) ─────────────────────────────────────────── */
+.founder {
+  background: var(--paper, #f4f3ee);
+  color: var(--ink, #12232b);
+}
 .intro {
-  text-align: center;
-  margin-bottom: clamp(36px, 7vh, 84px);
+  margin-bottom: clamp(26px, 4vh, 52px);
   will-change: transform;
 }
 .introEyebrow {
@@ -38,16 +41,17 @@
   letter-spacing: 0.18em;
   text-transform: uppercase;
   font-weight: 600;
-  color: var(--aqua, #98d6d3);
+  color: var(--muted, #55635f);
   margin: 0 0 14px;
 }
 .introH {
   font-family: var(--font-instrument), ui-sans-serif, system-ui, sans-serif;
-  font-size: clamp(1.7rem, 3.6vw, 3rem);
+  font-size: clamp(1.5rem, 2.6vw, 2.1rem);
   font-weight: 600;
-  line-height: 1.08;
+  line-height: 1.12;
   letter-spacing: -0.02em;
   margin: 0;
+  color: var(--ink, #12232b);
 }
 .storyCols {
   display: grid;
@@ -55,13 +59,17 @@
   gap: clamp(28px, 4vw, 72px);
   align-items: end;
 }
+.storyLeft {
+  min-width: 0;
+}
 .storyLead {
   font-family: var(--font-instrument), ui-sans-serif, system-ui, sans-serif;
-  font-size: clamp(1.4rem, 2.9vw, 2.35rem);
+  font-size: clamp(1.5rem, 2.9vw, 2.35rem);
   font-weight: 600;
-  line-height: 1.22;
+  line-height: 1.2;
   letter-spacing: -0.015em;
   margin: 0;
+  color: var(--ink, #12232b);
 }
 .phrase {
   opacity: 0.12;
@@ -71,18 +79,20 @@
 .storyRight {
   will-change: transform, opacity;
   opacity: 0;
+  padding-bottom: 6px;
 }
 .storyRight p {
-  font-size: clamp(1rem, 1.3vw, 1.12rem);
-  line-height: 1.6;
-  color: rgba(255, 255, 255, 0.74);
+  font-size: clamp(0.95rem, 1.15vw, 1.05rem);
+  line-height: 1.65;
+  color: var(--muted, #55635f);
   margin: 0;
-  max-width: 42ch;
+  max-width: 46ch;
 }
 
-/* ── leadership ────────────────────────────────────────────────────────────── */
+/* ── leadership (navy) ─────────────────────────────────────────────────────── */
 .lead {
   opacity: 0;
+  background: var(--navy, #081c26);
 }
 .leadEyebrow {
   text-align: center;

@@ -175,32 +175,37 @@ export function OurStoryV3() {
   return (
     <section ref={rootRef} className={styles.root} style={{ height: `${TOTAL_VH}vh` }} aria-label="Our story">
       <div className={styles.sticky}>
-        {/* ── Founder story stage ─────────────────────────────────────────── */}
+        {/* ── Founder story stage (paper) ─────────────────────────────────── */}
         <div ref={founderRef} className={styles.founder}>
           <div className="wrap">
-            <div ref={introRef} className={styles.intro}>
-              <p className={styles.introEyebrow}>This is personal.</p>
-              <h2 className={styles.introH}>
-                NESTRE began with founder,<br />Dr. Tommy Shavers.
-              </h2>
-            </div>
             <div className={styles.storyCols}>
-              <p className={styles.storyLead}>
-                {STORY.map((s, i) => (
-                  <span
-                    key={i}
-                    ref={(el) => { phraseRefs.current[i] = el }}
-                    className={styles.phrase}
-                  >
-                    {s}
-                  </span>
-                ))}
-              </p>
+              <div className={styles.storyLeft}>
+                <div ref={introRef} className={styles.intro}>
+                  <p className={styles.introEyebrow}>This is personal.</p>
+                  <h2 className={styles.introH}>
+                    NESTRE began with founder,<br />Dr. Tommy Shavers.
+                  </h2>
+                </div>
+                <p className={styles.storyLead}>
+                  {STORY.map((s, i) => (
+                    <span
+                      key={i}
+                      ref={(el) => { phraseRefs.current[i] = el }}
+                      className={styles.phrase}
+                    >
+                      {s}
+                    </span>
+                  ))}
+                </p>
+              </div>
               <div ref={rightRef} className={styles.storyRight}>
                 <p>
-                  With a belief in neuroplasticity — the brain’s ability to learn, adapt, and grow —
-                  Tommy set out to prove that cognitive performance can be trained. NESTRE is the
-                  result: a way to measure your mind, then strengthen it.
+                  With a belief in neuroplasticity and the power of the mind, he developed language and
+                  a system to measure cognitive performance and make the data actionable. His experience
+                  exposed how performance can be affected by factors we can’t see through the body alone —
+                  and that insight became a broader mission: help every person understand their mind and
+                  brain performance, unlock more of what they’re capable of, and meet increasing demands
+                  with greater clarity, capacity and resilience using the power of neuroscience.
                 </p>
               </div>
             </div>
