@@ -15,7 +15,8 @@
   align-items: center;
 }
 
-/* both stages occupy the same centered area and cross-fade/translate */
+/* both stages occupy the same centered area; the founder travels up over the
+   leadership stage (opaque layers, no cross-fade) */
 .founder,
 .lead {
   position: absolute;
@@ -24,11 +25,12 @@
   flex-direction: column;
   justify-content: center;
   padding: clamp(72px, 12vh, 120px) 0;
-  will-change: transform, opacity;
+  will-change: transform;
 }
 
-/* ── founder story (paper / light) ─────────────────────────────────────────── */
+/* ── founder story (paper / light) — sits ON TOP, slides up to reveal ──────── */
 .founder {
+  z-index: 2;
   background: var(--paper, #f4f3ee);
   color: var(--ink, #12232b);
 }
@@ -90,9 +92,9 @@
   max-width: 46ch;
 }
 
-/* ── leadership (navy) ─────────────────────────────────────────────────────── */
+/* ── leadership (navy) — sits BENEATH, opaque; revealed as founder slides up ── */
 .lead {
-  opacity: 0;
+  z-index: 1;
   background: var(--navy, #081c26);
 }
 .leadEyebrow {

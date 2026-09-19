@@ -96,47 +96,45 @@ export function OurStoryV3() {
       const scrollable = root.offsetHeight - vh
       const p = scrollable > 0 ? clamp(-rect.top / scrollable) : 0
 
-      if (reduced.current) {
-        // static resting state: everything visible, no transforms
-        phraseRefs.current.forEach((el) => el && (el.style.opacity = '1'))
-        if (introRef.current) introRef.current.style.transform = 'none'
-        if (rightRef.current) { rightRef.current.style.opacity = '1'; rightRef.current.style.transform = 'none' }
-        if (founderRef.current) { founderRef.current.style.opacity = '1'; founderRef.current.style.transform = 'none' }
-        if (leadRef.current) { leadRef.current.style.opacity = '1'; leadRef.current.style.transform = 'none' }
-      } else {
-        // 1) founder intro parallax — drifts up slightly slower than the stage
-        if (introRef.current) introRef.current.style.transform = `translate3d(0, ${lerp(0, -40, span(p, 0, FOUNDER_END))}px, 0)`
+      // ── within-founder reveals (skip the staggered ghost under reduced motion) ──
+      if (introRef.current)
+        introRef.current.style.transform = reduced.current
+          ? 'none'
+          : `translate3d(0, ${lerp(0, -40, span(p, 0, FOUNDER_END))}px, 0)`
 
-        // 2) ghost → solid reveal, phrase by phrase (overlapping windows)
-        const N = STORY.length
-        phraseRefs.current.forEach((el, i) => {
-          if (!el) return
-          const start = 0.02 + i * (0.10 / N)
-          const t = span(p, start, start + 0.07)
-          el.style.opacity = String(lerp(0.12, 1, t))
-          el.style.transform = `translate3d(0, ${lerp(10, 0, t)}px, 0)`
-        })
+      // ghost → solid reveal, phrase by phrase (overlapping windows)
+      const N = STORY.length
+      phraseRefs.current.forEach((el, i) => {
+        if (!el) return
+        if (reduced.current) { el.style.opacity = '1'; el.style.transform = 'none'; return }
+        const start = 0.02 + i * (0.10 / N)
+        const t = span(p, start, start + 0.07)
+        el.style.opacity = String(lerp(0.12, 1, t))
+        el.style.transform = `translate3d(0, ${lerp(10, 0, t)}px, 0)`
+      })
 
-        // 3) right paragraph holds, then rises to "catch up" once left is ~80% done
-        if (rightRef.current) {
+      // right paragraph holds, then rises to "catch up" once left is ~80% done
+      if (rightRef.current) {
+        if (reduced.current) { rightRef.current.style.opacity = '1'; rightRef.current.style.transform = 'none' }
+        else {
           const t = span(p, 0.11, 0.18)
           rightRef.current.style.opacity = String(t)
           rightRef.current.style.transform = `translate3d(0, ${lerp(110, 0, t)}px, 0)`
         }
+      }
 
-        // 4) founder story travels up + fades; leadership rises in underneath (overlap)
-        if (founderRef.current) {
-          const out = span(p, FOUNDER_END, LEAD_START + 0.06)
-          founderRef.current.style.transform = `translate3d(0, ${lerp(0, -110, out)}px, 0)`
-          founderRef.current.style.opacity = String(1 - out)
-          founderRef.current.style.pointerEvents = out > 0.5 ? 'none' : 'auto'
-        }
-        if (leadRef.current) {
-          const inn = span(p, LEAD_START, LEAD_START + 0.09)
-          leadRef.current.style.transform = `translate3d(0, ${lerp(120, 0, inn)}px, 0)`
-          leadRef.current.style.opacity = String(inn)
-          leadRef.current.style.pointerEvents = inn > 0.5 ? 'auto' : 'none'
-        }
+      // ── section handoff: founder SLIDES UP and out, revealing the opaque
+      //    leadership stage sitting beneath it. No cross-fade — both stages stay
+      //    fully opaque, matching the site's transform-travel intro pattern. ──
+      if (founderRef.current) {
+        const out = span(p, FOUNDER_END, LEAD_START + 0.08)
+        founderRef.current.style.transform = `translate3d(0, ${lerp(0, -100, out)}vh, 0)`
+        founderRef.current.style.pointerEvents = out > 0.5 ? 'none' : 'auto'
+      }
+      // leadership is static beneath (opaque); the founder clearing it is the reveal
+      if (leadRef.current) {
+        const revealed = p >= FOUNDER_END
+        leadRef.current.style.pointerEvents = revealed ? 'auto' : 'none'
       }
 
       // 5) active leader from scroll (works both directions)
