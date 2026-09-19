@@ -97,98 +97,107 @@
 .leadEyebrow {
   text-align: center;
 }
-.leadH {
-  text-align: center;
-  margin-top: 12px;
-  margin-bottom: clamp(28px, 5vh, 56px);
-}
 .leadStage {
   display: grid;
-  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
-  gap: clamp(28px, 4vw, 64px);
+  grid-template-columns: minmax(0, 40%) minmax(0, 60%);
+  gap: clamp(28px, 5vw, 80px);
   align-items: center;
 }
 .leadLeft {
   display: flex;
   flex-direction: column;
-  gap: 22px;
+  gap: 20px;
 }
 .leadRing {
   height: auto !important;
   width: 100%;
-  max-width: 360px;
+  max-width: 320px;
   aspect-ratio: 1 / 1.04;
   margin: 0;
 }
-.bio {
-  max-width: 44ch;
-  animation: bioIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
 @keyframes bioIn {
-  from { opacity: 0; transform: translateY(12px); }
+  from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
-.bioName {
-  font-size: 21px;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-}
-.bioTitle {
-  font-size: 13px;
-  color: var(--aqua, #98d6d3);
-  margin-top: 3px;
-  letter-spacing: 0.02em;
-}
 .bioText {
-  font-size: 14.5px;
-  line-height: 1.6;
-  color: rgba(255, 255, 255, 0.72);
-  margin: 12px 0 0;
+  font-size: 13.5px;
+  line-height: 1.62;
+  color: rgba(255, 255, 255, 0.58);
+  margin: 0;
+  max-width: 40ch;
+  animation: bioIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-/* right team nav */
+/* right: heading + team nav */
 .leadRight {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+}
+.leadHead {
+  margin-bottom: clamp(16px, 3vh, 34px);
+}
+.leadHead :global(.h2) {
+  margin-top: 10px;
+}
+.leadNav {
+  display: flex;
+  flex-direction: column;
 }
 .person {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 18px;
   width: 100%;
-  padding: 12px 14px;
+  padding: 11px 8px;
   border: 0;
   background: transparent;
   border-radius: 14px;
   cursor: pointer;
   text-align: left;
-  opacity: 0.4;
-  filter: saturate(0.7);
-  transition: opacity 0.35s ease, background 0.35s ease, filter 0.35s ease;
+  opacity: 0.12; /* inactive blocks ~10% */
+  transition: opacity 0.4s ease;
 }
 .personOn {
   opacity: 1;
-  filter: none;
-  background: rgba(152, 214, 211, 0.08);
 }
 .pAva {
   flex: 0 0 auto;
-  width: 52px;
-  height: 52px;
+  width: 58px;
+  height: 58px;
   border-radius: 13px;
   overflow: hidden;
   display: grid;
   place-items: center;
-  border: 1px solid rgba(152, 214, 211, 0.25);
+  border: 1px solid rgba(152, 214, 211, 0.2);
   background: linear-gradient(135deg, #e930ff 0%, #18c8ff 52%, #25e979 100%);
 }
 .pAva img { width: 100%; height: 100%; object-fit: cover; object-position: center 22%; }
-.pAva span { font-family: var(--font-instrument), system-ui, sans-serif; font-weight: 800; font-size: 17px; color: #fff; text-shadow: 0 1px 2px rgba(8, 12, 20, 0.5); }
+.pAva span { font-family: var(--font-instrument), system-ui, sans-serif; font-weight: 800; font-size: 18px; color: #fff; text-shadow: 0 1px 2px rgba(8, 12, 20, 0.5); }
 .pMeta { min-width: 0; display: flex; flex-direction: column; }
-.pName { font-size: 16px; font-weight: 700; letter-spacing: -0.01em; line-height: 1.2; }
-.pTitle { font-size: 12.5px; color: #9fb4b3; margin-top: 2px; }
-.personOn .pTitle { color: var(--aqua, #98d6d3); }
+.pName {
+  font-family: var(--font-instrument), ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(19px, 2.1vw, 27px);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.12;
+  color: #fff;
+}
+/* title flows in only on the active row */
+.pTitle {
+  font-size: 15px;
+  color: var(--aqua, #98d6d3);
+  font-weight: 500;
+  max-height: 0;
+  opacity: 0;
+  margin-top: 0;
+  overflow: hidden;
+  transition: max-height 0.45s ease, opacity 0.4s ease 0.05s, margin-top 0.4s ease;
+}
+.personOn .pTitle {
+  max-height: 1.8em;
+  opacity: 1;
+  margin-top: 3px;
+}
 
 /* vertical progress dots */
 .progress {

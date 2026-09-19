@@ -2,7 +2,7 @@ import type { MindsetValues } from '@/lib/mindset-personas'
 
 // Leadership team for the Our Story scrollytelling. View derives from
 // activeMemberIndex; scroll progress controls the active member.
-// NOTE: bios + mindset profiles are placeholders pending the final content.
+// NOTE: mindset profiles are placeholders pending final per-person numbers.
 
 export type Leader = {
   id: string
@@ -21,7 +21,7 @@ export const LEADERS: Leader[] = [
     name: 'Dr. Tommy Shavers, D.M.',
     title: 'Founder & CEO',
     image: `${P}/tommy.jpg`,
-    bio: 'Creator of the NESTRE model and a former University of Central Florida team captain. After recovering his own cognitive performance, he built NESTRE to help others train the mind like the body.',
+    bio: '15+ years organizational leadership and high-profile behavior & performance experience. Sports and human performance expert. Former NCAA D1 Captain (UCF). Published researcher.',
     profile: { cerebral: 0, alpha: 80, prime: 20 },
   },
   {
@@ -29,35 +29,39 @@ export const LEADERS: Leader[] = [
     name: 'Dr. Elkhonon Goldberg',
     title: 'Chief Scientific Officer',
     image: `${P}/goldberg.jpg`,
-    bio: 'World-renowned neuropsychologist, Director of the Luria Neuroscience Institute, and a Diplomate of the American Board of Professional Psychology.',
+    bio: 'Internationally recognized clinical neuropsychologist. NYU Clinical Professor of Neurology. Founding Director, Luria Neuroscience Institute. Neuroplasticity pioneer.',
     profile: { cerebral: 50, alpha: 21, prime: 29 },
   },
   {
     id: 'tomica',
     name: 'Tomica Nelson-Shavers, MBA',
     title: 'President',
-    bio: 'Leads NESTRE operations and growth, translating the science of neuro-strength into a premium, human experience for every member.',
+    image: `${P}/tomica.jpg`,
+    bio: 'President of NESTRE Health & Performance, Inc. MBA with over a decade of experience in business administration, consulting, and executive leadership.',
     profile: { cerebral: 34, alpha: 40, prime: 26 },
   },
   {
     id: 'perez',
     name: 'Carlos Perez',
     title: 'Chief Operating Officer',
-    bio: 'Runs day-to-day operations across NESTRE, keeping the training experience consistent, reliable, and scalable.',
+    image: `${P}/perez.jpg`,
+    bio: '30+ years leadership. U.S. Army Special Forces veteran. Expert in interagency, DoD, and cross-functional teams. Responsible for 620-neurolab deployment execution.',
     profile: { cerebral: 30, alpha: 40, prime: 30 },
   },
   {
     id: 'dorosz',
     name: 'Daniel Dorosz',
     title: 'Chief Technology Officer',
-    bio: 'A seasoned software engineer and technical lead. Builds the platform that turns cognitive performance data into personalized training.',
+    image: `${P}/dorosz.jpg`,
+    bio: '18 years enterprise software. Data science, AI/ML, and deep neural networks across finance, telecom, and healthcare.',
     profile: { cerebral: 44, alpha: 26, prime: 30 },
   },
   {
-    id: 'buckaloo',
+    id: 'clayton',
     name: 'Clayton Buckaloo',
     title: 'Chief Growth Officer',
-    bio: 'Leads brand and growth, bringing NESTRE’s neuro-strength approach to more people, teams, and performers.',
+    image: `${P}/clayton.jpg`,
+    bio: 'Leads commercialization, brand, go-to-market strategy, and market expansion. Brings experience across health, fitness, performance, and consumer growth to turn NESTRE’s science and technology into a scalable category, customer experience, and revenue engine.',
     profile: { cerebral: 28, alpha: 44, prime: 28 },
   },
 ]

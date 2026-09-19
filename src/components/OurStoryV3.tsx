@@ -215,44 +215,43 @@ export function OurStoryV3() {
         {/* ── Leadership scrollytelling stage ─────────────────────────────── */}
         <div ref={leadRef} className={styles.lead}>
           <div className="wrap">
-            <p className={`eyebrow ${styles.leadEyebrow}`}>Your NESTRE Mindset Team</p>
-            <h2 className={`h2 ${styles.leadH}`}>World-class leadership.</h2>
-
             <div className={styles.leadStage}>
-              {/* left: mindset profile + bio (synced to active) */}
+              {/* left: mindset profile + supporting description (synced to active) */}
               <div className={styles.leadLeft}>
                 <MindsetRingCard values={vals} className={styles.leadRing} />
-                <div key={active} className={styles.bio}>
-                  <div className={styles.bioName}>{member.name}</div>
-                  <div className={styles.bioTitle}>{member.title}</div>
-                  <p className={styles.bioText}>{member.bio}</p>
-                </div>
+                <p key={active} className={styles.bioText}>{member.bio}</p>
               </div>
 
-              {/* right: team nav with active/inactive emphasis */}
-              <div className={styles.leadRight} role="tablist" aria-label="Leadership">
-                {LEADERS.map((l, i) => (
-                  <button
-                    key={l.id}
-                    type="button"
-                    className={`${styles.person} ${i === active ? styles.personOn : ''}`}
-                    aria-current={i === active ? 'true' : undefined}
-                    onClick={() => goTo(i)}
-                  >
-                    <span className={styles.pAva}>
-                      {l.image ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img src={l.image} alt="" loading="lazy" />
-                      ) : (
-                        <span>{initialsOf(l.name)}</span>
-                      )}
-                    </span>
-                    <span className={styles.pMeta}>
-                      <span className={styles.pName}>{l.name}</span>
-                      <span className={styles.pTitle}>{l.title}</span>
-                    </span>
-                  </button>
-                ))}
+              {/* right: heading + team nav (title flows in only on the active row) */}
+              <div className={styles.leadRight}>
+                <div className={styles.leadHead}>
+                  <p className="eyebrow">Your NESTRE Mindset Team</p>
+                  <h2 className="h2">World-class leadership.</h2>
+                </div>
+                <div className={styles.leadNav} role="tablist" aria-label="Leadership">
+                  {LEADERS.map((l, i) => (
+                    <button
+                      key={l.id}
+                      type="button"
+                      className={`${styles.person} ${i === active ? styles.personOn : ''}`}
+                      aria-current={i === active ? 'true' : undefined}
+                      onClick={() => goTo(i)}
+                    >
+                      <span className={styles.pAva}>
+                        {l.image ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img src={l.image} alt="" loading="lazy" />
+                        ) : (
+                          <span>{initialsOf(l.name)}</span>
+                        )}
+                      </span>
+                      <span className={styles.pMeta}>
+                        <span className={styles.pName}>{l.name}</span>
+                        <span className={styles.pTitle}>{l.title}</span>
+                      </span>
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
