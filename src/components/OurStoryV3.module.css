@@ -139,8 +139,17 @@
 .leadHead {
   margin-bottom: clamp(16px, 3vh, 34px);
 }
+.leadHead :global(.eyebrow) {
+  color: var(--aqua, #98d6d3);
+}
 .leadHead :global(.h2) {
   margin-top: 10px;
+  white-space: nowrap;
+}
+@media (max-width: 900px) {
+  .leadHead :global(.h2) {
+    white-space: normal;
+  }
 }
 .leadNav {
   display: flex;
