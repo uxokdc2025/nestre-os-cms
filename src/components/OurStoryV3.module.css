@@ -146,7 +146,8 @@
   margin-top: 10px;
   white-space: nowrap; /* one line; original global .h2 size */
 }
-@media (max-width: 900px) {
+/* keep full size; wrap (instead of spilling) once the column gets too narrow */
+@media (max-width: 1080px) {
   .leadHead :global(.h2) {
     white-space: normal;
   }
