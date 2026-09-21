@@ -29,7 +29,7 @@ const COLUMNS = [
   { heading: 'Company', links: [
     { label: 'Our Story', href: '/our-story' },
     { label: 'For Teams', href: '/for-teams' },
-    { label: 'News', href: '/news' },
+    // News removed for launch — hold for phase 2 (Sept 21 handoff).
   ] },
   { heading: 'Get started', links: [
     { label: 'Book a Consultation', href: '/book-a-consultation' },

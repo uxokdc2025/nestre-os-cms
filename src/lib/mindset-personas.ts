@@ -61,7 +61,7 @@ export const SEQUENCE: Persona[] = [
     quote: '“NESTRE Neuro-Strength training is the future of health, wellness, and performance.”',
     accent: '#25e979',
     image: `${P}/calvin.jpg`,
-    imagePos: '31% 28%',
+    imagePos: '48% 18%',
     imageAlt: 'Calvin Johnson Jr., Pro Football Hall of Fame wide receiver',
   },
   {

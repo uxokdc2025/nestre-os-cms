@@ -23,7 +23,7 @@ export type LocationItem = {
 }
 
 const DEFAULTS: LocationItem[] = [
-  { name: 'Lake Nona', address: '6775 Chopra Ter, Orlando, FL 32827', miles: '3.1 miles away', hours: 'Open now', earliest: '11:00am', image: '/img/locations/lake-nona.png', map: '/img/locations/lake-nona-map.png', mapPos: '50% 78%', viewHref: '#', bookHref: '/book-a-consultation' },
+  { name: 'Lake Nona', address: '6775 Chopra Ter, Orlando, FL 32827', miles: '3.1 miles away', hours: 'Open now', earliest: '11:00am', image: '/img/locations/lake-nona.jpg', map: '/img/locations/lake-nona-map.png', mapPos: '50% 78%', viewHref: '#', bookHref: '/book-a-consultation' },
   { name: 'Winter Park', address: '2200 Lee Rd, Winter Park, FL 32789', miles: '5.2 miles away', hours: 'Open now', earliest: '11:00am', image: '/img/locations/winter-park.png', map: '/img/locations/winter-park-map.png', mapPos: '90% 50%', viewHref: '#', bookHref: '/book-a-consultation' },
   { name: 'Monterey', address: '5 Harris Ct Bldg. T, Suite 102, Monterey, CA 93940', miles: '3,010 miles away', hours: 'Open now', earliest: '11:00am', image: '/img/locations/monterey.png', map: '/img/locations/monterey-map.png', mapPos: '92% 50%', viewHref: '#', bookHref: '/book-a-consultation' },
 ]
@@ -51,7 +51,7 @@ export function LocationsMap({
   // this is why the home page renders the map but /neuro-labs (CMS data) did not.
   const locs = (items && items.length ? items : DEFAULTS).map((l) => {
     const d = DEFAULT_BY_NAME[(l.name || '').toLowerCase()]
-    return d ? { ...l, map: l.map || d.map, mapPos: l.mapPos || d.mapPos, image: l.image || d.image } : l
+    return d ? { ...l, map: l.map || d.map, mapPos: l.mapPos || d.mapPos, image: l.image || d.image, viewHref: l.viewHref || d.viewHref, bookHref: l.bookHref || d.bookHref } : l
   })
   const [active, setActive] = useState(0)
   const current = locs[Math.min(active, locs.length - 1)]
