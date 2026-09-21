@@ -815,6 +815,10 @@ html { scroll-behavior: auto; }
    image drifts the other — driven by Carousels.tsx. Image oversized (scale) so the
    pan never exposes an edge. */
 .split-media { border-radius: 20px; overflow: hidden; margin: 0; max-width: none; aspect-ratio: 4 / 3; }
+/* the large split image is tall; give the section extra bottom room so the image
+   doesn't crowd the next (often navy) section */
+.sec:has(.split-media) { padding-bottom: 168px; }
+@media (max-width: 860px) { .sec:has(.split-media) { padding-bottom: 96px; } }
 .split-media img, .split-media video { width: 100%; height: 100%; object-fit: cover; display: block; scale: 1.2; will-change: translate; }
 /* Our Story founders headshot — show the exact image as sent: match the frame to the
    image's own ratio and drop the site-wide parallax crop/zoom/pan for this one.
