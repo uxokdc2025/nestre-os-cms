@@ -101,6 +101,8 @@ h1, h2, h3 { margin: 0; letter-spacing: -0.02em; line-height: 1.02; text-wrap: b
 .steps { display: grid; gap: 24px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); margin-top: 44px; }
 .step .thumb { aspect-ratio: 4/3; border-radius: 14px; overflow: hidden; background: rgba(255,255,255,.06); }
 .step .thumb img { width: 100%; height: 100%; object-fit: cover; }
+/* portrait subject shot in a landscape card — anchor to top so the head is never cut */
+.step .thumb img[src*="home-train"] { object-position: center top; }
 /* graphic dashboards fit WHOLE (no crop) on a navy ground matching the artwork */
 .step .thumb.fit { background: #0c1a26; }
 .step .thumb.fit img { object-fit: contain !important; scale: 1 !important; }
