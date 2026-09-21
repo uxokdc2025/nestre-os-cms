@@ -678,6 +678,8 @@ html { scroll-behavior: auto; }
 /* fixed height (well under the 600px desktop cap) — portrait or landscape both
    fill cleanly, never blown up, never collapsed. */
 .sticky-media-inner img, .sticky-media-inner video { width: 100%; height: clamp(340px, 44vh, 500px); object-fit: cover; display: block; }
+/* portrait subject shot — anchor the crop to the top so the head is never cut */
+.sticky-media-inner img[src*="see-your-brain"] { object-position: center top; }
 @media (max-width: 900px) { .sticky-media-inner img { height: 300px; } }
 /* tall card column (tall cards + generous gaps) so the left pins through ALL cards */
 /* cards start lower so the LEFT content frames first; they then rise in as you scroll */
