@@ -87,36 +87,16 @@ export function Carousels() {
     const numsPoll = window.setInterval(() => { checkNums(); if (!pending.length && !pendingBars.length) window.clearInterval(numsPoll) }, 200)
     window.setTimeout(() => window.clearInterval(numsPoll), 20000)
 
-    // Image parallax: every content image is oversized (CSS scale) and pans
-    // vertically as its frame moves through the viewport — the frame and the image
-    // move at different speeds. Scroll-listener driven so it works everywhere
-    // (inside horizontal carousels, sticky columns, anywhere CSS view() stalls).
+    // Content images render at their exported size (100%) — no oversize/pan.
+    // (Previously each image was CSS-scaled 1.16 and vertically parallaxed within
+    // its frame; David asked for the images at 100%, so clear any residual pan.)
     const pimgs = Array.from(document.querySelectorAll(
       'main .ncard-media img, main .panel img, main .thumb-lg img, main .step .thumb img, main .loc-img img, main .fr-media img',
     )) as HTMLElement[]
-    pimgs.forEach((im) => { im.style.willChange = 'transform' })
-    let praf = 0
-    const parallax = () => {
-      praf = 0
-      const vh = window.innerHeight
-      for (const im of pimgs) {
-        const frame = im.parentElement
-        if (!frame) continue
-        const r = frame.getBoundingClientRect()
-        if (r.bottom < -40 || r.top > vh + 40) continue
-        const off = (r.top + r.height / 2 - vh / 2) / vh // -0.5 (top) … +0.5 (bottom)
-        const ty = (off * -26).toFixed(1) // moves opposite to scroll → parallax depth
-        // set the `translate` property (NOT transform) so the CSS `scale` (base +
-        // smooth hover grow) composes independently and never fights this per-frame
-        // update — no transform-transition restart = no scroll jank.
-        im.style.translate = `0 ${ty}px`
-      }
-    }
-    const onParallax = () => { if (!praf) praf = requestAnimationFrame(parallax) }
-    if (!reduce) { parallax(); window.addEventListener('scroll', onParallax, { passive: true }); window.addEventListener('resize', onParallax) }
+    pimgs.forEach((im) => { im.style.translate = '0 0px' })
 
     const rails = Array.from(document.querySelectorAll('main .panels, main .phones')) as HTMLElement[]
-    const cleanups: (() => void)[] = [() => document.removeEventListener('click', onScrollCta), () => vio.disconnect(), () => window.removeEventListener('scroll', checkNums), () => { window.removeEventListener('scroll', onParallax); window.removeEventListener('resize', onParallax); if (praf) cancelAnimationFrame(praf) }]
+    const cleanups: (() => void)[] = [() => document.removeEventListener('click', onScrollCta), () => vio.disconnect(), () => window.removeEventListener('scroll', checkNums)]
 
     // Progressive bottom blur fades OUT once the footer is reached — the footer is
     // never blurred (per design). Toggle .hide when the footer enters the viewport.

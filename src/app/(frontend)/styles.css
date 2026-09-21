@@ -512,10 +512,10 @@ html { scroll-behavior: auto; }
    transition, for a smooth grow). Two different properties → they never fight, and
    the parallax is no longer restarting a transform-transition every frame. */
 .ncard-media img, .panel img, .thumb-lg img, .step .thumb img, .loc-img img, .fr-media img {
-  will-change: transform; scale: 1.16; transition: scale .5s cubic-bezier(.22,1,.36,1), filter .4s ease;
+  will-change: filter; scale: 1; transition: filter .4s ease;
 }
 .ncard:hover .ncard-media img, .panel:hover img, .step:hover .thumb img, .loc-card:hover .loc-img img,
-.fr-row:hover .fr-media img, .thumb-lg:hover img { filter: brightness(1.08); scale: 1.22; }
+.fr-row:hover .fr-media img, .thumb-lg:hover img { filter: brightness(1.06); }
 /* in a grid, hovering one card makes its siblings recede */
 .ncard, .panel, .step, .loc-card { transition: opacity .35s ease, filter .35s ease; }
 .news-grid:hover .ncard:not(:hover),
