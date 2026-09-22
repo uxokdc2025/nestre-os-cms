@@ -1,5 +1,6 @@
 // AI-SEO / GEO: static, server-rendered structured data + site constants.
 // Domain cut over to nestreperformance.com (Sept 2026) — canonicals/sitemap/OG use it.
+import { consultCostAnswer, CONSULT_COST_TOKEN, type Region } from './consult-pricing'
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://nestreperformance.com'
 export const SITE_NAME = 'NESTRE'
 export const ORG_ID = `${SITE_URL}/#org`
@@ -125,12 +126,14 @@ export function siteGraph() {
   return { '@context': 'https://schema.org', '@graph': [org, website, ...labs, app] }
 }
 
-/** FAQPage built from a page's faq blocks (answer engines lift these verbatim). */
-export function faqGraph(layout: any[]): object | null { // eslint-disable-line @typescript-eslint/no-explicit-any
+/** FAQPage built from a page's faq blocks (answer engines lift these verbatim).
+ *  Resolves the region-aware {{consultCost}} token so structured data matches
+ *  what the visitor sees on the page. */
+export function faqGraph(layout: any[], region: Region = 'default'): object | null { // eslint-disable-line @typescript-eslint/no-explicit-any
   const items: { q: string; a: string }[] = []
   for (const b of layout || []) {
     if (b?.blockType === 'faq' && Array.isArray(b.items)) {
-      for (const it of b.items) if (it?.q && it?.a) items.push({ q: it.q, a: it.a })
+      for (const it of b.items) if (it?.q && it?.a) items.push({ q: it.q, a: (it.a as string).includes(CONSULT_COST_TOKEN) ? (it.a as string).replace(CONSULT_COST_TOKEN, consultCostAnswer(region)) : it.a })
     }
   }
   if (!items.length) return null

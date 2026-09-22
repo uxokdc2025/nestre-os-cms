@@ -7,6 +7,7 @@ import { MindsetRing } from '@/components/MindsetRing'
 import { Reveal } from '@/components/Reveal'
 import { ReadingReveal } from '@/components/ReadingReveal'
 import { siteGraph, faqGraph, SITE_URL } from '@/lib/seo'
+import { getRegion } from '@/lib/geo-pricing'
 
 export const dynamic = 'force-dynamic'
 
@@ -52,7 +53,8 @@ export default async function Page({ params, searchParams }: { params: Promise<{
   const { page } = await getPage(slug) // published (version tables are managed by Payload only)
   if (!page) notFound()
 
-  const faq = faqGraph(page.layout || [])
+  const region = await getRegion()
+  const faq = faqGraph(page.layout || [], region)
   const slugStr = slug?.join('/') || 'home'
   // Mindset ring lives only on the /appv2 sandbox now — removed from live /the-app.
   const afterHero = slugStr === 'appv2' ? <MindsetRing /> : undefined
@@ -61,7 +63,7 @@ export default async function Page({ params, searchParams }: { params: Promise<{
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(siteGraph()) }} />
       {faq && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faq) }} />}
       <main id="main">
-        <RenderBlocks blocks={page.layout || []} afterHero={afterHero} />
+        <RenderBlocks blocks={page.layout || []} afterHero={afterHero} region={region} />
       </main>
       {!studio && <Reveal />}
       {!studio && <ReadingReveal />}

@@ -5,6 +5,8 @@ import { ClosingParallax } from './ClosingParallax'
 import { PhoneShowcase } from './PhoneShowcase'
 import { LocationsMap } from './LocationsMap'
 import { MindsetRingCard } from './MindsetRingCard'
+import { RegionToggle } from './RegionToggle'
+import { consultCostAnswer, CONSULT_COST_TOKEN, type Region } from '@/lib/consult-pricing'
 
 // Founder (Dr. Tommy Shavers) NESTRE Mindset Profile — shown in place of his photo
 // in the Our Story "A different view…" section.
@@ -68,7 +70,35 @@ function Buttons({ ctas }: { ctas?: CTA[] }) {
 }
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export function Block({ block }: { block: any }) {
+
+// FAQ section. Region-aware: any answer containing the {{consultCost}} token is
+// swapped for the visitor's location-appropriate consult pricing, with a toggle
+// so anyone can switch FL ↔ Monterey if the IP guess is wrong. The region is
+// resolved by the page (getRegion) and passed in, so this file never imports
+// next/headers and stays safe to bundle for the Puck client editor.
+function FaqBlock({ block, region = 'default' }: { block: any; region?: Region }) {
+  return (
+    <section className={`sec ${block.theme || 'paper'}`}>
+      <div className="wrap" style={{ maxWidth: 820 }}>
+        {block.eyebrow && <p className="eyebrow">{block.eyebrow}</p>}
+        {block.heading && <h2 className="h2" style={{ marginTop: 16, marginBottom: 24, whiteSpace: 'pre-line' }}>{block.heading}</h2>}
+        {block.items?.map((it: any, i: number) => {
+          const priced = (it?.a || '').includes(CONSULT_COST_TOKEN)
+          const answer = priced ? (it.a as string).replace(CONSULT_COST_TOKEN, consultCostAnswer(region)) : it.a
+          return (
+            <details key={i} className="faq-item">
+              <summary>{it.q}</summary>
+              <p className="muted">{answer}</p>
+              {priced && <RegionToggle region={region} />}
+            </details>
+          )
+        })}
+      </div>
+    </section>
+  )
+}
+
+export function Block({ block, region }: { block: any; region?: Region }) {
   switch (block.blockType) {
     case 'hero': {
       const isQuote = (block.subheading || '').trim().startsWith('—')
@@ -362,20 +392,7 @@ export function Block({ block }: { block: any }) {
         </section>
       )
     case 'faq':
-      return (
-        <section className={`sec ${block.theme || 'paper'}`}>
-          <div className="wrap" style={{ maxWidth: 820 }}>
-            {block.eyebrow && <p className="eyebrow">{block.eyebrow}</p>}
-            {block.heading && <h2 className="h2" style={{ marginTop: 16, marginBottom: 24, whiteSpace: 'pre-line' }}>{block.heading}</h2>}
-            {block.items?.map((it: any, i: number) => ( // eslint-disable-line @typescript-eslint/no-explicit-any
-              <details key={i} className="faq-item">
-                <summary>{it.q}</summary>
-                <p className="muted">{it.a}</p>
-              </details>
-            ))}
-          </div>
-        </section>
-      )
+      return <FaqBlock block={block} region={region} />
     case 'locations': {
       const items = (block.items || []).map((l: any) => ({
         name: l.name,
@@ -403,7 +420,7 @@ export function Block({ block }: { block: any }) {
   }
 }
 
-export function RenderBlocks({ blocks, afterHero }: { blocks: any[]; afterHero?: React.ReactNode }) {
+export function RenderBlocks({ blocks, afterHero, region }: { blocks: any[]; afterHero?: React.ReactNode; region?: Region }) {
   if (!blocks?.length) return null
   // data-block-idx tags each section so the AI Studio overlay can target it.
   // display:contents keeps the wrapper out of layout — blocks render unchanged.
@@ -412,7 +429,7 @@ export function RenderBlocks({ blocks, afterHero }: { blocks: any[]; afterHero?:
       {blocks.map((b, i) => (
         <React.Fragment key={b.id || i}>
           <div data-block-idx={i} data-block-type={b.blockType} style={{ display: 'contents' }}>
-            <Block block={b} />
+            <Block block={b} region={region} />
           </div>
           {i === 0 && <div id="next" className="scroll-anchor" aria-hidden />}
           {i === 0 && afterHero}
