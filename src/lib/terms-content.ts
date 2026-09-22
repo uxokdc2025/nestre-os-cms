@@ -130,6 +130,6 @@ export const TERMS: Block[] = [
 
   { t: 'h2', x: `Contact Us` },
   { t: 'p', x: `If you have any questions about these Terms and Conditions, You can contact us:` },
-  { t: 'li', x: `By email: tshavers@nestreperformance.com` },
+  { t: 'li', x: `By email: info@nestreperformance.com` },
   { t: 'li', x: `By phone: 689-710-3260` },
 ]

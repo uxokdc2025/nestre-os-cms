@@ -8,7 +8,7 @@ export const HELP: Block[] = [
 
   { t: 'h2', x: `Contact support` },
   { t: 'p', x: `Reach the NESTRE App Support team and we’ll get back to you as soon as we can.` },
-  { t: 'li', x: `By email: tshavers@nestreperformance.com` },
+  { t: 'li', x: `By email: info@nestreperformance.com` },
   { t: 'li', x: `By phone: 689-710-3260` },
 
   { t: 'h2', x: `Delete your account` },

@@ -58,7 +58,7 @@ export function SiteFooter({ logoUrl, footer }: { logoUrl?: string; footer?: any
   void logoUrl
   const year = new Date().getFullYear()
   const tagline = footer?.tagline || 'Cognitive performance, made personal. Understand your mind, then train it.'
-  const email = footer?.contactEmail || 'tshavers@nestreperformance.com'
+  const email = footer?.contactEmail || 'info@nestreperformance.com'
   const phone = footer?.contactPhone || '689-710-3260'
   const legal = footer?.legalNote || 'NESTRE Health & Performance Inc. All rights reserved.'
   const tel = phone.replace(/[^0-9+]/g, '')
