@@ -19,23 +19,30 @@ export function Carousels() {
       const a = (e.target as Element)?.closest?.('a[href="#next"], .hero-scroll') as HTMLElement | null
       if (!a) return
       e.preventDefault()
-      const target = document.getElementById('next')
-        || (document.querySelector('main .hero') as HTMLElement | null)?.closest('[data-block-idx]')?.nextElementSibling
-      target?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      const target = (document.getElementById('next')
+        || (document.querySelector('main .hero') as HTMLElement | null)?.nextElementSibling) as HTMLElement | null
+      if (target) window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY, behavior: 'smooth' })
     }
     document.addEventListener('click', onScrollCta)
 
     // G2 — videos autoplay (muted) once ~halfway into view, pause when out.
     const vids = Array.from(document.querySelectorAll('main video')) as HTMLVideoElement[]
     vids.forEach((v) => { v.muted = true; v.loop = true; v.playsInline = true; v.removeAttribute('controls') })
+    // A full-screen hero video never crosses a 0.5 ratio cleanly on first paint,
+    // so it could sit paused. Fire on any overlap (0.01) and, for anything already
+    // on screen at mount, kick play() immediately instead of waiting for the observer.
     const vio = new IntersectionObserver((entries) => {
       for (const e of entries) {
         const v = e.target as HTMLVideoElement
         if (e.isIntersecting) v.play?.().catch(() => {})
         else v.pause?.()
       }
-    }, { threshold: 0.5 })
-    vids.forEach((v) => vio.observe(v))
+    }, { threshold: 0.01 })
+    vids.forEach((v) => {
+      vio.observe(v)
+      const r = v.getBoundingClientRect()
+      if (r.top < window.innerHeight && r.bottom > 0) v.play?.().catch(() => {})
+    })
 
     // stat badges count up 0 → value once they scroll into view. Uses a plain
     // scroll listener (rect check) rather than IntersectionObserver — IO proved

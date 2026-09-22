@@ -20,11 +20,11 @@ const mediaAlt = (m: Media): string =>
 const isVideo = (url: string | null) => !!url && /\.(mp4|webm|mov)(\?|$)/i.test(url)
 
 /** Renders a media url as a muted looping video if it's a video, else an image. */
-function Visual({ url, alt, poster, className }: { url: string | null; alt?: string; poster?: string | null; className?: string }) {
+function Visual({ url, alt, poster, className, eager }: { url: string | null; alt?: string; poster?: string | null; className?: string; eager?: boolean }) {
   if (!url) return null
   if (isVideo(url))
     return (
-      <video className={className} src={url} poster={poster || undefined} autoPlay muted loop playsInline preload="metadata" />
+      <video className={className} src={url} poster={poster || undefined} autoPlay muted loop playsInline preload={eager ? 'auto' : 'metadata'} />
     )
   return <img className={className} src={url} alt={alt || ''} />
 }
@@ -83,6 +83,7 @@ export function Block({ block }: { block: any }) {
                 // The video shows its own first frame over the navy .hero bg instead.
                 poster={mediaUrl(block.video) ? null : mediaUrl(block.background)}
                 alt={mediaAlt(block.background)}
+                eager={!!mediaUrl(block.video)}
               />
             </div>
           )}

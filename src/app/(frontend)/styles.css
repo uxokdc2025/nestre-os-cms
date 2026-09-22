@@ -519,10 +519,10 @@ html { scroll-behavior: auto; }
    transition, for a smooth grow). Two different properties → they never fight, and
    the parallax is no longer restarting a transform-transition every frame. */
 .ncard-media img, .panel img, .thumb-lg img, .step .thumb img, .loc-img img, .fr-media img {
-  will-change: filter; scale: 1; transition: filter .4s ease;
+  will-change: transform; scale: 1; transition: scale .5s cubic-bezier(.22,1,.36,1), filter .4s ease;
 }
 .ncard:hover .ncard-media img, .panel:hover img, .step:hover .thumb img, .loc-card:hover .loc-img img,
-.fr-row:hover .fr-media img, .thumb-lg:hover img { filter: brightness(1.06); }
+.fr-row:hover .fr-media img, .thumb-lg:hover img { filter: brightness(1.06); scale: 1.05; }
 /* in a grid, hovering one card makes its siblings recede */
 .ncard, .panel, .step, .loc-card { transition: opacity .35s ease, filter .35s ease; }
 .news-grid:hover .ncard:not(:hover),
@@ -833,6 +833,10 @@ html { scroll-behavior: auto; }
 .closing-copy.copy-right h2 { color: var(--navy); }
 .closing-copy.copy-right .closing-body { color: rgba(8,28,38,.82); }
 .closing-copy.copy-right .eyebrow { color: var(--aqua-ink); margin-left: 0; margin-right: 0; }
+/* Neuro Labs closing ("Bring the human") — nudge the copy block 75px to the right.
+   Scoped to the forest-breath image so other closings are untouched; the parent
+   .closing-copy carries a JS-set transform, so we shift the inner block instead. */
+.closing-px:has(.closing-frame img[src*="forest-breath"]) .closing-copy.copy-right .closing-copy-inner { transform: translateX(75px); }
 /* ---------- two-column split (copy | image) for image-only feature sections ---------- */
 /* copy column ~100px narrower than the media so the video fills the reclaimed space */
 .split { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 56px; align-items: center; }
