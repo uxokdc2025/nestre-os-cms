@@ -23,9 +23,11 @@ export type LocationItem = {
 }
 
 const DEFAULTS: LocationItem[] = [
-  { name: 'Lake Nona', address: '6775 Chopra Ter, Orlando, FL 32827', miles: '3.1 miles away', hours: 'Open now', earliest: '11:00am', image: '/img/locations/lake-nona.jpg', map: '/img/locations/lake-nona-map.png', mapPos: '50% 78%', viewHref: '#', bookHref: '/book-a-consultation' },
-  { name: 'Winter Park', address: '2200 Lee Rd, Winter Park, FL 32789', miles: '5.2 miles away', hours: 'Open now', earliest: '11:00am', image: '/img/locations/winter-park.png', map: '/img/locations/winter-park-map.png', mapPos: '90% 50%', viewHref: '#', bookHref: '/book-a-consultation' },
-  { name: 'Monterey', address: '5 Harris Ct Bldg. T, Suite 102, Monterey, CA 93940', miles: '3,010 miles away', hours: 'Open now', earliest: '11:00am', image: '/img/locations/monterey.png', map: '/img/locations/monterey-map.png', mapPos: '92% 50%', viewHref: '#', bookHref: '/book-a-consultation' },
+  // Images point at the SAME CMS media the /neuro-labs block uses, so both places
+  // render identical location photos from one source. Maps stay as shipped crops.
+  { name: 'Lake Nona', address: '6775 Chopra Ter, Orlando, FL 32827', miles: '3.1 miles away', hours: 'Open now', earliest: '11:00am', image: '/api/media/file/lnpc-lake-nona.jpg', map: '/img/locations/lake-nona-map.png', mapPos: '50% 78%', viewHref: '#', bookHref: '/book-a-consultation' },
+  { name: 'Winter Park', address: '2200 Lee Rd, Winter Park, FL 32789', miles: '5.2 miles away', hours: 'Open now', earliest: '11:00am', image: '/api/media/file/lab-winter-park-building.jpg', map: '/img/locations/winter-park-map.png', mapPos: '90% 50%', viewHref: '#', bookHref: '/book-a-consultation' },
+  { name: 'Monterey', address: '5 Harris Ct Bldg. T, Suite 102, Monterey, CA 93940', miles: '3,010 miles away', hours: 'Open now', earliest: '11:00am', image: '/api/media/file/lab-monterey.jpg', map: '/img/locations/monterey-map.png', mapPos: '92% 50%', viewHref: '#', bookHref: '/book-a-consultation' },
 ]
 
 // Known locations keyed by name, so CMS-driven blocks that omit map/image data
@@ -98,8 +100,22 @@ export function LocationsMap({
                       </div>
                     )}
                     <div className="loc2-btns">
-                      <a className="btn outline" href={l.viewHref || '#'} onClick={(e) => e.stopPropagation()}>View Location</a>
-                      <a className="btn solid" href={l.bookHref || '#'} onClick={(e) => e.stopPropagation()}>Book Training</a>
+                      <a
+                        className="btn outline"
+                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${l.name} NESTRE ${l.address || ''}`)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                      >View Location</a>
+                      <a
+                        className="btn solid"
+                        href={l.bookHref || '/book-a-consultation'}
+                        onClick={(e) => {
+                          if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return
+                          e.preventDefault(); e.stopPropagation()
+                          window.dispatchEvent(new CustomEvent('nestre:open-consult'))
+                        }}
+                      >Book Training</a>
                     </div>
                   </div>
                 </div>

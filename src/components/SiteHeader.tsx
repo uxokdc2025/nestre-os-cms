@@ -65,7 +65,7 @@ export function SiteHeader({ items, cta, logoUrl }: { items: any[]; cta?: any; l
           ))}
         </nav>
         <div className="nav-right">
-          {cta?.label && <ConsultPopover label={cta.label} />}
+          {cta?.label && <ConsultPopover label={cta.label} listenGlobal />}
         </div>
         {cta?.label && <ConsultPopover label={cta.label} className="btn aqua mobile-cta" wrapClassName="consult-mobile" />}
       </div>

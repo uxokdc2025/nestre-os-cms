@@ -13,11 +13,13 @@ export function ConsultPopover({
   className = 'btn aqua nav-cta',
   wrapClassName = '',
   onOpen,
+  listenGlobal = false,
 }: {
   label?: string
   className?: string
   wrapClassName?: string
   onOpen?: () => void
+  listenGlobal?: boolean
 }) {
   const [open, setOpen] = useState(false)
   const [state, setState] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
@@ -34,6 +36,14 @@ export function ConsultPopover({
     mq.addEventListener('change', on)
     return () => mq.removeEventListener('change', on)
   }, [])
+
+  // Open from anywhere via a window event (e.g. a location card's "Book Training").
+  useEffect(() => {
+    if (!listenGlobal) return
+    const openIt = () => { onOpen?.(); setState('idle'); setOpen(true) }
+    window.addEventListener('nestre:open-consult', openIt as EventListener)
+    return () => window.removeEventListener('nestre:open-consult', openIt as EventListener)
+  }, [listenGlobal, onOpen])
 
   useEffect(() => {
     if (!open) return

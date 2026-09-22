@@ -32,12 +32,6 @@ const COLUMNS = [
     { label: 'For Teams', href: '/for-teams' },
     // News removed for launch — hold for phase 2 (Sept 21 handoff).
   ] },
-  { heading: 'Get started', links: [
-    { label: 'Book a Consultation', href: '/book-a-consultation' },
-    { label: 'Download for iOS', href: IOS, external: true },
-    { label: 'Get it for Android', href: ANDROID, external: true },
-    { label: 'Work With Us', wwu: true },
-  ] },
 ]
 
 function Icon({ name }: { name: string }) {
@@ -50,6 +44,8 @@ function Icon({ name }: { name: string }) {
     Google: <path d="M21.4 12.2c0-.6-.1-1.2-.2-1.8H12v3.4h5.3a4.6 4.6 0 01-2 3v2.5h3.2c1.9-1.7 2.9-4.3 2.9-7.1zM12 22c2.7 0 5-.9 6.6-2.4l-3.2-2.5c-.9.6-2 .9-3.4.9-2.6 0-4.8-1.8-5.6-4.1H3.1v2.6A10 10 0 0012 22zM6.4 13.9a6 6 0 010-3.8V7.5H3.1a10 10 0 000 9zM12 6c1.5 0 2.8.5 3.8 1.5l2.8-2.8A10 10 0 003.1 7.5l3.3 2.6C7.2 7.8 9.4 6 12 6z" fill="currentColor" stroke="none" />,
     Spotify: <><circle cx="12" cy="12" r="9.6" /><path d="M7.2 9.7c3.1-.8 6.6-.5 9 1.1M7.7 12.6c2.3-.6 4.9-.4 6.8.9M8.3 15.2c1.6-.4 3.5-.3 5 .6" /></>,
     ApplePodcasts: <><circle cx="12" cy="10.4" r="2.2" /><path d="M12 2.5a9.5 9.5 0 0 0-4.6 17.8M12 2.5a9.5 9.5 0 0 1 4.6 17.8" /><path d="M9.2 15.4c0-1.6 1.2-2.5 2.8-2.5s2.8.9 2.8 2.5l-.7 4.4c-.15.9-1 1.2-2.1 1.2s-1.95-.3-2.1-1.2z" /></>,
+    Apple: <path d="M16.7 12.9c0-2.1 1.7-3.1 1.8-3.2-1-1.4-2.5-1.6-3-1.7-1.3-.13-2.5.76-3.1.76-.65 0-1.65-.74-2.7-.72-1.4.02-2.68.8-3.4 2.05-1.45 2.5-.37 6.22 1.04 8.26.69.98 1.5 2.09 2.57 2.05 1.03-.04 1.42-.66 2.67-.66 1.24 0 1.6.66 2.68.64 1.1-.02 1.8-1 2.48-2 .78-1.14 1.1-2.25 1.12-2.3-.02-.02-2.15-.83-2.17-3.27zM14.6 6.35c.57-.7.96-1.66.85-2.62-.82.03-1.82.55-2.42 1.24-.53.6-1 1.58-.88 2.5.92.08 1.87-.46 2.45-1.12z" fill="currentColor" stroke="none" />,
+    GooglePlay: <><path d="M3.6 2.3c-.25.2-.4.53-.4.98v17.44c0 .45.15.78.4.98l9.7-9.7z" fill="currentColor" stroke="none" /><path d="M17 8.4l-2.9 2.9 2.9 2.9 3.3-1.9c.9-.52.9-1.48 0-2z" fill="currentColor" stroke="none" /><path d="M13.3 12.3l-9.3 9.3c.3.2.66.2 1.05-.02l10.9-6.3z" fill="currentColor" stroke="none" /><path d="M5.05 2.42C4.66 2.2 4.3 2.2 4 2.4l9.3 9.3 2.65-2.65z" fill="currentColor" stroke="none" /></>,
   }
   return (
     <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -101,6 +97,17 @@ export function SiteFooter({ logoUrl, footer }: { logoUrl?: string; footer?: any
               ))}
             </div>
           ))}
+          <div className="footer-getstarted">
+            <div className="footer-apps">
+              <a href={IOS} target="_blank" rel="noopener noreferrer" className="footer-app-icon" aria-label="Download on the App Store">
+                <Icon name="Apple" />
+              </a>
+              <a href={ANDROID} target="_blank" rel="noopener noreferrer" className="footer-app-icon" aria-label="Get it on Google Play">
+                <Icon name="GooglePlay" />
+              </a>
+            </div>
+            <WorkWithUsPopover label="Work With Us" className="footer-link-btn" />
+          </div>
         </nav>
       </div>
       <div className="wrap footer-bottom">
