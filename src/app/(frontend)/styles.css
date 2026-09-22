@@ -605,12 +605,9 @@ html { scroll-behavior: auto; }
 .footer-cols .footer-link-btn:hover { background: var(--aqua-deep); }
 .footer-cols .footer-link-btn:active { transform: scale(.97); }
 .footer-getstarted { display: flex; flex-direction: column; align-items: flex-start; }
-.footer-apps { display: flex; flex-direction: column; gap: 10px; align-items: flex-start; }
-.app-badge { display: inline-flex; align-items: center; gap: 10px; min-width: 156px; padding: 8px 14px; border: 1px solid rgba(255,255,255,.28); border-radius: 10px; color: #fff; transition: border-color .2s ease, background .2s ease; }
-.app-badge:hover { border-color: var(--aqua); background: rgba(255,255,255,.05); }
-.app-badge span { display: flex; flex-direction: column; line-height: 1.12; }
-.app-badge small { font-size: 9px; letter-spacing: .04em; text-transform: uppercase; opacity: .78; }
-.app-badge b { font-size: 15px; font-weight: 600; letter-spacing: -.01em; }
+.footer-apps { display: flex; flex-direction: row; gap: 18px; align-items: center; }
+.app-icon { display: inline-flex; align-items: center; justify-content: center; color: rgba(255,255,255,.85); transition: color .2s ease, transform .12s ease; }
+.app-icon:hover { color: #fff; transform: translateY(-1px); }
 .wwu-backdrop { position: fixed; inset: 0; background: rgba(8,20,26,.5); z-index: 400; animation: wwuFade .2s ease both; }
 .wwu-pop {
   position: fixed; top: 50%; right: clamp(12px, 3vw, 40px); transform: translateY(-50%);
