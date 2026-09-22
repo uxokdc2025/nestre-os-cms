@@ -1,6 +1,6 @@
 // AI-SEO / GEO: static, server-rendered structured data + site constants.
-// When the domain cuts over, change SITE_URL to https://nestreperformance.com.
-export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://nestre-os-cms.vercel.app'
+// Domain cut over to nestreperformance.com (Sept 2026) — canonicals/sitemap/OG use it.
+export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://nestreperformance.com'
 export const SITE_NAME = 'NESTRE'
 export const ORG_ID = `${SITE_URL}/#org`
 export const SITE_ID = `${SITE_URL}/#website`
