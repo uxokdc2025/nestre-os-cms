@@ -598,8 +598,10 @@ html { scroll-behavior: auto; }
 .consult-close { display: none; }
 
 /* Work With Us — footer link + right-side slide-in panel (portaled to body) */
-.footer-cols .footer-link-btn { display: block; color: rgba(255,255,255,.82); font-size: 15px; margin-top: 10px; background: none; border: 0; padding: 0; font: inherit; text-align: left; cursor: pointer; transition: color .2s ease; }
-.footer-cols .footer-link-btn:hover { color: var(--aqua); }
+/* "Work With Us" — a teal pill button, spaced away from the footer nav links */
+.footer-cols .footer-link-btn { display: inline-flex; align-items: center; justify-content: center; margin-top: 22px; padding: 11px 22px; border-radius: 999px; background: var(--aqua); color: var(--ink); border: 0; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; transition: background .2s ease, transform .12s ease; }
+.footer-cols .footer-link-btn:hover { background: var(--aqua-deep); }
+.footer-cols .footer-link-btn:active { transform: scale(.97); }
 .wwu-backdrop { position: fixed; inset: 0; background: rgba(8,20,26,.5); z-index: 400; animation: wwuFade .2s ease both; }
 .wwu-pop {
   position: fixed; top: 50%; right: clamp(12px, 3vw, 40px); transform: translateY(-50%);
