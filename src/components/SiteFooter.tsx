@@ -1,6 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
 import { ConsultFooterLink } from './ConsultFooterLink'
+import { WorkWithUsPopover } from './WorkWithUsPopover'
 
 const isInternal = (h?: string) => !!h && h.startsWith('/') && !h.startsWith('//')
 function A({ href, children, ...rest }: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -35,6 +36,7 @@ const COLUMNS = [
     { label: 'Book a Consultation', href: '/book-a-consultation' },
     { label: 'Download for iOS', href: IOS, external: true },
     { label: 'Get it for Android', href: ANDROID, external: true },
+    { label: 'Work With Us', wwu: true },
   ] },
 ]
 
@@ -87,7 +89,9 @@ export function SiteFooter({ logoUrl, footer }: { logoUrl?: string; footer?: any
             <div key={col.heading}>
               <p className="footer-h">{col.heading}</p>
               {col.links.map((l) => (
-                l.href === '/book-a-consultation' ? (
+                'wwu' in l && l.wwu ? (
+                  <WorkWithUsPopover key={l.label} label={l.label} className="footer-link-btn" />
+                ) : l.href === '/book-a-consultation' ? (
                   <ConsultFooterLink key={l.label}>{l.label}</ConsultFooterLink>
                 ) : (
                   <A key={l.label} href={l.href} {...(('external' in l && l.external) ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
