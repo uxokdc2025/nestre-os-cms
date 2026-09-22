@@ -21,9 +21,7 @@ export async function POST(req: Request) {
 
   const key = process.env.RESEND_API_KEY
   const from = process.env.CONSULT_FROM || process.env.ONBOARDING_FROM || 'NESTRE <onboarding@nestreperformance.com>'
-  // TEMP (testing): route all consultation leads to designer@uxokdc.com regardless
-  // of CONSULT_TO env. Restore `process.env.CONSULT_TO || …` once verified.
-  const to = 'designer@uxokdc.com'
+  const to = process.env.CONSULT_TO || 'info@nestreperformance.com'
   if (!key) return NextResponse.json({ error: 'email_not_configured' }, { status: 503 })
 
   const esc = (s: string) => s.replace(/[<>&]/g, (c) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;' }[c] as string))
