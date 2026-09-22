@@ -98,14 +98,8 @@ export function SiteFooter({ logoUrl, footer }: { logoUrl?: string; footer?: any
             </div>
           ))}
           <div className="footer-getstarted">
-            <div className="footer-apps">
-              <a href={IOS} target="_blank" rel="noopener noreferrer" className="app-icon" aria-label="Download on the App Store">
-                <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor" aria-hidden><path d="M16.7 12.9c0-2.1 1.7-3.1 1.8-3.2-1-1.4-2.5-1.6-3-1.7-1.3-.13-2.5.76-3.1.76-.65 0-1.65-.74-2.7-.72-1.4.02-2.68.8-3.4 2.05-1.45 2.5-.37 6.22 1.04 8.26.69.98 1.5 2.09 2.57 2.05 1.03-.04 1.42-.66 2.67-.66 1.24 0 1.6.66 2.68.64 1.1-.02 1.8-1 2.48-2 .78-1.14 1.1-2.25 1.12-2.3-.02-.02-2.15-.83-2.17-3.27zM14.6 6.35c.57-.7.96-1.66.85-2.62-.82.03-1.82.55-2.42 1.24-.53.6-1 1.58-.88 2.5.92.08 1.87-.46 2.45-1.12z" /></svg>
-              </a>
-              <a href={ANDROID} target="_blank" rel="noopener noreferrer" className="app-icon" aria-label="Get it on Google Play">
-                <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden><path d="M3.9 2.3C3.6 2.5 3.5 2.9 3.5 3.4v17.2c0 .5.1.9.4 1.1l9.2-9.7z" fill="#00d0ff"/><path d="M16.9 8.7l-3.8 3.6 3.8 3.6 3.2-1.8c1-.55 1-1.55 0-2.1z" fill="#ffce00"/><path d="M13.1 12.3L3.9 21.7c.3.2.8.2 1.2 0l11-6.3z" fill="#ff3d43"/><path d="M5.1 2.3c-.4-.2-.9-.2-1.2 0l9.2 9.4 2-1.9z" fill="#00e17a"/></svg>
-              </a>
-            </div>
+            <a href={IOS} target="_blank" rel="noopener noreferrer">Download for iOS</a>
+            <a href={ANDROID} target="_blank" rel="noopener noreferrer">Get it for Android</a>
             <WorkWithUsPopover label="Work With Us" className="footer-link-btn" />
           </div>
         </nav>
