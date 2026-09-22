@@ -29,8 +29,8 @@ export const LEADERS: Leader[] = [
     name: 'Dr. Elkhonon Goldberg',
     title: 'Chief Scientific Officer',
     image: `${P}/goldberg.jpg`,
-    bio: 'Internationally recognized clinical neuropsychologist. NYU Clinical Professor of Neurology. Founding Director, Luria Neuroscience Institute. Neuroplasticity pioneer.',
-    profile: { cerebral: 50, alpha: 21, prime: 29 },
+    bio: 'Internationally recognized clinical neuropsychologist. Former NYU Clinical Professor of Neurology. Founding Director, Luria Neuroscience Institute. Neuroplasticity pioneer.',
+    profile: { cerebral: 24, alpha: 56, prime: 20 },
   },
   {
     id: 'tomica',
@@ -38,7 +38,7 @@ export const LEADERS: Leader[] = [
     title: 'President',
     image: `${P}/tomica.jpg`,
     bio: 'President of NESTRE Health & Performance, Inc. MBA with over a decade of experience in business administration, consulting, and executive leadership.',
-    profile: { cerebral: 34, alpha: 40, prime: 26 },
+    profile: { cerebral: 72, alpha: 20, prime: 8 },
   },
   {
     id: 'perez',
@@ -46,7 +46,7 @@ export const LEADERS: Leader[] = [
     title: 'Chief Operating Officer',
     image: `${P}/perez.jpg`,
     bio: '30+ years leadership. U.S. Army Special Forces veteran. Expert in interagency, DoD, and cross-functional teams. Responsible for 620-neurolab deployment execution.',
-    profile: { cerebral: 30, alpha: 40, prime: 30 },
+    profile: { cerebral: 16, alpha: 80, prime: 4 },
   },
   {
     id: 'dorosz',
@@ -54,7 +54,7 @@ export const LEADERS: Leader[] = [
     title: 'Chief Technology Officer',
     image: `${P}/dorosz.jpg`,
     bio: '18 years enterprise software. Data science, AI/ML, and deep neural networks across finance, telecom, and healthcare.',
-    profile: { cerebral: 44, alpha: 26, prime: 30 },
+    profile: { cerebral: 28, alpha: 60, prime: 12 },
   },
   {
     id: 'clayton',
@@ -62,7 +62,7 @@ export const LEADERS: Leader[] = [
     title: 'Chief Growth Officer',
     image: `${P}/clayton.jpg`,
     bio: 'Leads commercialization, brand, go-to-market strategy, and market expansion. Brings experience across health, fitness, performance, and consumer growth to turn NESTRE’s science and technology into a scalable category, customer experience, and revenue engine.',
-    profile: { cerebral: 28, alpha: 44, prime: 28 },
+    profile: { cerebral: 24, alpha: 56, prime: 20 },
   },
 ]
 
