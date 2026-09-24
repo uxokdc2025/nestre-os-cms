@@ -382,8 +382,10 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px soli
 .legal-body h2 { font-size: 24px; font-weight: 600; margin: 40px 0 10px; letter-spacing: -0.01em; }
 .legal-body h3 { font-size: 18px; font-weight: 600; margin: 26px 0 8px; }
 .legal-body p { font-size: 15.5px; line-height: 1.7; color: #384a51; margin: 12px 0; }
-.legal-body ul { margin: 12px 0; padding-left: 22px; }
+.legal-body ul, .legal-body ol { margin: 12px 0; padding-left: 22px; }
+.legal-body ol { list-style: decimal; }
 .legal-body li { font-size: 15.5px; line-height: 1.7; color: #384a51; margin: 7px 0; }
+.legal-body a { color: var(--aqua-deep); text-decoration: underline; }
 .legal-body a { color: var(--aqua-ink); text-decoration: underline; }
 
 /* ---------- news ---------- */
@@ -575,12 +577,18 @@ html { scroll-behavior: auto; }
 .consult-title, .consult-done h3 { font-size: 22px; font-weight: 600; line-height: 1.15; margin: 8px 0 18px; }
 .consult-field { display: block; margin-bottom: 14px; }
 .consult-field span { display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px; }
-.consult-field input, .consult-field textarea {
+.consult-field input, .consult-field textarea, .consult-field select {
   width: 100%; border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px;
   font: inherit; font-size: 15px; color: var(--ink); background: var(--paper); resize: vertical;
   transition: border-color .18s ease, box-shadow .18s ease;
 }
-.consult-field input:focus, .consult-field textarea:focus { outline: none; border-color: var(--aqua-deep); box-shadow: 0 0 0 3px rgba(107,189,185,.22); background: #fff; }
+.consult-field select { appearance: none; -webkit-appearance: none; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2352666d' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 40px; }
+.consult-field input:focus, .consult-field textarea:focus, .consult-field select:focus { outline: none; border-color: var(--aqua-deep); box-shadow: 0 0 0 3px rgba(107,189,185,.22); background-color: #fff; }
+/* App support form (/nestre-app/help) — inline on the legal page. */
+.app-support-form { margin-top: 8px; max-width: 640px; }
+.form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; }
+@media (max-width: 560px) { .form-grid-2 { grid-template-columns: 1fr; } }
+.app-support-form .consult-send { margin-top: 6px; }
 .consult-hp { position: absolute !important; left: -9999px; width: 1px; height: 1px; opacity: 0; }
 .consult-avail { border: 0; padding: 0; margin: 0 0 16px; }
 .consult-avail legend { padding: 0; font-size: 13px; color: var(--muted); margin-bottom: 8px; }
