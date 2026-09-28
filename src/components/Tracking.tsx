@@ -1,55 +1,93 @@
-import React from 'react'
+'use client'
 
-// Marketing tracking, mirroring the WordPress original (nestreperformance.com):
-//   • GA4 + Meta Pixel → SITE-WIDE (every page) — rendered from the root layout
-//   • GTM             → get-started (ad) pages only — <GtmTag/> on those pages
-// IDs are Noah's current snippets (GA G-5YC8WDXZL0 supersedes the old GT-57SFVZRH).
-// Rendered as raw tags (not next/script) so they ship in the SSR HTML and fire on
-// the initial load exactly as they did on WordPress.
+import { useEffect, useState } from 'react'
+
+// Marketing tracking, consent-gated. GA4 + Meta Pixel (site-wide) and GTM
+// (get-started ad pages) only load AFTER the visitor accepts cookies — nothing
+// non-essential fires until then. Choice is remembered in localStorage.
+// IDs are Noah's current snippets.
 const GTM_ID = 'GTM-NZLQ3SJJ'
 const GA_ID = 'G-5YC8WDXZL0'
 const PIXEL_ID = '1564504577305537'
+const KEY = 'nestre-cookie-consent'
 
-// GA4 + Meta Pixel — site-wide.
+/* eslint-disable @typescript-eslint/no-explicit-any */
+function loadBaseAnalytics() {
+  const w = window as any
+  if (w.__nestreAnalyticsLoaded) return
+  w.__nestreAnalyticsLoaded = true
+  // GA4
+  const g = document.createElement('script')
+  g.async = true
+  g.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`
+  document.head.appendChild(g)
+  w.dataLayer = w.dataLayer || []
+  w.gtag = function () { w.dataLayer.push(arguments) }
+  w.gtag('js', new Date())
+  w.gtag('config', GA_ID)
+  // Meta Pixel
+  ;(function (f: any, b: Document, e: string, v: string) {
+    if (f.fbq) return
+    const n: any = (f.fbq = function () { n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments) })
+    if (!f._fbq) f._fbq = n
+    n.push = n; n.loaded = true; n.version = '2.0'; n.queue = []
+    const t = b.createElement(e) as HTMLScriptElement; t.async = true; t.src = v
+    const s = b.getElementsByTagName(e)[0]; s.parentNode!.insertBefore(t, s)
+  })(w, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js')
+  w.fbq('init', PIXEL_ID)
+  w.fbq('track', 'PageView')
+  window.dispatchEvent(new Event('nestre:consent-accepted'))
+}
+
+// Consent banner + gated GA4/Meta Pixel — rendered site-wide from the layout.
 export function AnalyticsBase() {
+  const [choice, setChoice] = useState<'unknown' | 'accepted' | 'declined'>('unknown')
+
+  useEffect(() => {
+    let c: string | null = null
+    try { c = localStorage.getItem(KEY) } catch {}
+    if (c === 'accepted') { setChoice('accepted'); loadBaseAnalytics() }
+    else if (c === 'declined') setChoice('declined')
+    else setChoice('unknown')
+  }, [])
+
+  const accept = () => { try { localStorage.setItem(KEY, 'accepted') } catch {}; setChoice('accepted'); loadBaseAnalytics() }
+  const decline = () => { try { localStorage.setItem(KEY, 'declined') } catch {}; setChoice('declined') }
+
+  if (choice !== 'unknown') return null
   return (
-    <>
-      {/* Google tag (gtag.js) */}
-      <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} />
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${GA_ID}');`,
-        }}
-      />
-      {/* Meta Pixel */}
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','${PIXEL_ID}');fbq('track','PageView');`,
-        }}
-      />
-      <noscript
-        dangerouslySetInnerHTML={{
-          __html: `<img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=${PIXEL_ID}&ev=PageView&noscript=1" alt="" />`,
-        }}
-      />
-    </>
+    <div className="cookie-consent" role="dialog" aria-label="Cookie consent">
+      <p className="cookie-consent-text">
+        We use cookies to measure site traffic and improve your experience. See our <a href="/privacy">Privacy Policy</a>.
+      </p>
+      <div className="cookie-consent-btns">
+        <button type="button" className="btn cookie-decline" onClick={decline}>Decline</button>
+        <button type="button" className="btn aqua cookie-accept" onClick={accept}>Accept</button>
+      </div>
+    </div>
   )
 }
 
-// Google Tag Manager — ad (get-started) pages only.
+// Google Tag Manager — ad (get-started) pages only. Also gated on consent.
 export function GtmTag() {
-  return (
-    <>
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${GTM_ID}');`,
-        }}
-      />
-      <noscript
-        dangerouslySetInnerHTML={{
-          __html: `<iframe src="https://www.googletagmanager.com/ns.html?id=${GTM_ID}" height="0" width="0" style="display:none;visibility:hidden"></iframe>`,
-        }}
-      />
-    </>
-  )
+  useEffect(() => {
+    const load = () => {
+      const w = window as any
+      if (w.__nestreGtmLoaded) return
+      w.__nestreGtmLoaded = true
+      w.dataLayer = w.dataLayer || []
+      w.dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' })
+      const j = document.createElement('script')
+      j.async = true
+      j.src = `https://www.googletagmanager.com/gtm.js?id=${GTM_ID}`
+      document.head.appendChild(j)
+    }
+    let c: string | null = null
+    try { c = localStorage.getItem(KEY) } catch {}
+    if (c === 'accepted') { load(); return }
+    const h = () => load()
+    window.addEventListener('nestre:consent-accepted', h)
+    return () => window.removeEventListener('nestre:consent-accepted', h)
+  }, [])
+  return null
 }

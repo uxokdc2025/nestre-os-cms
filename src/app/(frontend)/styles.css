@@ -1172,6 +1172,16 @@ html { scroll-behavior: auto; }
 .get-book-lines { margin-top: 14px; display: flex; flex-direction: column; gap: 6px; }
 .get-book-lines p { margin: 0; font-size: 15px; line-height: 1.4; color: rgba(255,255,255,.82); }
 .get-book-lines a { color: var(--aqua); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
+
+/* Cookie consent — gates GA4 / Meta Pixel / GTM until the visitor accepts. */
+.cookie-consent { position: fixed; left: 16px; right: 16px; bottom: 16px; z-index: 500; max-width: 680px; margin-inline: auto; background: var(--navy); color: #fff; border-radius: 16px; padding: 16px 20px; display: flex; align-items: center; gap: 18px; flex-wrap: wrap; box-shadow: 0 20px 60px rgba(0,0,0,.35); }
+.cookie-consent-text { font-size: 14px; line-height: 1.5; flex: 1; min-width: 220px; color: rgba(255,255,255,.85); margin: 0; }
+.cookie-consent-text a { color: var(--aqua); text-decoration: underline; }
+.cookie-consent-btns { display: flex; gap: 10px; flex: 0 0 auto; }
+.cookie-consent .btn { height: 40px; font-size: 14px; padding: 0 22px; }
+.cookie-decline { background: transparent; border: 1px solid rgba(255,255,255,.4); color: #fff; }
+.cookie-decline:hover { border-color: #fff; }
+@media (max-width: 520px) { .cookie-consent-btns { width: 100%; } .cookie-consent .btn { flex: 1; } }
 .get-form-note { font-size: 13px; text-align: center; margin-top: -6px; }
 .get-book-why ul { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 12px; }
 .get-book-why li { display: flex; align-items: center; gap: 12px; font-size: 14px; }
