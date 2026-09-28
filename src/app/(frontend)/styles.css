@@ -1156,6 +1156,9 @@ html { scroll-behavior: auto; }
 .get-form input, .get-form select, .get-form textarea { font: inherit; font-size: 15px; color: var(--ink); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; background: #fbfbf9; width: 100%; }
 .get-form input:focus, .get-form select:focus, .get-form textarea:focus { outline: 2px solid var(--aqua-deep); outline-offset: 1px; border-color: var(--aqua-deep); }
 .get-form textarea { resize: vertical; min-height: 96px; }
+.get-form label.has-err input, .get-form label.has-err textarea { border-color: #c0392b; background: #fdf5f4; }
+.get-form label.has-err input:focus, .get-form label.has-err textarea:focus { outline-color: #c0392b; border-color: #c0392b; }
+.field-err { font-size: 12px; font-weight: 500; color: #c0392b; margin-top: 2px; }
 .get-form-submit { width: 100%; height: 52px; margin-top: 4px; }
 .get-consent { border-top: 1px solid var(--line); margin-top: 4px; }
 .get-consent p { font-size: 12px; line-height: 1.6; }
