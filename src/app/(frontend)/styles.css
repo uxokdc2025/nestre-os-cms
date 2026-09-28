@@ -1022,7 +1022,7 @@ html { scroll-behavior: auto; }
 .news-grid { gap: 94px; }
 
 /* ===== Locations (interactive: selectable cards + stylised brand map) ===== */
-.locations-sec .loc2-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 28px; margin-top: 44px; align-items: stretch; }
+.locations-sec .loc2-layout { display: grid; grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr); gap: 28px; margin-top: 44px; align-items: stretch; }
 .loc2-list { display: flex; flex-direction: column; gap: 16px; }
 .loc2-card { display: grid; grid-template-columns: 132px 1fr; gap: 18px; padding: 16px; border: 1px solid var(--line); border-radius: 18px; background: #fff; cursor: pointer; outline: none; align-items: stretch; transition: border-color .2s ease, background .2s ease, box-shadow .2s ease, transform .2s ease; }
 .loc2-card:hover { transform: translateY(-2px); box-shadow: 0 14px 34px rgba(8,28,38,.09); }

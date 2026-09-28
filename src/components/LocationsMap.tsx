@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
+import { bookTrainingUrl } from '@/lib/book-training'
 
 // One NESTRE location. `x`/`y` are the marker position on the stylised map,
 // expressed as a percentage of the panel (0–100). When a live Mapbox token is
@@ -101,20 +102,11 @@ export function LocationsMap({
                     )}
                     <div className="loc2-btns">
                       <a
-                        className="btn outline"
-                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${l.name} NESTRE ${l.address || ''}`)}`}
+                        className="btn solid"
+                        href={bookTrainingUrl(l.name) || l.bookHref || '/book-a-consultation'}
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={(e) => e.stopPropagation()}
-                      >View Location</a>
-                      <a
-                        className="btn solid"
-                        href={l.bookHref || '/book-a-consultation'}
-                        onClick={(e) => {
-                          if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return
-                          e.preventDefault(); e.stopPropagation()
-                          window.dispatchEvent(new CustomEvent('nestre:open-consult'))
-                        }}
                       >Book Training</a>
                     </div>
                   </div>
