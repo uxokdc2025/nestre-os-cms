@@ -16,3 +16,20 @@ export function bookTrainingUrl(name?: string): string | null {
   const hit = Object.keys(BOOK_TRAINING_BY_NAME).find((k) => n.startsWith(k) || n.includes(k))
   return hit ? BOOK_TRAINING_BY_NAME[hit] : null
 }
+
+// The three NESTRE locations, in display order. Single source for the booking
+// dropdown, the location cards' "View Location" links, and the schedule-page hero
+// images. `page` = that location's schedule landing page; `image` = its photo.
+export type BookLocation = { name: string; sub: string; url: string; page: string; image: string }
+export const BOOK_LOCATIONS: BookLocation[] = [
+  { name: 'Lake Nona', sub: 'Orlando, FL', url: BOOK_TRAINING_BY_NAME['lake nona'], page: '/schedule-with-nestre-at-lake-nona-performance-club', image: '/api/media/file/lnpc-lake-nona.jpg' },
+  { name: 'Winter Park', sub: 'Winter Park, FL', url: BOOK_TRAINING_BY_NAME['winter park'], page: '/schedule-with-nestre-at-neurovations-clinic', image: '/api/media/file/lab-winter-park-building.jpg' },
+  { name: 'Monterey', sub: 'Monterey, CA', url: BOOK_TRAINING_BY_NAME['monterey'], page: '/schedule-with-nestre-in-monterey', image: '/api/media/file/lab-monterey.jpg' },
+]
+
+// Look up a location by leading-name match (handles "Lake Nona Performance Club" etc.).
+export function bookLocation(name?: string): BookLocation | null {
+  const n = (name || '').trim().toLowerCase()
+  if (!n) return null
+  return BOOK_LOCATIONS.find((l) => n.startsWith(l.name.toLowerCase()) || n.includes(l.name.toLowerCase())) || null
+}

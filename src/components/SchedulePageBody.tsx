@@ -26,6 +26,7 @@ const PACKAGE_COPY: Record<string, string> = {
 export type ScheduleConfig = {
   location: string
   address?: string
+  heroImage?: string // big location photo shown on the right of the hero
   consultationId: string
   jumpstartId: string
   // `packages` = the named Everyday Performer programs (grouped Advanced/Base by name
@@ -61,7 +62,8 @@ export function SchedulePageBody({ cfg }: { cfg: ScheduleConfig }) {
     <main id="main">
       {/* Consultation */}
       <section className="sec navy" id="consultation">
-        <div className="wrap">
+        <div className={`wrap${cfg.heroImage ? ' sched-hero' : ''}`}>
+          <div className="sched-hero-copy">
           <p className="eyebrow">Schedule with NESTRE · {cfg.location}</p>
           <h1 className="h2" style={{ marginTop: 16, maxWidth: '20ch' }}>Your NESTRE training starts with a consultation.</h1>
           {cfg.address && <p className="lead" style={{ color: 'rgba(255,255,255,.7)', marginTop: 12 }}>{cfg.address}</p>}
@@ -72,7 +74,7 @@ export function SchedulePageBody({ cfg }: { cfg: ScheduleConfig }) {
           </p>
           {v.consultation && <Vid src={v.consultation} label="How to schedule a consultation" portrait />}
           <div className="btns" style={{ marginTop: 22 }}>
-            <a className="btn aqua" href={cart(cfg.consultationId)} target="_blank" rel="noopener noreferrer">Schedule consultation</a>
+            <a className="btn aqua" href={cart(cfg.consultationId)} target="_blank" rel="noopener noreferrer">Book My Consultation</a>
           </div>
           <div className="sched-contact">
             <p><strong>Contact scheduler</strong></p>
@@ -84,6 +86,12 @@ export function SchedulePageBody({ cfg }: { cfg: ScheduleConfig }) {
               </p>
             )}
           </div>
+          </div>
+          {cfg.heroImage && (
+            <div className="sched-hero-media">
+              <img src={cfg.heroImage} alt={`NESTRE ${cfg.location}`} />
+            </div>
+          )}
         </div>
       </section>
 
@@ -205,7 +213,7 @@ export function SchedulePageBody({ cfg }: { cfg: ScheduleConfig }) {
             Call the NESTRE Scheduler at <a href={PHONE_HREF} style={{ color: 'var(--aqua)' }}>{PHONE_DISPLAY}</a> · {cfg.hours}
           </p>
           <div className="btns" style={{ justifyContent: 'center', marginTop: 22 }}>
-            <a className="btn aqua" href={cart(cfg.consultationId)} target="_blank" rel="noopener noreferrer">Schedule consultation</a>
+            <a className="btn aqua" href={cart(cfg.consultationId)} target="_blank" rel="noopener noreferrer">Book My Consultation</a>
           </div>
         </div>
       </section>

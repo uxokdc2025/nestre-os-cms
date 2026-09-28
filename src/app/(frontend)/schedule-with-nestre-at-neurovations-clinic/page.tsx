@@ -10,6 +10,7 @@ export const metadata: Metadata = {
 
 const cfg: ScheduleConfig = {
   location: 'Neurovations Clinic',
+  heroImage: '/api/media/file/lab-winter-park-building.jpg',
   consultationId: '2112998',
   jumpstartId: '2108867',
   hours: '10:00am – 5:00pm (EST)',

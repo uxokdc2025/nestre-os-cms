@@ -10,6 +10,7 @@ export const metadata: Metadata = {
 
 const cfg: ScheduleConfig = {
   location: 'Monterey',
+  heroImage: '/api/media/file/lab-monterey.jpg',
   address: 'Terrapin Physical Therapy · 5 Harris Ct. Bld. T, Ste 102, Monterey, CA 93940',
   consultationId: '2113000',
   jumpstartId: '2011825',
