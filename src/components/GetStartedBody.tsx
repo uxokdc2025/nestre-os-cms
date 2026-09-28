@@ -80,7 +80,7 @@ export function GetStartedBody({ location, acuityType }: { location: string; acu
             <span className="get-price-was">Regularly $300</span>
           </div>
           <div className="btns">
-            <a className="btn aqua" href="#book">Schedule my consultation</a>
+            <a className="btn aqua" href="#book">Request A Consultation</a>
             <a className="btn outline light" href={PHONE_HREF}>Call {PHONE_DISPLAY}</a>
           </div>
           <p className="muted" style={{ color: 'rgba(255,255,255,.6)', marginTop: 14, fontSize: 14 }}>
@@ -214,7 +214,7 @@ export function GetStartedBody({ location, acuityType }: { location: string; acu
             <p className="muted" style={{ color: 'rgba(255,255,255,.72)', marginTop: 10 }}>Save $50 on your NESTRE consultation</p>
             <div className="get-offer-price"><span className="was">Regular $300</span><span className="now">Now $250</span></div>
             <div className="btns" style={{ justifyContent: 'center', marginTop: 20 }}>
-              <a className="btn aqua" href="#book">Schedule my consultation</a>
+              <a className="btn aqua" href="#book">Request A Consultation</a>
               <a className="btn outline light" href={PHONE_HREF}>Call {PHONE_DISPLAY}</a>
             </div>
           </div>

@@ -4,9 +4,9 @@ import { useState } from 'react'
 
 const LOCATIONS = ['Lake Nona, FL', 'Winter Park, FL', 'Monterey, CA']
 
-// Landing-page booking form. Posts to /api/consult (same route as the header
-// popover) which emails the request to clayton@nestreperformance.com. No booking
-// state is stored here — it's a lead hand-off to the NESTRE scheduler.
+// Get-started "Request A Consultation" form (Neuro Lab landing pages). Posts to
+// /api/neurolab-consult, which emails the request to neurolabs@nestreperformance.com.
+// No booking state is stored here — it's a lead hand-off to the NESTRE scheduler.
 export function GetStartedForm({ defaultLocation }: { defaultLocation?: string }) {
   const [status, setStatus] = useState<'idle' | 'sending' | 'ok' | 'error'>('idle')
 
@@ -15,7 +15,7 @@ export function GetStartedForm({ defaultLocation }: { defaultLocation?: string }
     const fd = new FormData(e.currentTarget)
     setStatus('sending')
     try {
-      const res = await fetch('/api/consult', {
+      const res = await fetch('/api/neurolab-consult', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -70,7 +70,7 @@ export function GetStartedForm({ defaultLocation }: { defaultLocation?: string }
       </div>
       <label>What would you like to train the most?<textarea name="message" rows={4} /></label>
       <button className="btn aqua get-form-submit" type="submit" disabled={status === 'sending'}>
-        {status === 'sending' ? 'Sending…' : 'Schedule my consultation'}
+        {status === 'sending' ? 'Sending…' : 'Request A Consultation'}
       </button>
       {status === 'error' && (
         <p className="muted" style={{ color: '#ffb4b4', marginTop: 10 }} role="alert">
