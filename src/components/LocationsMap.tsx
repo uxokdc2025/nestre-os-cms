@@ -81,6 +81,7 @@ export function LocationsMap({
                   key={i}
                   className={`loc2-card${on ? ' on' : ''}`}
                   aria-current={on ? 'true' : undefined}
+                  onMouseEnter={() => setActive(i)}
                   onClick={() => setActive(i)}
                   onFocusCapture={() => setActive(i)}
                 >
