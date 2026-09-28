@@ -1147,7 +1147,7 @@ html { scroll-behavior: auto; }
 .get-offer-price .now { font-size: clamp(2.2rem,5vw,3rem); font-weight: 600; color: var(--aqua); line-height: 1; }
 
 /* Booking form section */
-.get-book { display: grid; grid-template-columns: 1.15fr .85fr; gap: 28px; margin-top: 36px; align-items: start; }
+.get-book { display: grid; grid-template-columns: 1.15fr .85fr; gap: 28px; margin-top: 36px; align-items: stretch; }
 .get-book-form { border: 1px solid var(--line); border-radius: 22px; padding: clamp(24px,3vw,34px); background: #fff; }
 .get-form { display: grid; gap: 16px; }
 .get-hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
@@ -1162,13 +1162,16 @@ html { scroll-behavior: auto; }
 .get-form-done { text-align: center; padding: 24px 8px; }
 @media (max-width: 560px) { .get-form-row { grid-template-columns: 1fr; } }
 
-.get-book-side { display: grid; gap: 20px; }
-.get-book-media { position: relative; border-radius: 22px; overflow: hidden; }
-.get-book-media > img { width: 100%; display: block; aspect-ratio: 19/10; object-fit: cover; }
-.get-book-why { padding: 22px 24px 24px; background: var(--navy); color: #fff; }
+.get-book-side { display: flex; flex-direction: column; }
+.get-book-media { position: relative; border-radius: 22px; overflow: hidden; display: flex; flex-direction: column; flex: 1; }
+.get-book-media > img { width: 100%; display: block; aspect-ratio: 19/10; object-fit: cover; flex: 0 0 auto; }
+.get-book-why { padding: 24px; background: var(--navy); color: #fff; flex: 1; display: flex; flex-direction: column; }
 .get-book-accent { display: block; width: 34px; height: 3px; background: var(--aqua); border-radius: 2px; margin-bottom: 14px; }
-.get-book-card-title { font-size: 20px; font-weight: 600; line-height: 1.2; }
-.get-book-card-sub { font-size: 14px; line-height: 1.6; color: rgba(255,255,255,.78); margin-top: 8px; }
+.get-book-card-title { font-size: 21px; font-weight: 600; line-height: 1.2; }
+.get-book-card-sub { font-size: 14.5px; line-height: 1.6; color: rgba(255,255,255,.78); margin-top: 8px; }
+.get-book-lines { margin-top: auto; padding-top: 22px; display: grid; gap: 10px; }
+.get-book-lines p { font-size: 15px; line-height: 1.5; color: rgba(255,255,255,.82); }
+.get-book-lines a { color: var(--aqua); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
 .get-form-note { font-size: 13px; text-align: center; margin-top: -6px; }
 .get-book-why ul { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 12px; }
 .get-book-why li { display: flex; align-items: center; gap: 12px; font-size: 14px; }

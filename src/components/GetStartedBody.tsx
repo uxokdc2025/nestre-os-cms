@@ -228,11 +228,11 @@ export function GetStartedBody({ location, bookUrl }: { location: string; bookUr
                 <span className="get-book-accent" aria-hidden />
                 <p className="get-book-card-title">An Informed First Step.</p>
                 <p className="get-book-card-sub">Understand what your consultation includes, what your time with a Neuro-Strength Trainer looks like, and how to prepare.</p>
+                <div className="get-book-lines">
+                  <p>Prefer to speak to a NESTRE team member? <a href={PHONE_HREF}>Call {PHONE_DISPLAY}</a></p>
+                  <p>For more information visit <a href="https://nestreperformance.com" target="_blank" rel="noopener noreferrer">nestreperformance.com</a></p>
+                </div>
               </div>
-            </div>
-            <div className="get-book-call">
-              <p>Prefer to speak to a NESTRE team member?</p>
-              <a className="btn outline" href={PHONE_HREF}>Call {PHONE_DISPLAY}</a>
             </div>
           </aside>
         </div>

@@ -59,7 +59,7 @@ export function GetStartedForm() {
       <label>What would you like to know?
         <textarea name="message" rows={4} required placeholder="Tell us what's on your mind about the consultation." />
       </label>
-      <button className="btn ink get-form-submit" type="submit" disabled={status === 'sending'}>
+      <button className="btn aqua get-form-submit" type="submit" disabled={status === 'sending'}>
         {status === 'sending' ? 'Sending…' : 'Ask Our Team →'}
       </button>
       <p className="get-form-note muted">Our team will reach out to you within 24&ndash;48 hours.</p>
