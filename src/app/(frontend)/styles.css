@@ -1165,7 +1165,11 @@ html { scroll-behavior: auto; }
 .get-book-side { display: grid; gap: 20px; }
 .get-book-media { position: relative; border-radius: 22px; overflow: hidden; }
 .get-book-media > img { width: 100%; display: block; aspect-ratio: 19/10; object-fit: cover; }
-.get-book-why { padding: 20px 22px 22px; background: var(--navy); color: #fff; }
+.get-book-why { padding: 22px 24px 24px; background: var(--navy); color: #fff; }
+.get-book-accent { display: block; width: 34px; height: 3px; background: var(--aqua); border-radius: 2px; margin-bottom: 14px; }
+.get-book-card-title { font-size: 20px; font-weight: 600; line-height: 1.2; }
+.get-book-card-sub { font-size: 14px; line-height: 1.6; color: rgba(255,255,255,.78); margin-top: 8px; }
+.get-form-note { font-size: 13px; text-align: center; margin-top: -6px; }
 .get-book-why ul { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 12px; }
 .get-book-why li { display: flex; align-items: center; gap: 12px; font-size: 14px; }
 .get-book-why li img { width: 20px; height: 20px; object-fit: contain; flex: 0 0 auto; }

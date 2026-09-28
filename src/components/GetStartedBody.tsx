@@ -15,12 +15,6 @@ const IMG = '/legacy/getstarted'
 const LOGO_STRIP = '/legacy/logos/logos-color.png'
 const LOGO_ALT = 'Featured by Bleacher Report, Harvard Medical School, Bloomberg, Sports Illustrated, the U.S. Department of Veterans Affairs, and ESPN'
 
-// Maps the route's location label to the form's Preferred-Location option.
-const PREFERRED: Record<string, string> = {
-  'Neurovations': 'Winter Park, FL',
-  'Lake Nona Performance Club': 'Lake Nona, FL',
-}
-
 export function GetStartedBody({ location, bookUrl }: { location: string; bookUrl: string }) {
 
   const heroFeatures = [
@@ -49,12 +43,6 @@ export function GetStartedBody({ location, bookUrl }: { location: string; bookUr
     { icon: 'landing-page-mindset-profile-icon.png', t: 'Respond to high pressure and changing demands' },
     { icon: 'landing-page-strength-icon.png', t: 'Regulate your reactions' },
     { icon: 'landing-page-access-icon.png', t: 'Access clarity and capability when it matters most' },
-  ]
-
-  const whyBook = [
-    { icon: 'stop-watch.png', t: '60 minutes, one-on-one with a Neuro-Strength Trainer' },
-    { icon: 'Exclude.png', t: 'Personalized one-on-one training' },
-    { icon: 'document-text.png', t: 'Customized reports for your review' },
   ]
 
   return (
@@ -219,27 +207,27 @@ export function GetStartedBody({ location, bookUrl }: { location: string; bookUr
         </div>
       </section>
 
-      {/* Booking form */}
+      {/* Questions about the consultation */}
       <section className="sec paper" id="book">
         <div className="wrap" style={{ textAlign: 'center' }}>
-          <p className="eyebrow" style={{ color: 'var(--aqua-ink)' }}>Limited-Time Offer</p>
-          <h2 className="h2" style={{ marginTop: 10 }}>Claim Your $50 Consultation Savings.</h2>
-          <p className="lead muted" style={{ marginInline: 'auto', marginTop: 12 }}>Schedule your initial NESTRE Consultation for $250 — regularly $300.</p>
+          <p className="eyebrow" style={{ color: 'var(--aqua-ink)' }}>Your NESTRE Consultation</p>
+          <h2 className="h2" style={{ marginTop: 10 }}>Clarity Before You Begin.</h2>
+          <p className="lead muted" style={{ marginInline: 'auto', marginTop: 12, maxWidth: '62ch' }}>
+            Learn more about your NESTRE Consultation. Whether you&rsquo;re curious about the experience,
+            pricing, or what to expect, our team is here to answer your questions.
+          </p>
         </div>
         <div className="wrap get-book">
           <div className="get-book-form">
-            <GetStartedForm defaultLocation={PREFERRED[location]} bookUrl={bookUrl} />
+            <GetStartedForm />
           </div>
           <aside className="get-book-side">
             <div className="get-book-media">
-              <img src={`${IMG}/ladyprofile.png`} alt="A NESTRE client with her cognitive performance data profile" loading="lazy" />
+              <img src={`${IMG}/ladyprofile.png`} alt="A NESTRE client during a moment of calm focus" loading="lazy" />
               <div className="get-book-why">
-                <p className="kick" style={{ color: 'var(--aqua)' }}>Why Clients Book</p>
-                <ul>
-                  {whyBook.map((w) => (
-                    <li key={w.t}><img src={`${IMG}/${w.icon}`} alt="" aria-hidden /><span>{w.t}</span></li>
-                  ))}
-                </ul>
+                <span className="get-book-accent" aria-hidden />
+                <p className="get-book-card-title">An Informed First Step.</p>
+                <p className="get-book-card-sub">Understand what your consultation includes, what your time with a Neuro-Strength Trainer looks like, and how to prepare.</p>
               </div>
             </div>
             <div className="get-book-call">
