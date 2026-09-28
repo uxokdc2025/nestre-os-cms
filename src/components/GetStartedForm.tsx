@@ -69,7 +69,7 @@ export function GetStartedForm() {
         <p className="eyebrow" style={{ color: 'var(--aqua-ink)' }}>Message sent</p>
         <h3 style={{ marginTop: 10 }}>Thanks — we&rsquo;ll be in touch.</h3>
         <p className="muted" style={{ marginTop: 10 }}>Our team will reach out to you within 24&ndash;48 hours.</p>
-        <p className="muted" style={{ marginTop: 20, fontWeight: 600, color: 'var(--ink)' }}>For more information about NESTRE&hellip;</p>
+        <p className="muted" style={{ marginTop: 20, fontWeight: 600, color: 'var(--ink)' }}>Ready to learn more? Start your NESTRE journey.</p>
         <a className="btn aqua" style={{ marginTop: 12 }} href="https://nestreperformance.com">Explore NESTRE</a>
       </div>
     )
