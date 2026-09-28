@@ -7,7 +7,7 @@ const LOCATIONS = ['Lake Nona, FL', 'Winter Park, FL', 'Monterey, CA']
 // Get-started "Request A Consultation" form (Neuro Lab landing pages). Posts to
 // /api/neurolab-consult, which emails the request to neurolabs@nestreperformance.com.
 // No booking state is stored here — it's a lead hand-off to the NESTRE scheduler.
-export function GetStartedForm({ defaultLocation }: { defaultLocation?: string }) {
+export function GetStartedForm({ defaultLocation, bookUrl }: { defaultLocation?: string; bookUrl?: string }) {
   const [status, setStatus] = useState<'idle' | 'sending' | 'ok' | 'error'>('idle')
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -29,7 +29,15 @@ export function GetStartedForm({ defaultLocation }: { defaultLocation?: string }
           company: fd.get('company'), // honeypot
         }),
       })
-      setStatus(res.ok ? 'ok' : 'error')
+      if (res.ok) {
+        setStatus('ok')
+        // Lead is captured (emailed to neurolabs@). Now hand the person off to the
+        // Acuity scheduler to actually pick a time. Small delay so they see the
+        // confirmation; a manual link is shown as a fallback.
+        if (bookUrl) setTimeout(() => { window.location.href = bookUrl }, 1500)
+      } else {
+        setStatus('error')
+      }
     } catch {
       setStatus('error')
     }
@@ -39,10 +47,14 @@ export function GetStartedForm({ defaultLocation }: { defaultLocation?: string }
     return (
       <div className="get-form-done" role="status">
         <p className="eyebrow" style={{ color: 'var(--aqua)' }}>Booking request received</p>
-        <h3 style={{ marginTop: 10 }}>We&rsquo;ll be in touch shortly.</h3>
+        <h3 style={{ marginTop: 10 }}>{bookUrl ? 'Taking you to the scheduler…' : 'We’ll be in touch shortly.'}</h3>
         <p className="muted" style={{ marginTop: 10 }}>
-          A NESTRE Scheduler will reach out to confirm your consultation. Prefer to talk now?
-          Call <a href="tel:+16897103260">(689) 710-3260</a>.
+          {bookUrl ? (
+            <>Pick your time on the next screen. If it doesn&rsquo;t open, <a href={bookUrl} target="_blank" rel="noopener noreferrer">continue to booking</a>. </>
+          ) : (
+            <>A NESTRE Scheduler will reach out to confirm your consultation. </>
+          )}
+          Prefer to talk now? Call <a href="tel:+16897103260">(689) 710-3260</a>.
         </p>
       </div>
     )

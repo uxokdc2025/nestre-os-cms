@@ -228,7 +228,7 @@ export function GetStartedBody({ location, bookUrl }: { location: string; bookUr
         </div>
         <div className="wrap get-book">
           <div className="get-book-form">
-            <GetStartedForm defaultLocation={PREFERRED[location]} />
+            <GetStartedForm defaultLocation={PREFERRED[location]} bookUrl={bookUrl} />
           </div>
           <aside className="get-book-side">
             <div className="get-book-media">
