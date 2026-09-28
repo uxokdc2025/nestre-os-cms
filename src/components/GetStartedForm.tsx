@@ -70,7 +70,7 @@ export function GetStartedForm({ defaultLocation }: { defaultLocation?: string }
       </div>
       <label>What would you like to train the most?<textarea name="message" rows={4} /></label>
       <button className="btn aqua get-form-submit" type="submit" disabled={status === 'sending'}>
-        {status === 'sending' ? 'Sending…' : 'Book A Consultation'}
+        {status === 'sending' ? 'Sending…' : 'Book My Consultation'}
       </button>
       {status === 'error' && (
         <p className="muted" style={{ color: '#ffb4b4', marginTop: 10 }} role="alert">

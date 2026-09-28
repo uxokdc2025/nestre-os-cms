@@ -59,7 +59,7 @@ export function SiteHeader({ items, cta, logoUrl }: { items: any[]; cta?: any; l
       <header className={`nav nav-minimal${scrolled ? ' scrolled' : ''}`}>
         <div className="wrap inner">
           <Logo />
-          <a className="btn aqua" href={landing.bookUrl} target="_blank" rel="noopener noreferrer">Book a Consultation</a>
+          <a className="btn aqua" href={landing.bookUrl} target="_blank" rel="noopener noreferrer">Book My Consultation</a>
         </div>
       </header>
     )
