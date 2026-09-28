@@ -196,6 +196,8 @@ h1, h2, h3 { margin: 0; letter-spacing: -0.02em; line-height: 1.02; text-wrap: b
 .nav .brand-left { flex: 0 0 auto; display: inline-flex; }
 .nav .links { display: none; flex: 1; gap: 28px; justify-content: center; }
 .nav .nav-right { flex: 0 0 auto; }
+/* Get-started landing header: logo left, single Book button right. */
+.nav-minimal .inner { justify-content: space-between; }
 @media (min-width: 940px) { .nav .links { display: flex; } }
 .nav .links a {
   color: rgba(255,255,255,.82); font-size: 15px; position: relative; padding: 6px 0;

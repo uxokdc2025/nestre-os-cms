@@ -6,8 +6,7 @@ import { GtmTag } from './Tracking'
 // Ad landing page ("Get Started at …") rebuilt faithfully from the legacy WordPress
 // pages on the NESTRE design system — same sections, copy, images, icons and the
 // same Acuity booking, kept at the original URLs so Meta/Google ads keep landing.
-// `acuityType` is the Acuity appointmentType for this location's direct booking.
-const OWNER = '23912005'
+// `bookUrl` is this location's full Acuity booking link (direct-to-calendar).
 const PHONE_DISPLAY = '(689) 710-3260'
 const PHONE_HREF = 'tel:+16897103260'
 const IMG = '/legacy/getstarted'
@@ -22,8 +21,7 @@ const PREFERRED: Record<string, string> = {
   'Lake Nona Performance Club': 'Lake Nona, FL',
 }
 
-export function GetStartedBody({ location, acuityType }: { location: string; acuityType: string }) {
-  const schedule = `https://app.acuityscheduling.com/schedule.php?owner=${OWNER}&appointmentType=${acuityType}`
+export function GetStartedBody({ location, bookUrl }: { location: string; bookUrl: string }) {
 
   const heroFeatures = [
     { icon: 'Exclude.png', t: `One-on-One at ${location}` },
@@ -80,7 +78,7 @@ export function GetStartedBody({ location, acuityType }: { location: string; acu
             <span className="get-price-was">Regularly $300</span>
           </div>
           <div className="btns">
-            <a className="btn aqua" href="#book">Request A Consultation</a>
+            <a className="btn aqua" href={bookUrl} target="_blank" rel="noopener noreferrer">Book My Consultation</a>
             <a className="btn outline light" href={PHONE_HREF}>Call {PHONE_DISPLAY}</a>
           </div>
           <p className="muted" style={{ color: 'rgba(255,255,255,.6)', marginTop: 14, fontSize: 14 }}>
@@ -214,7 +212,7 @@ export function GetStartedBody({ location, acuityType }: { location: string; acu
             <p className="muted" style={{ color: 'rgba(255,255,255,.72)', marginTop: 10 }}>Save $50 on your NESTRE consultation</p>
             <div className="get-offer-price"><span className="was">Regular $300</span><span className="now">Now $250</span></div>
             <div className="btns" style={{ justifyContent: 'center', marginTop: 20 }}>
-              <a className="btn aqua" href="#book">Request A Consultation</a>
+              <a className="btn aqua" href={bookUrl} target="_blank" rel="noopener noreferrer">Book My Consultation</a>
               <a className="btn outline light" href={PHONE_HREF}>Call {PHONE_DISPLAY}</a>
             </div>
           </div>

@@ -38,7 +38,7 @@ export function GetStartedForm({ defaultLocation }: { defaultLocation?: string }
   if (status === 'ok') {
     return (
       <div className="get-form-done" role="status">
-        <p className="eyebrow" style={{ color: 'var(--aqua)' }}>Request received</p>
+        <p className="eyebrow" style={{ color: 'var(--aqua)' }}>Booking request received</p>
         <h3 style={{ marginTop: 10 }}>We&rsquo;ll be in touch shortly.</h3>
         <p className="muted" style={{ marginTop: 10 }}>
           A NESTRE Scheduler will reach out to confirm your consultation. Prefer to talk now?
@@ -70,7 +70,7 @@ export function GetStartedForm({ defaultLocation }: { defaultLocation?: string }
       </div>
       <label>What would you like to train the most?<textarea name="message" rows={4} /></label>
       <button className="btn aqua get-form-submit" type="submit" disabled={status === 'sending'}>
-        {status === 'sending' ? 'Sending…' : 'Request A Consultation'}
+        {status === 'sending' ? 'Sending…' : 'Book A Consultation'}
       </button>
       {status === 'error' && (
         <p className="muted" style={{ color: '#ffb4b4', marginTop: 10 }} role="alert">

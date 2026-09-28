@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { ConsultPopover } from './ConsultPopover'
+import { GET_STARTED } from '@/lib/get-started'
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // Internal links use next/link for instant client-side nav (no reload/flash);
@@ -49,6 +50,20 @@ export function SiteHeader({ items, cta, logoUrl }: { items: any[]; cta?: any; l
   // The header scrim is a dark→transparent gradient built for dark hero images; on
   // the light legal/support pages it smears over the copy, so use a solid navy block.
   const solid = ['/privacy', '/terms', '/help'].includes(pathname)
+
+  // Get-started landing pages get a stripped header: logo + a single Book button
+  // that goes straight to this location's Acuity booking. No nav, no menu.
+  const landing = GET_STARTED[pathname]
+  if (landing) {
+    return (
+      <header className={`nav nav-minimal${scrolled ? ' scrolled' : ''}`}>
+        <div className="wrap inner">
+          <Logo />
+          <a className="btn aqua" href={landing.bookUrl} target="_blank" rel="noopener noreferrer">Book a Consultation</a>
+        </div>
+      </header>
+    )
+  }
 
   return (
     <header className={`nav${scrolled ? ' scrolled' : ''}${solid ? ' nav-solid' : ''}`}>

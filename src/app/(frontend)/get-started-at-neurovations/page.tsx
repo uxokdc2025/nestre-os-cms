@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { SITE_URL } from '@/lib/seo'
 import { GetStartedBody } from '@/components/GetStartedBody'
+import { GET_STARTED } from '@/lib/get-started'
 
 export const metadata: Metadata = {
   title: 'Get Started at Neurovations | NESTRE Performance',
@@ -9,5 +10,5 @@ export const metadata: Metadata = {
 }
 
 export default function GetStartedNeurovations() {
-  return <GetStartedBody location="Neurovations" acuityType="96663987" />
+  return <GetStartedBody location={GET_STARTED['/get-started-at-neurovations'].location} bookUrl={GET_STARTED['/get-started-at-neurovations'].bookUrl} />
 }
