@@ -213,8 +213,7 @@ export function GetStartedBody({ location, bookUrl }: { location: string; bookUr
           <p className="eyebrow" style={{ color: 'var(--aqua-ink)' }}>Your NESTRE Consultation</p>
           <h2 className="h2" style={{ marginTop: 10 }}>Clarity Before You Begin.</h2>
           <p className="lead muted" style={{ marginInline: 'auto', marginTop: 12, maxWidth: '62ch' }}>
-            Learn more about your NESTRE Consultation. Whether you&rsquo;re curious about the experience,
-            pricing, or what to expect, our team is here to answer your questions.
+            Learn more about your NESTRE consultation. Our team is here to answer any questions you may have.
           </p>
         </div>
         <div className="wrap get-book">
