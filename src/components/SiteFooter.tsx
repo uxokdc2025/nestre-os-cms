@@ -1,7 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
 import { ConsultFooterLink } from './ConsultFooterLink'
-import { WorkWithUsPopover } from './WorkWithUsPopover'
+import { CareersDrawer } from './CareersDrawer'
 
 const isInternal = (h?: string) => !!h && h.startsWith('/') && !h.startsWith('//')
 function A({ href, children, ...rest }: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -86,7 +86,7 @@ export function SiteFooter({ logoUrl, footer }: { logoUrl?: string; footer?: any
               <p className="footer-h">{col.heading}</p>
               {col.links.map((l) => (
                 'wwu' in l && l.wwu ? (
-                  <WorkWithUsPopover key={l.label} label={l.label} className="footer-link-btn" />
+                  <CareersDrawer key={l.label} label={l.label} className="footer-link-btn" />
                 ) : l.href === '/book-a-consultation' ? (
                   <ConsultFooterLink key={l.label}>{l.label}</ConsultFooterLink>
                 ) : (
@@ -100,7 +100,7 @@ export function SiteFooter({ logoUrl, footer }: { logoUrl?: string; footer?: any
           <div className="footer-getstarted">
             <a href={IOS} target="_blank" rel="noopener noreferrer">Download for iOS</a>
             <a href={ANDROID} target="_blank" rel="noopener noreferrer">Get it for Android</a>
-            <WorkWithUsPopover label="Work With Us" className="footer-link-btn" />
+            <CareersDrawer label="Work With Us" className="footer-link-btn" />
           </div>
         </nav>
       </div>
