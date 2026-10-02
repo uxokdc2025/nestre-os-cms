@@ -624,25 +624,28 @@ html { scroll-behavior: auto; }
 .footer-cols .footer-link-btn:active { transform: scale(.97); }
 .footer-getstarted { display: flex; flex-direction: column; align-items: flex-start; }
 .wwu-backdrop { position: fixed; inset: 0; background: rgba(8,20,26,.5); z-index: 400; animation: wwuFade .2s ease both; }
+/* Full-height right-side drawer that slides in from the edge (flush top/right/bottom). */
 .wwu-pop {
-  position: fixed; top: 50%; right: clamp(12px, 3vw, 40px); transform: translateY(-50%);
-  width: min(400px, 94vw); max-height: 92vh; overflow-y: auto;
-  background: #fff; color: var(--ink); border-radius: 22px; padding: 30px 26px 26px;
-  box-shadow: 0 40px 100px rgba(8,28,38,.4); border: 1px solid var(--line);
-  z-index: 401; animation: wwuSlide .28s cubic-bezier(.22,1,.36,1) both;
+  position: fixed; top: 0; right: 0; bottom: 0; transform: translateX(0);
+  width: min(440px, 94vw); height: 100%; overflow-y: auto; -webkit-overflow-scrolling: touch;
+  background: #fff; color: var(--ink); border-radius: 0;
+  padding: calc(34px + env(safe-area-inset-top)) 30px calc(30px + env(safe-area-inset-bottom));
+  box-shadow: -30px 0 90px rgba(8,28,38,.34); border-left: 1px solid var(--line);
+  z-index: 401; animation: wwuSlide .3s cubic-bezier(.22,1,.36,1) both;
 }
 @keyframes wwuFade { from { opacity: 0; } to { opacity: 1; } }
-@keyframes wwuSlide { from { opacity: 0; transform: translate(24px,-50%); } to { opacity: 1; transform: translate(0,-50%); } }
-.wwu-pop .consult-close { display: inline-flex; position: absolute; top: 14px; right: 16px; width: 32px; height: 32px; align-items: center; justify-content: center; border: 0; background: var(--paper); border-radius: 50%; font-size: 20px; line-height: 1; color: var(--muted); cursor: pointer; }
+@keyframes wwuSlide { from { transform: translateX(100%); } to { transform: translateX(0); } }
+.wwu-pop .consult-close { display: inline-flex; position: absolute; top: 16px; right: 18px; width: 34px; height: 34px; align-items: center; justify-content: center; border: 0; background: var(--paper); border-radius: 50%; font-size: 20px; line-height: 1; color: var(--muted); cursor: pointer; z-index: 2; }
 .wwu-pop .consult-close:hover { background: var(--line); color: var(--ink); }
 .wwu-file-input { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
 .wwu-file-btn { display: block; width: 100%; text-align: left; border: 1px dashed var(--line); border-radius: 12px; padding: 12px 14px; font: inherit; font-size: 14px; color: var(--muted); background: var(--paper); cursor: pointer; transition: border-color .18s ease, color .18s ease; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .wwu-file-btn:hover { border-color: var(--aqua-deep); color: var(--ink); }
-@media (max-width: 620px) { .wwu-pop { right: 3vw; left: 3vw; width: auto; } }
+/* Mobile = full-screen overlay sliding in from the right. */
+@media (max-width: 620px) { .wwu-pop { width: 100vw; border-left: 0; } }
 
 /* Careers drawer — wider panel for the longer, 2-column form + inline errors. */
 .careers-pop { width: min(560px, 94vw); }
-@media (max-width: 620px) { .careers-pop { right: 3vw; left: 3vw; width: auto; top: 50%; max-height: 90vh; } }
+@media (max-width: 620px) { .careers-pop { width: 100vw; } }
 .consult-field.has-err input, .consult-field.has-err select, .consult-field.has-err textarea { border-color: #c0392b; background: #fdf5f4; }
 .consult-field.has-err input:focus, .consult-field.has-err select:focus, .consult-field.has-err textarea:focus { outline: none; border-color: #c0392b; box-shadow: 0 0 0 3px rgba(192,57,43,.18); }
 .careers-group { font-size: 12.5px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--ink); margin: 22px 0 12px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
