@@ -30,6 +30,7 @@ const COLUMNS = [
   { heading: 'Company', links: [
     { label: 'Our Story', href: '/our-story' },
     { label: 'For Teams', href: '/for-teams' },
+    { label: 'Careers', href: '#', wwu: true }, // opens the careers interest form (drawer)
     // News removed for launch — hold for phase 2 (Sept 21 handoff).
   ] },
 ]
@@ -98,9 +99,8 @@ export function SiteFooter({ logoUrl, footer }: { logoUrl?: string; footer?: any
             </div>
           ))}
           <div className="footer-getstarted">
-            <a href={IOS} target="_blank" rel="noopener noreferrer">Download for iOS</a>
-            <a href={ANDROID} target="_blank" rel="noopener noreferrer">Get it for Android</a>
-            <CareersDrawer label="Work With Us" className="footer-link-btn" />
+            <a href={IOS} target="_blank" rel="noopener noreferrer">Download App for iOS</a>
+            <a href={ANDROID} target="_blank" rel="noopener noreferrer">Download App for Android</a>
           </div>
         </nav>
       </div>
