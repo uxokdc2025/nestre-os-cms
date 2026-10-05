@@ -107,9 +107,14 @@ export function CareersDrawer({ label = 'Submit your interest', className = 'btn
           <form onSubmit={submit} noValidate>
             <p className="consult-eyebrow">Careers at NESTRE</p>
             <h3 className="consult-title" style={{ marginBottom: 8 }}>Build human performance with us.</h3>
-            <p className="consult-sub" style={{ marginTop: 0, marginBottom: 16 }}>
-              Share your background and career interests. This is for general interest, not a specific
-              position — please don&rsquo;t include sensitive personal data. <span className="careers-req">* Required</span>
+            <p className="consult-sub" style={{ marginTop: 0, marginBottom: 14 }}>
+              Interested in joining NESTRE? Share your background and career interests. Our Talent
+              Acquisition team will review your information as opportunities become available.
+            </p>
+            <p className="careers-note" style={{ marginBottom: 16 }}>
+              This form is for general career interest and is not an application for a specific position.
+              Please do not include medical information, Social Security numbers, financial information, or
+              other sensitive personal data. <span className="careers-req">* Required fields</span>
             </p>
 
             <p className="careers-group">Contact information</p>
