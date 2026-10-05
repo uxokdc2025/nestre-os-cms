@@ -11,4 +11,14 @@ export const GET_STARTED: Record<string, { location: string; bookUrl: string }> 
     location: 'Lake Nona Performance Club',
     bookUrl: 'https://app.acuityscheduling.com/schedule/1f29f701/appointment/96663934/calendar/5959541?appointmentTypeIds[]=96663934',
   },
+  // Event consultation offer pages — duplicates of the two get-started pages with
+  // the event-specific Acuity booking links (provided by NESTRE, 2026-10-05).
+  '/neurovations-event-consultation-offer': {
+    location: 'Neurovations',
+    bookUrl: 'https://app.acuityscheduling.com/schedule/1f29f701/appointment/99094513/calendar/12875091?appointmentTypeIds[]=99094513',
+  },
+  '/lnpc-event-consultation-offer': {
+    location: 'Lake Nona Performance Club',
+    bookUrl: 'https://app.acuityscheduling.com/schedule.php?owner=23912005&appointmentType=99094479',
+  },
 }
