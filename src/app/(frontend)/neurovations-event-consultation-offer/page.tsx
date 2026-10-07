@@ -4,7 +4,7 @@ import { GetStartedBody } from '@/components/GetStartedBody'
 import { GET_STARTED } from '@/lib/get-started'
 
 export const metadata: Metadata = {
-  title: 'Get Started at Neurovations | NESTRE Performance',
+  title: { absolute: 'Consultation Promo at Neurovations' },
   description: 'Schedule your NESTRE consultation at Neurovations — a 60-minute, one-on-one session with a brain scan, your NESTRE Mindset Profile, and a personalized results review.',
   alternates: { canonical: `${SITE_URL}/neurovations-event-consultation-offer` },
 }

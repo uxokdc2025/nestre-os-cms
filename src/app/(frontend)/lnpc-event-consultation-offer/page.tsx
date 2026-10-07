@@ -4,7 +4,7 @@ import { GetStartedBody } from '@/components/GetStartedBody'
 import { GET_STARTED } from '@/lib/get-started'
 
 export const metadata: Metadata = {
-  title: 'Get Started at LNPC | NESTRE Performance',
+  title: { absolute: 'Consultation Promo at Lake Nona Performance Club' },
   description: 'Schedule your NESTRE consultation at Lake Nona Performance Club — a 60-minute, one-on-one session with a brain scan, your NESTRE Mindset Profile, and a personalized results review.',
   alternates: { canonical: `${SITE_URL}/lnpc-event-consultation-offer` },
 }

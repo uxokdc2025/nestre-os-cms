@@ -15,7 +15,7 @@ const IMG = '/legacy/getstarted'
 const LOGO_STRIP = '/legacy/logos/logos-color.png'
 const LOGO_ALT = 'Featured by Bleacher Report, Harvard Medical School, Bloomberg, Sports Illustrated, the U.S. Department of Veterans Affairs, and ESPN'
 
-export function GetStartedBody({ location, bookUrl }: { location: string; bookUrl: string }) {
+export function GetStartedBody({ location, bookUrl, priceNow = '$250', priceWas = '$300' }: { location: string; bookUrl: string; priceNow?: string; priceWas?: string }) {
 
   const heroFeatures = [
     { icon: 'Exclude.png', t: `One-on-One at ${location}` },
@@ -62,8 +62,8 @@ export function GetStartedBody({ location, bookUrl }: { location: string; bookUr
             recommendations for what to do next.
           </p>
           <div className="get-price">
-            <span className="get-price-now">$250</span>
-            <span className="get-price-was">Regularly $300</span>
+            <span className="get-price-now">{priceNow}</span>
+            <span className="get-price-was">Regularly {priceWas}</span>
           </div>
           <div className="btns">
             <a className="btn aqua" href={bookUrl} target="_blank" rel="noopener noreferrer">Book My Consultation</a>
@@ -198,7 +198,7 @@ export function GetStartedBody({ location, bookUrl }: { location: string; bookUr
           <div className="get-offer">
             <p className="eyebrow" style={{ color: 'var(--aqua)' }}>Discover What Your Mind and Brain Data Can Tell You</p>
             <p className="muted" style={{ color: 'rgba(255,255,255,.72)', marginTop: 10 }}>Save $50 on your NESTRE consultation</p>
-            <div className="get-offer-price"><span className="was">Regular $300</span><span className="now">Now $250</span></div>
+            <div className="get-offer-price"><span className="was">Regular {priceWas}</span><span className="now">Now {priceNow}</span></div>
             <div className="btns" style={{ justifyContent: 'center', marginTop: 20 }}>
               <a className="btn aqua" href={bookUrl} target="_blank" rel="noopener noreferrer">Book My Consultation</a>
               <a className="btn outline light" href={PHONE_HREF}>Call {PHONE_DISPLAY}</a>

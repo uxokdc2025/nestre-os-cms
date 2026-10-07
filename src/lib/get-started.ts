@@ -2,7 +2,7 @@
 // booking link each one's CTAs drive to. Used by the page configs (GetStartedBody)
 // and by SiteHeader (which renders a stripped header — logo + Book only — on these
 // pages). Keep the two pages' links here so they can never drift apart.
-export const GET_STARTED: Record<string, { location: string; bookUrl: string }> = {
+export const GET_STARTED: Record<string, { location: string; bookUrl: string; priceNow?: string; priceWas?: string }> = {
   '/get-started-at-neurovations': {
     location: 'Neurovations',
     bookUrl: 'https://app.acuityscheduling.com/schedule/1f29f701/appointment/96663987/calendar/12875091?appointmentTypeIds[]=96663987',
@@ -20,5 +20,11 @@ export const GET_STARTED: Record<string, { location: string; bookUrl: string }> 
   '/lnpc-event-consultation-offer': {
     location: 'Lake Nona Performance Club',
     bookUrl: 'https://app.acuityscheduling.com/schedule.php?owner=23912005&appointmentType=99094479',
+  },
+  '/terrapin-event-consultation-offer': {
+    location: 'Terrapin Physical Therapy',
+    bookUrl: 'https://app.acuityscheduling.com/schedule.php?owner=23912005&appointmentType=99171595',
+    priceNow: '$450',
+    priceWas: '$500',
   },
 }
