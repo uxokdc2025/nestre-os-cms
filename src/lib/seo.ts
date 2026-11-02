@@ -44,12 +44,6 @@ const LABS = [
     locality: 'Winter Park', region: 'FL', country: 'US',
     inside: 'Winter Park, Florida',
   },
-  {
-    name: 'NESTRE Neuro Lab — Monterey',
-    street: '5 Harris Ct, Building T, Suite 102',
-    locality: 'Monterey', region: 'CA', postal: '93940', country: 'US',
-    inside: 'Inside Terrapin Physical Therapy',
-  },
 ]
 
 /** Site-wide @graph: Organization + WebSite + the 3 Neuro Labs + the App. */

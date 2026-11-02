@@ -5,7 +5,6 @@ import { ClosingParallax } from './ClosingParallax'
 import { PhoneShowcase } from './PhoneShowcase'
 import { LocationsMap } from './LocationsMap'
 import { MindsetRingCard } from './MindsetRingCard'
-import { RegionToggle } from './RegionToggle'
 import { consultCostAnswer, CONSULT_COST_TOKEN, type Region } from '@/lib/consult-pricing'
 
 // Founder (Dr. Tommy Shavers) NESTRE Mindset Profile — shown in place of his photo
@@ -89,7 +88,6 @@ function FaqBlock({ block, region = 'default' }: { block: any; region?: Region }
             <details key={i} className="faq-item">
               <summary>{it.q}</summary>
               <p className="muted">{answer}</p>
-              {priced && <RegionToggle region={region} />}
             </details>
           )
         })}

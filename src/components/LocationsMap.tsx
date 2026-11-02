@@ -28,7 +28,6 @@ const DEFAULTS: LocationItem[] = [
   // render identical location photos from one source. Maps stay as shipped crops.
   { name: 'Lake Nona', address: '6775 Chopra Ter, Orlando, FL 32827', miles: '3.1 miles away', hours: 'Open now', earliest: '11:00am', image: '/api/media/file/lnpc-lake-nona.jpg', map: '/img/locations/lake-nona-map.png', mapPos: '50% 78%', viewHref: '#', bookHref: '/book-a-consultation' },
   { name: 'Winter Park', address: '2200 Lee Rd, Winter Park, FL 32789', miles: '5.2 miles away', hours: 'Open now', earliest: '11:00am', image: '/api/media/file/lab-winter-park-building.jpg', map: '/img/locations/winter-park-map.png', mapPos: '90% 50%', viewHref: '#', bookHref: '/book-a-consultation' },
-  { name: 'Monterey', address: '5 Harris Ct Bldg. T, Suite 102, Monterey, CA 93940', miles: '3,010 miles away', hours: 'Open now', earliest: '11:00am', image: '/api/media/file/lab-monterey.jpg', map: '/img/locations/monterey-map.png', mapPos: '92% 50%', viewHref: '#', bookHref: '/book-a-consultation' },
 ]
 
 // Known locations keyed by name, so CMS-driven blocks that omit map/image data

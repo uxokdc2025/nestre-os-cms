@@ -21,10 +21,4 @@ export const GET_STARTED: Record<string, { location: string; bookUrl: string; pr
     location: 'Lake Nona Performance Club',
     bookUrl: 'https://app.acuityscheduling.com/schedule.php?owner=23912005&appointmentType=99094479',
   },
-  '/terrapin-event-consultation-offer': {
-    location: 'Terrapin Physical Therapy',
-    bookUrl: 'https://app.acuityscheduling.com/schedule.php?owner=23912005&appointmentType=99171595',
-    priceNow: '$450',
-    priceWas: '$500',
-  },
 }

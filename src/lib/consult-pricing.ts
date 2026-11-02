@@ -6,9 +6,8 @@ export type Region = 'monterey' | 'default'
 
 /** The full, region-appropriate answer to "How much does the consult cost?". */
 export function consultCostAnswer(region: Region): string {
-  return region === 'monterey'
-    ? 'The initial consultation at our Monterey Neuro Lab is $500. Pricing varies by location — see your NESTRE Neuro Lab’s scheduling page for details.'
-    : 'The regular price is $300. For a limited time, new clients can schedule an initial consultation for $250 — a savings of $50. Pricing at our Monterey Neuro Lab differs.'
+  void region
+  return 'The regular price is $300. For a limited time, new clients can schedule an initial consultation for $250 — a savings of $50.'
 }
 
 // Token authors can drop into CMS FAQ copy; the FAQ renderer swaps it for the
