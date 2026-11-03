@@ -74,7 +74,7 @@ h1, h2, h3 { margin: 0; letter-spacing: -0.02em; line-height: 1.02; text-wrap: b
    this flex child shrink to its headline width and re-center, so the X-start drifts
    page to page. */
 .hero .inner { position: relative; width: 100%; padding-top: 120px; padding-bottom: 120px; } /* keep .wrap's horizontal padding */
-.hero h1 { font-size: clamp(2.8333rem, 8.77vw, 6.3333rem); font-weight: 600; }
+.hero h1 { font-size: clamp(2.5833rem, 8.42vw, 6.0833rem); font-weight: 600; }
 .hero .subhead { font-size: clamp(1.4rem, 3vw, 1.9rem); font-weight: 500; margin-top: 22px; }
 .hero .subhead .accent { color: var(--aqua); }
 
