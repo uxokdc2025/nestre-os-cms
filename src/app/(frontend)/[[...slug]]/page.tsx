@@ -62,7 +62,7 @@ export default async function Page({ params, searchParams }: { params: Promise<{
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(siteGraph()) }} />
       {faq && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faq) }} />}
-      <main id="main">
+      <main id="main" data-page={slugStr}>
         <RenderBlocks blocks={page.layout || []} afterHero={afterHero} region={region} />
       </main>
       {!studio && <Reveal />}
