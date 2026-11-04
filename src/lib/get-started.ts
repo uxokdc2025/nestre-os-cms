@@ -21,4 +21,13 @@ export const GET_STARTED: Record<string, { location: string; bookUrl: string; pr
     location: 'Lake Nona Performance Club',
     bookUrl: 'https://app.acuityscheduling.com/schedule.php?owner=23912005&appointmentType=99094479',
   },
+  // Terrapin Physical Therapy event page (Monterey, CA) — duplicate of the event
+  // offer pages with Terrapin's own Acuity booking link and the event pricing
+  // ($450, regularly $500). Provided by NESTRE, 2026-11-04.
+  '/terrapin-event-consultation-offer': {
+    location: 'Terrapin Physical Therapy',
+    bookUrl: 'https://app.acuityscheduling.com/schedule.php?owner=23912005&appointmentType=99171595',
+    priceNow: '$450',
+    priceWas: '$500',
+  },
 }
