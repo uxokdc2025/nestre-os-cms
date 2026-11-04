@@ -1254,3 +1254,14 @@ html { scroll-behavior: auto; }
 /* scheduling page: slim promo strip + figure reset for framed videos */
 .sched-promo-strip { padding: 44px 0 !important; border-bottom: 1px solid var(--line); }
 figure.sched-video { margin: 28px 0 0; }
+
+/* Homepage hero at ~60% of the previous size (client asked for 50–65%).
+   Was: h1 clamp(2.5833rem, 8.42vw, 6.0833rem) = 48px@390 / 104px@1440,
+   subhead 22.4/30.4px, buttons 15px × 52px, min-height 92vh, padding 120px. */
+main[data-page="home"] .hero:not(.quote) { min-height: 55vh; }
+main[data-page="home"] .hero:not(.quote) .inner { padding-top: 72px; padding-bottom: 72px; }
+main[data-page="home"] .hero:not(.quote) h1 { font-size: clamp(29px, 4.3vw, 62px); }
+main[data-page="home"] .hero:not(.quote) .subhead { font-size: clamp(15px, 1.25vw, 18px); margin-top: 14px; }
+main[data-page="home"] .hero:not(.quote) .lead { font-size: 15px; margin-top: 12px; }
+main[data-page="home"] .hero:not(.quote) .btn { height: 40px; padding: 0 20px; font-size: 13px; }
+main[data-page="home"] .hero:not(.quote) .btns { margin-top: 18px; }
