@@ -1294,3 +1294,11 @@ main[data-page="home"] .hero:not(.quote) .subhead { font-size: clamp(15px, 1.25v
 main[data-page="home"] .hero:not(.quote) .lead { font-size: 15px; margin-top: 12px; }
 main[data-page="home"] .hero:not(.quote) .btn { height: 40px; padding: 0 20px; font-size: 13px; }
 main[data-page="home"] .hero:not(.quote) .btns { margin-top: 18px; }
+
+/* Desktop: narrow the homepage hero headline to 3 balanced lines (no widow)
+   so more of the hero image shows on the right. Mobile unchanged. */
+@media (min-width: 1024px) {
+  main[data-page="home"] .hero:not(.quote) h1 { max-width: 24ch; text-wrap: balance; }
+  main[data-page="home"] .hero:not(.quote) .subhead { max-width: 32ch; }
+  main[data-page="home"] .hero:not(.quote) .lead { max-width: 46ch; }
+}
