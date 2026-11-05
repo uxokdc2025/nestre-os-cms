@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { ConsultPopover } from './ConsultPopover'
+import { SurveyCtaButton } from './SurveyModal'
 import { GET_STARTED } from '@/lib/get-started'
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -51,15 +52,21 @@ export function SiteHeader({ items, cta, logoUrl }: { items: any[]; cta?: any; l
   // the light legal/support pages it smears over the copy, so use a solid navy block.
   const solid = ['/privacy', '/terms', '/help'].includes(pathname)
 
-  // Get-started landing pages get a stripped header: logo + a single Book button
-  // that goes straight to this location's Acuity booking. No nav, no menu.
+  // Get-started landing pages get a stripped header: logo + a single Book button.
+  // No nav, no menu. When the page has a survey configured it opens the quiz popup
+  // (matching the page body's main CTA in GetStartedBody); otherwise it links
+  // straight to this location's Acuity booking.
   const landing = GET_STARTED[pathname]
   if (landing) {
     return (
       <header className={`nav nav-minimal${scrolled ? ' scrolled' : ''}`}>
         <div className="wrap inner">
           <Logo />
-          <a className="btn aqua" href={landing.bookUrl} target="_blank" rel="noopener noreferrer">Book My Consultation</a>
+          {landing.surveyId ? (
+            <SurveyCtaButton surveyId={landing.surveyId} label="Book My Consultation" className="btn aqua" title="Book Your NESTRE Consultation" />
+          ) : (
+            <a className="btn aqua" href={landing.bookUrl} target="_blank" rel="noopener noreferrer">Book My Consultation</a>
+          )}
         </div>
       </header>
     )
