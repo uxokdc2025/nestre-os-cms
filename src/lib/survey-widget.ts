@@ -4,10 +4,17 @@ import { CONSULT_SURVEY_ID } from './get-started'
 // cannot reach the logo or the headline inside it. We re-serve that one survey
 // from our origin and hide those two blocks; SurveyCtaButton draws Chloe's photo
 // and the resized headline in their place.
+//
+// The document is a Nuxt app that only mounts the quiz on `/widget/survey/:id`.
+// Serving it from any other path hydrates an empty shell. form_embed.js also
+// hides every iframe whose src contains "/survey" (opacity 0, visibility hidden,
+// left -9999px) until that document posts its height, and an empty shell stays
+// at the 5px init height — so the questions never appear. The iframe src has to
+// be the path the widget actually routes.
 const UPSTREAM = 'https://api.leadconnectorhq.com/widget/survey/'
 
 export function consultSurveySrc(surveyId: string) {
-  return surveyId === CONSULT_SURVEY_ID ? `/api/survey-widget/${surveyId}` : `${UPSTREAM}${surveyId}`
+  return surveyId === CONSULT_SURVEY_ID ? `/widget/survey/${surveyId}` : `${UPSTREAM}${surveyId}`
 }
 
 export function isConsultSurvey(surveyId: string) {

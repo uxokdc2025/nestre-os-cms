@@ -5,8 +5,9 @@ import { loadConsultSurveyHtml } from '@/lib/survey-widget'
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
-// Same-origin copy of the consultation quiz so the popup can swap the logo and
-// headline. Only the known survey id is fetched — this is not an open proxy.
+// Same-origin copy of the consultation quiz so the popup can hide the survey's
+// own logo and headline. The path has to be `/widget/survey/:id` — that is the
+// route the LeadConnector app mounts. Only the known survey id is fetched.
 export async function GET(_req: Request, ctx: { params: Promise<{ surveyId: string }> }) {
   const { surveyId } = await ctx.params
   if (surveyId !== CONSULT_SURVEY_ID) {
