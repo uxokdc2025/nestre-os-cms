@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useId, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
+import { consultSurveySrc, isConsultSurvey } from '@/lib/survey-widget'
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -91,9 +92,20 @@ export function SurveyCtaButton({
           <button type="button" ref={closeRef} className="survey-close" aria-label="Close" onClick={close}>×</button>
         </div>
         <div className="survey-dialog-body">
+          {isConsultSurvey(surveyId) && (
+            <div className="survey-intro">
+              <img
+                className="survey-intro-photo"
+                src="/survey/chloe-deluca.png"
+                alt="Chloe DeLuca"
+              />
+              <h3 className="survey-intro-title">You Know Your Personality Type. But Do You Know How Your Mind Operates?</h3>
+              <p className="survey-intro-sub">Four quick questions to explore your cognitive patterns— find your starting point for mind and brain fitness.</p>
+            </div>
+          )}
           <iframe
             className="survey-frame"
-            src={`https://api.leadconnectorhq.com/widget/survey/${surveyId}`}
+            src={consultSurveySrc(surveyId)}
             id={surveyId}
             title="survey"
             scrolling="no"

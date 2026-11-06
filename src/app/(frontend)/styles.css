@@ -1273,6 +1273,36 @@ figure.sched-video { margin: 28px 0 0; }
 /* iframe auto-sizes (scrolling=no + form_embed.js) so it never shows its own
    scrollbar; this body scrolls only if the survey is taller than the viewport. */
 .survey-dialog-body { flex: 1 1 auto; overflow-y: auto; -webkit-overflow-scrolling: touch; background: #fff; }
+/* Quiz intro, drawn by us (the LeadConnector document hides its own logo + headline).
+   Headline was 40px inside the survey. Chloe asked for it a few sizes smaller,
+   and still a few sizes larger than the 14px “four quick questions” line. */
+.survey-intro { padding: 16px 20px 8px; background: #fff; }
+.survey-intro-photo {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 460px;
+  margin: 0 auto 14px;
+  object-fit: contain;
+  object-position: center top;
+  background: #fff;
+}
+.survey-intro-title {
+  margin: 0;
+  color: #000;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.28;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+.survey-intro-sub {
+  margin: 8px 0 0;
+  color: #344054;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+}
 .survey-frame { display: block; width: 100%; border: 0; min-height: 420px; }
 @keyframes surveyFade { from { opacity: 0 } to { opacity: 1 } }
 @keyframes surveyIn { from { opacity: 0; transform: translate(-50%, calc(-50% + 14px)) } to { opacity: 1; transform: translate(-50%, -50%) } }
