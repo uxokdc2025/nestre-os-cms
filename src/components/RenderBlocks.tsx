@@ -6,13 +6,14 @@ import { PhoneShowcase } from './PhoneShowcase'
 import { LocationsMap } from './LocationsMap'
 import { MindsetRingCard } from './MindsetRingCard'
 import { consultCostAnswer, CONSULT_COST_TOKEN, type Region } from '@/lib/consult-pricing'
+import { SurveyCtaButton } from './SurveyModal'
 
 // Founder (Dr. Tommy Shavers) NESTRE Mindset Profile — shown in place of his photo
 // in the Our Story "A different view…" section.
 const FOUNDER_PROFILE = { cerebral: 0, alpha: 80, prime: 20 }
 
 type Media = { url?: string | null; alt?: string | null } | string | null | undefined
-type CTA = { label?: string; href?: string | null; style?: string }
+type CTA = { label?: string; href?: string | null; style?: string; survey?: string | null }
 
 const mediaUrl = (m: Media): string | null =>
   m && typeof m === 'object' && 'url' in m ? (m.url ?? null) : null
@@ -56,6 +57,7 @@ function Buttons({ ctas }: { ctas?: CTA[] }) {
     <div className="btns">
       {list.map((c, i) => {
         const cls = `btn ${c.style || 'aqua'}`
+        if (c.survey) return <SurveyCtaButton key={i} surveyId={c.survey} label={c.label || 'Get started'} className={cls} />
         return isInternal(c.href) ? (
           <Link key={i} className={cls} href={c.href!}>{c.label}</Link>
         ) : (

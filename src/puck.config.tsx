@@ -20,6 +20,9 @@ const ctasField = {
         { label: 'Link', value: 'link' },
       ],
     },
+    // Optional: a LeadConnector survey id. When set, the button opens a modal
+    // embedding that survey instead of navigating to `href`.
+    survey: { type: 'text' as const, label: 'Survey id (opens survey modal)' },
   },
   getItemSummary: (i: any) => i?.label || 'Button',
 }
