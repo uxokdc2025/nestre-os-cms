@@ -10,5 +10,5 @@ export const metadata: Metadata = {
 }
 
 export default function GetStartedNeurovations() {
-  return <GetStartedBody location={GET_STARTED['/get-started-at-neurovations'].location} bookUrl={GET_STARTED['/get-started-at-neurovations'].bookUrl} />
+  return <GetStartedBody location={GET_STARTED['/get-started-at-neurovations'].location} bookUrl={GET_STARTED['/get-started-at-neurovations'].bookUrl} surveyId={GET_STARTED['/get-started-at-neurovations'].surveyId} />
 }

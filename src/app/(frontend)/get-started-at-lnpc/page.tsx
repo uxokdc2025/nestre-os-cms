@@ -10,5 +10,5 @@ export const metadata: Metadata = {
 }
 
 export default function GetStartedLNPC() {
-  return <GetStartedBody location={GET_STARTED['/get-started-at-lnpc'].location} bookUrl={GET_STARTED['/get-started-at-lnpc'].bookUrl} />
+  return <GetStartedBody location={GET_STARTED['/get-started-at-lnpc'].location} bookUrl={GET_STARTED['/get-started-at-lnpc'].bookUrl} surveyId={GET_STARTED['/get-started-at-lnpc'].surveyId} />
 }

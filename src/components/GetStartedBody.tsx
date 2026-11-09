@@ -2,6 +2,7 @@ import React from 'react'
 import { Reveal } from './Reveal'
 import { GetStartedForm } from './GetStartedForm'
 import { GtmTag } from './Tracking'
+import { SurveyCtaButton } from './SurveyModal'
 
 // Ad landing page ("Get Started at …") rebuilt faithfully from the legacy WordPress
 // pages on the NESTRE design system — same sections, copy, images, icons and the
@@ -15,7 +16,17 @@ const IMG = '/legacy/getstarted'
 const LOGO_STRIP = '/legacy/logos/logos-color.png'
 const LOGO_ALT = 'Featured by Bleacher Report, Harvard Medical School, Bloomberg, Sports Illustrated, the U.S. Department of Veterans Affairs, and ESPN'
 
-export function GetStartedBody({ location, bookUrl, priceNow = '$250', priceWas = '$300' }: { location: string; bookUrl: string; priceNow?: string; priceWas?: string }) {
+export function GetStartedBody({ location, bookUrl, surveyId, priceNow = '$250', priceWas = '$300' }: { location: string; bookUrl: string; surveyId?: string; priceNow?: string; priceWas?: string }) {
+
+  // Main booking CTA. When a surveyId is configured for the page, it opens a modal
+  // embedding the LeadConnector survey; otherwise it links straight to Acuity.
+  // Shown twice (hero + closing offer) — rendered fresh each place.
+  const bookCta = () =>
+    surveyId ? (
+      <SurveyCtaButton surveyId={surveyId} label="Book My Consultation" className="btn aqua" title="Book Your NESTRE Consultation" />
+    ) : (
+      <a className="btn aqua" href={bookUrl} target="_blank" rel="noopener noreferrer">Book My Consultation</a>
+    )
 
   const heroFeatures = [
     { icon: 'Exclude.png', t: `One-on-One at ${location}` },
@@ -66,7 +77,7 @@ export function GetStartedBody({ location, bookUrl, priceNow = '$250', priceWas 
             <span className="get-price-was">Regularly {priceWas}</span>
           </div>
           <div className="btns">
-            <a className="btn aqua" href={bookUrl} target="_blank" rel="noopener noreferrer">Book My Consultation</a>
+            {bookCta()}
             <a className="btn outline light" href={PHONE_HREF}>Call {PHONE_DISPLAY}</a>
           </div>
           <p className="muted" style={{ color: 'rgba(255,255,255,.6)', marginTop: 14, fontSize: 14 }}>
@@ -200,7 +211,7 @@ export function GetStartedBody({ location, bookUrl, priceNow = '$250', priceWas 
             <p className="muted" style={{ color: 'rgba(255,255,255,.72)', marginTop: 10 }}>Save $50 on your NESTRE consultation</p>
             <div className="get-offer-price"><span className="was">Regular {priceWas}</span><span className="now">Now {priceNow}</span></div>
             <div className="btns" style={{ justifyContent: 'center', marginTop: 20 }}>
-              <a className="btn aqua" href={bookUrl} target="_blank" rel="noopener noreferrer">Book My Consultation</a>
+              {bookCta()}
               <a className="btn outline light" href={PHONE_HREF}>Call {PHONE_DISPLAY}</a>
             </div>
           </div>
