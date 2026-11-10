@@ -420,7 +420,7 @@ export function Block({ block, region }: { block: any; region?: Region }) {
   }
 }
 
-export function RenderBlocks({ blocks, afterHero, region }: { blocks: any[]; afterHero?: React.ReactNode; region?: Region }) {
+export function RenderBlocks({ blocks, afterHero, region, suppressNextAnchor = false }: { blocks: any[]; afterHero?: React.ReactNode; region?: Region; suppressNextAnchor?: boolean }) {
   if (!blocks?.length) return null
   // data-block-idx tags each section so the AI Studio overlay can target it.
   // display:contents keeps the wrapper out of layout — blocks render unchanged.
@@ -431,7 +431,7 @@ export function RenderBlocks({ blocks, afterHero, region }: { blocks: any[]; aft
           <div data-block-idx={i} data-block-type={b.blockType} style={{ display: 'contents' }}>
             <Block block={b} region={region} />
           </div>
-          {i === 0 && <div id="next" className="scroll-anchor" aria-hidden />}
+          {i === 0 && !suppressNextAnchor && <div id="next" className="scroll-anchor" aria-hidden />}
           {i === 0 && afterHero}
         </React.Fragment>
       ))}
