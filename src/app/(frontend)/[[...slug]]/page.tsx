@@ -63,7 +63,7 @@ export default async function Page({ params, searchParams }: { params: Promise<{
   const isHome = slugStr === 'home'
   let skippedHero = false
   const blocks = isHome
-    ? layout.filter((block) => {
+    ? layout.filter((block: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
         if (!skippedHero && block?.blockType === 'hero') {
           skippedHero = true
           return false
