@@ -299,7 +299,7 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px soli
 /* full-screen mobile menu overlay (sits below the fixed header bar) */
 /* full-screen overlay that fits without scrolling. viewport units (not inset:0)
    dodge the header's backdrop-filter containing block; sits below the header bar. */
-.nav-mobile { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; height: 100dvh; z-index: 1; display: flex; flex-direction: column; padding: 84px 28px max(24px, env(safe-area-inset-bottom)); background: var(--navy); overflow: hidden; }
+.nav-mobile { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; height: 100dvh; z-index: 1; display: flex; flex-direction: column; padding: 84px 28px max(24px, env(safe-area-inset-bottom)); background: var(--navy); overflow-x: hidden; overflow-y: auto; }
 .nav-mobile a:not(.btn) { display: flex; align-items: center; color: #fff; font-size: 19px; font-weight: 500; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,.1); transition: color .2s; }
 .nav-mobile a:not(.btn):hover { color: var(--aqua); }
 .nav-mobile a:not(.btn)[aria-current="page"] { color: var(--aqua); }
@@ -1317,18 +1317,75 @@ figure.sched-video { margin: 28px 0 0; }
 /* Homepage hero at ~60% of the previous size (client asked for 50–65%).
    Was: h1 clamp(2.5833rem, 8.42vw, 6.0833rem) = 48px@390 / 104px@1440,
    subhead 22.4/30.4px, buttons 15px × 52px, min-height 92vh, padding 120px. */
-main[data-page="home"] .hero:not(.quote) { min-height: 55vh; }
-main[data-page="home"] .hero:not(.quote) .inner { padding-top: 72px; padding-bottom: 72px; }
-main[data-page="home"] .hero:not(.quote) h1 { font-size: clamp(29px, 4.3vw, 62px); }
-main[data-page="home"] .hero:not(.quote) .subhead { font-size: clamp(15px, 1.25vw, 18px); margin-top: 14px; }
-main[data-page="home"] .hero:not(.quote) .lead { font-size: 15px; margin-top: 12px; }
-main[data-page="home"] .hero:not(.quote) .btn { height: 40px; padding: 0 20px; font-size: 13px; }
-main[data-page="home"] .hero:not(.quote) .btns { margin-top: 18px; }
+main[data-page="home"] .hero:not(.quote):not(.veterans) { min-height: 55vh; }
+main[data-page="home"] .hero:not(.quote):not(.veterans) .inner { padding-top: 72px; padding-bottom: 72px; }
+main[data-page="home"] .hero:not(.quote):not(.veterans) h1 { font-size: clamp(29px, 4.3vw, 62px); }
+main[data-page="home"] .hero:not(.quote):not(.veterans) .subhead { font-size: clamp(15px, 1.25vw, 18px); margin-top: 14px; }
+main[data-page="home"] .hero:not(.quote):not(.veterans) .lead { font-size: 15px; margin-top: 12px; }
+main[data-page="home"] .hero:not(.quote):not(.veterans) .btn { height: 40px; padding: 0 20px; font-size: 13px; }
+main[data-page="home"] .hero:not(.quote):not(.veterans) .btns { margin-top: 18px; }
 
 /* Desktop: narrow the homepage hero headline to 3 balanced lines (no widow)
    so more of the hero image shows on the right. Mobile unchanged. */
 @media (min-width: 1024px) {
-  main[data-page="home"] .hero:not(.quote) h1 { max-width: 24ch; text-wrap: balance; }
-  main[data-page="home"] .hero:not(.quote) .subhead { max-width: 32ch; }
-  main[data-page="home"] .hero:not(.quote) .lead { max-width: 46ch; }
+  main[data-page="home"] .hero:not(.quote):not(.veterans) h1 { max-width: 24ch; text-wrap: balance; }
+  main[data-page="home"] .hero:not(.quote):not(.veterans) .subhead { max-width: 32ch; }
+  main[data-page="home"] .hero:not(.quote):not(.veterans) .lead { max-width: 46ch; }
+}
+
+/* Veterans Day hero — full-bleed flag, navy scrim on the left, teal pill CTA.
+   The homepage size reduction above does not apply (.veterans). */
+.hero.veterans { min-height: 100vh; min-height: 100svh; align-items: center; }
+.hero.veterans .bg img { object-fit: cover; object-position: 68% center; }
+.hero.veterans .grad {
+  background:
+    linear-gradient(90deg, rgba(8, 28, 38, 0.94) 0%, rgba(8, 28, 38, 0.82) 28%, rgba(8, 28, 38, 0.45) 52%, rgba(8, 28, 38, 0.12) 72%, rgba(8, 28, 38, 0) 100%);
+}
+.hero.veterans .inner { padding-top: 108px; padding-bottom: 72px; }
+.hero.veterans .eyebrow { font-size: 13px; letter-spacing: 0.22em; font-weight: 600; }
+.hero.veterans h1 {
+  margin-top: 18px;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 0.86;
+  font-size: clamp(3.5rem, 7.4vw, 7.4rem);
+  text-wrap: unset;
+  max-width: none;
+}
+.hero.veterans h1 .line { display: block; white-space: nowrap; }
+.hero.veterans .veterans-copy { margin-top: 28px; max-width: 68rem; }
+.hero.veterans .veterans-copy p {
+  margin: 0;
+  max-width: none;
+  color: #fff;
+  font-size: clamp(17px, 1.35vw, 21px);
+  line-height: 1.35;
+  font-weight: 400;
+}
+.hero.veterans .veterans-copy p + p { margin-top: 8px; }
+.hero.veterans .veterans-copy .em { font-weight: 600; }
+.hero.veterans .btns { margin-top: 32px; }
+.hero.veterans .btn { height: 52px; padding: 0 28px; font-size: 16px; font-weight: 500; }
+@media (max-width: 720px) {
+  .hero.veterans .grad {
+    background:
+      linear-gradient(180deg, rgba(8, 28, 38, 0.55) 0%, rgba(8, 28, 38, 0.82) 28%, rgba(8, 28, 38, 0.72) 70%, rgba(8, 28, 38, 0.4) 100%);
+  }
+  .hero.veterans h1 { font-size: clamp(2.7rem, 12.5vw, 4.2rem); }
+  .hero.veterans .veterans-copy { max-width: 22rem; }
+  .hero.veterans .veterans-copy { max-width: 36rem; }
+}
+
+/* Holidays is a shell: same hero chrome, no invented body copy. */
+.hero.holidays { min-height: 78vh; }
+.hero.holidays h1 { margin-top: 0; font-size: clamp(3rem, 7vw, 5.5rem); font-weight: 600; }
+
+/* Seven header links: keep them on one row beside the logo and Book CTA. */
+@media (max-width: 1280px) {
+  .nav .links { gap: 16px; }
+  .nav .links a { font-size: 14px; }
+}
+@media (max-width: 1080px) {
+  .nav .links { gap: 12px; }
+  .nav .links a { font-size: 13px; }
 }
