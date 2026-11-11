@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import config from '@/payload.config'
 import { RenderBlocks } from '@/components/RenderBlocks'
+import { VeteransHero } from '@/components/VeteransHero'
 import { MindsetRing } from '@/components/MindsetRing'
 import { Reveal } from '@/components/Reveal'
 import { ReadingReveal } from '@/components/ReadingReveal'
@@ -54,8 +55,22 @@ export default async function Page({ params, searchParams }: { params: Promise<{
   if (!page) notFound()
 
   const region = await getRegion()
-  const faq = faqGraph(page.layout || [], region)
+  const layout = page.layout || []
+  const faq = faqGraph(layout, region)
   const slugStr = slug?.join('/') || 'home'
+  // Veterans Day: the homepage hero is the code-driven flag lockup. Everything
+  // after the first hero block stays the published homepage.
+  const isHome = slugStr === 'home'
+  let skippedHero = false
+  const blocks = isHome
+    ? layout.filter((block: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
+        if (!skippedHero && block?.blockType === 'hero') {
+          skippedHero = true
+          return false
+        }
+        return true
+      })
+    : layout
   // Mindset ring lives only on the /appv2 sandbox now — removed from live /the-app.
   const afterHero = slugStr === 'appv2' ? <MindsetRing /> : undefined
   return (
@@ -63,7 +78,13 @@ export default async function Page({ params, searchParams }: { params: Promise<{
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(siteGraph()) }} />
       {faq && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faq) }} />}
       <main id="main" data-page={slugStr}>
-        <RenderBlocks blocks={page.layout || []} afterHero={afterHero} region={region} />
+        {isHome && (
+          <>
+            <VeteransHero cta="scroll" />
+            <div id="next" className="scroll-anchor" aria-hidden />
+          </>
+        )}
+        <RenderBlocks blocks={blocks} afterHero={afterHero} region={region} suppressNextAnchor={isHome} />
       </main>
       {!studio && <Reveal />}
       {!studio && <ReadingReveal />}
