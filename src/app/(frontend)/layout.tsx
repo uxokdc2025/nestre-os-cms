@@ -5,6 +5,7 @@ import { SiteHeader } from '@/components/SiteHeader'
 import { SiteFooter } from '@/components/SiteFooter'
 import { Carousels } from '@/components/Carousels'
 import { getChrome } from '@/lib/chrome'
+import { withCampaignNav } from '@/lib/nav'
 import { brandCss } from '@/lib/brand-css'
 import { BottomBlur } from '@/components/BottomBlur'
 import { CustomCursor } from '@/components/CustomCursor'
@@ -40,7 +41,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         {fontHref && <link rel="stylesheet" href={fontHref} />}
         {brandStyle && <style id="brand-tokens" dangerouslySetInnerHTML={{ __html: brandStyle }} />}
         <a href="#main" className="skip-link">Skip to content</a>
-        <SiteHeader items={nav?.items || []} cta={nav?.cta} logoUrl={logoUrl} />
+        <SiteHeader items={withCampaignNav(nav?.items)} cta={nav?.cta} logoUrl={logoUrl} />
         {children}
         <BottomBlur />
         <CustomCursor />
