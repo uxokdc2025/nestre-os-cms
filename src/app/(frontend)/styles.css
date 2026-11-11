@@ -1389,3 +1389,17 @@ main[data-page="home"] .hero:not(.quote):not(.veterans) .btns { margin-top: 18px
   .hero.veterans .veterans-copy { max-width: 22rem; }
   .hero.veterans .veterans-copy { max-width: 36rem; }
 }
+
+/* Holidays is a shell: same hero chrome, no invented body copy. */
+.hero.holidays { min-height: 78vh; }
+.hero.holidays h1 { margin-top: 0; font-size: clamp(3rem, 7vw, 5.5rem); font-weight: 600; }
+
+/* Seven header links: keep them on one row beside the logo and Book CTA. */
+@media (max-width: 1280px) {
+  .nav .links { gap: 16px; }
+  .nav .links a { font-size: 14px; }
+}
+@media (max-width: 1080px) {
+  .nav .links { gap: 12px; }
+  .nav .links a { font-size: 13px; }
+}
