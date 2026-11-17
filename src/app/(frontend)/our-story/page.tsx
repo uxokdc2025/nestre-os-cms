@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { getPayload } from 'payload'
 import config from '@/payload.config'
-import { SITE_URL } from '@/lib/seo'
+import { pageTitle, SITE_URL } from '@/lib/seo'
 import { RenderBlocks } from '@/components/RenderBlocks'
 import { OurStoryV4 } from '@/components/OurStoryV4'
 import { Reveal } from '@/components/Reveal'
@@ -12,7 +12,7 @@ import { ReadingReveal } from '@/components/ReadingReveal'
 // (OurStoryV4) → closing parallax with the swimmer (CMS) → footer.
 export const dynamic = 'force-dynamic'
 export const metadata: Metadata = {
-  title: 'Our Story — NESTRE',
+  title: pageTitle('Our Story — NESTRE'),
   description:
     'The story behind NESTRE — founder Dr. Tommy Shavers and the world-class team building a new standard for cognitive performance.',
   alternates: { canonical: `${SITE_URL}/our-story` },

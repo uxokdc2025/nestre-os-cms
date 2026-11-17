@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import React from 'react'
 import { Reveal } from '@/components/Reveal'
-import { SITE_URL, webPageGraph } from '@/lib/seo'
+import { pageTitle, SITE_URL, webPageGraph } from '@/lib/seo'
 import { AppSupportForm } from '@/components/AppSupportForm'
 
 // NESTRE app help & support at the exact URL the mobile app links to
@@ -10,11 +10,11 @@ import { AppSupportForm } from '@/components/AppSupportForm'
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
-  title: 'NESTRE App Help & Support',
+  title: pageTitle('NESTRE App Help & Support'),
   description: 'Get help with the NESTRE app — delete your account, cancel a subscription, or contact NESTRE app support.',
   alternates: { canonical: `${SITE_URL}/nestre-app/help` },
-  openGraph: { title: 'NESTRE App Help & Support · NESTRE', url: `${SITE_URL}/nestre-app/help`, images: [{ url: '/og', width: 1200, height: 630 }] },
-  twitter: { card: 'summary_large_image', title: 'NESTRE App Help & Support · NESTRE', images: ['/og'] },
+  openGraph: { title: 'NESTRE App Help & Support', url: `${SITE_URL}/nestre-app/help`, images: [{ url: '/og', width: 1200, height: 630 }] },
+  twitter: { card: 'summary_large_image', title: 'NESTRE App Help & Support', images: ['/og'] },
 }
 
 const IOS_CANCEL = 'https://support.apple.com/en-us/HT202039'

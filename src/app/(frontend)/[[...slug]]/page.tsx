@@ -7,7 +7,7 @@ import { VeteransHero } from '@/components/VeteransHero'
 import { MindsetRing } from '@/components/MindsetRing'
 import { Reveal } from '@/components/Reveal'
 import { ReadingReveal } from '@/components/ReadingReveal'
-import { siteGraph, faqGraph, SITE_URL } from '@/lib/seo'
+import { siteGraph, faqGraph, pageTitle, SITE_URL } from '@/lib/seo'
 import { getRegion } from '@/lib/geo-pricing'
 
 export const dynamic = 'force-dynamic'
@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug?: st
   const title = page.metaTitle || page.title
   const description = page.metaDescription || undefined
   return {
-    title,
+    title: pageTitle(title),
     description,
     ...(slug?.join('/') === 'appv2' ? { robots: { index: false, follow: false } } : {}),
     alternates: { canonical: path === '/' ? SITE_URL : `${SITE_URL}${path}` },
@@ -58,33 +58,18 @@ export default async function Page({ params, searchParams }: { params: Promise<{
   const layout = page.layout || []
   const faq = faqGraph(layout, region)
   const slugStr = slug?.join('/') || 'home'
-  // Veterans Day: the homepage hero is the code-driven flag lockup. Everything
-  // after the first hero block stays the published homepage.
   const isHome = slugStr === 'home'
-  let skippedHero = false
-  const blocks = isHome
-    ? layout.filter((block: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
-        if (!skippedHero && block?.blockType === 'hero') {
-          skippedHero = true
-          return false
-        }
-        return true
-      })
-    : layout
+  // The homepage leads with its published hero, so the brand line is the page's
+  // one h1; the Veterans tribute follows it as a section with an h2 (it used to
+  // replace the hero, which left "THANK YOU VETERANS" as the only homepage h1).
   // Mindset ring lives only on the /appv2 sandbox now — removed from live /the-app.
-  const afterHero = slugStr === 'appv2' ? <MindsetRing /> : undefined
+  const afterHero = slugStr === 'appv2' ? <MindsetRing /> : isHome ? <VeteransHero as="h2" /> : undefined
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(siteGraph()) }} />
       {faq && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faq) }} />}
       <main id="main" data-page={slugStr}>
-        {isHome && (
-          <>
-            <VeteransHero cta="scroll" />
-            <div id="next" className="scroll-anchor" aria-hidden />
-          </>
-        )}
-        <RenderBlocks blocks={blocks} afterHero={afterHero} region={region} suppressNextAnchor={isHome} />
+        <RenderBlocks blocks={layout} afterHero={afterHero} region={region} />
       </main>
       {!studio && <Reveal />}
       {!studio && <ReadingReveal />}

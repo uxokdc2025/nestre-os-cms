@@ -1,9 +1,9 @@
 import type { Metadata } from 'next'
-import { SITE_URL } from '@/lib/seo'
+import { pageTitle, SITE_URL } from '@/lib/seo'
 import { SchedulePageBody, type ScheduleConfig } from '@/components/SchedulePageBody'
 
 export const metadata: Metadata = {
-  title: 'Schedule with NESTRE at Lake Nona Performance Club | NESTRE Performance',
+  title: pageTitle('Schedule at Lake Nona Performance Club'),
   description: 'Book your NESTRE consultation and Neuro-Strength training at Lake Nona Performance Club.',
   alternates: { canonical: `${SITE_URL}/schedule-with-nestre-at-lake-nona-performance-club` },
 }

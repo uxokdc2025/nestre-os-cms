@@ -40,8 +40,10 @@ export default function ForVeteransPage() {
         <div className="grad" />
         <div className="wrap inner">
           <p className="eyebrow">NESTRE for Veterans</p>
+          {/* Two display lines, one sentence: the space after the comma lives inside
+              the first line so the h1 reads "THANK YOU, VETERANS." when parsed. */}
           <h1 id="veterans-hero-title">
-            <span className="line">THANK YOU,</span>
+            <span className="line">{'THANK YOU, '}</span>
             <span className="line">VETERANS.</span>
           </h1>
           <div className="veterans-copy">

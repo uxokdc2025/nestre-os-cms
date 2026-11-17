@@ -169,3 +169,11 @@ export function webPageGraph(name: string, path: string, description?: string): 
     ],
   }
 }
+
+/** Title de-duplication. The root layout appends ' · NESTRE' through its metadata
+ *  template, which doubled the brand on every title that already said NESTRE
+ *  ('Our Story — NESTRE · NESTRE'). Titles that already carry the brand opt out of
+ *  the template with `absolute`; the rest still get the suffix. */
+export function pageTitle(title: string): string | { absolute: string } {
+  return /nestre/i.test(title) ? { absolute: title } : title
+}

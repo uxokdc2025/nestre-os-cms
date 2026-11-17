@@ -23,11 +23,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       { url: `${SITE_URL}/for-veterans`, lastModified: new Date(), changeFrequency: 'weekly' as const, priority: 0.8 },
       { url: `${SITE_URL}/nestre-holidays`, lastModified: new Date(), changeFrequency: 'weekly' as const, priority: 0.5 },
       { url: `${SITE_URL}/news`, lastModified: new Date(), changeFrequency: 'weekly' as const, priority: 0.6 },
+      // Conversion routes: the two Neuro Lab get-started pages and their schedulers.
+      { url: `${SITE_URL}/get-started-at-lnpc`, lastModified: new Date(), changeFrequency: 'weekly' as const, priority: 0.8 },
+      { url: `${SITE_URL}/get-started-at-neurovations`, lastModified: new Date(), changeFrequency: 'weekly' as const, priority: 0.8 },
+      { url: `${SITE_URL}/schedule-with-nestre-at-lake-nona-performance-club`, lastModified: new Date(), changeFrequency: 'weekly' as const, priority: 0.7 },
+      { url: `${SITE_URL}/schedule-with-nestre-at-neurovations-clinic`, lastModified: new Date(), changeFrequency: 'weekly' as const, priority: 0.7 },
       { url: `${SITE_URL}/privacy`, lastModified: new Date(), changeFrequency: 'yearly' as const, priority: 0.2 },
       { url: `${SITE_URL}/terms`, lastModified: new Date(), changeFrequency: 'yearly' as const, priority: 0.2 },
       { url: `${SITE_URL}/help`, lastModified: new Date(), changeFrequency: 'yearly' as const, priority: 0.3 },
     ]
-    return [...cms, ...extra]
+    // /help, /terms and /privacy exist as both a CMS page and a standalone route, so
+    // they used to be emitted twice. One entry per URL — the CMS copy wins because it
+    // carries a real lastModified.
+    const seen = new Set<string>()
+    return [...cms, ...extra].filter((entry) => {
+      if (seen.has(entry.url)) return false
+      seen.add(entry.url)
+      return true
+    })
   } catch {
     return [{ url: SITE_URL, lastModified: new Date(), changeFrequency: 'weekly', priority: 1 }]
   }

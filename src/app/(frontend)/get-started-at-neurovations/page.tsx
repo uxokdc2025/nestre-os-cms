@@ -1,11 +1,11 @@
 import type { Metadata } from 'next'
-import { SITE_URL } from '@/lib/seo'
+import { pageTitle, SITE_URL } from '@/lib/seo'
 import { GetStartedBody } from '@/components/GetStartedBody'
 import { GET_STARTED } from '@/lib/get-started'
 
 export const metadata: Metadata = {
-  title: 'Get Started at Neurovations | NESTRE Performance',
-  description: 'Schedule your NESTRE consultation at Neurovations — a 60-minute, one-on-one session with a brain scan, your NESTRE Mindset Profile, and a personalized results review.',
+  title: pageTitle('Get Started at Neurovations | NESTRE Performance'),
+  description: 'A 60-minute NESTRE consultation at Neurovations: 3-minute brain scan, Mindset Profile, and a one-on-one results review.',
   alternates: { canonical: `${SITE_URL}/get-started-at-neurovations` },
 }
 
