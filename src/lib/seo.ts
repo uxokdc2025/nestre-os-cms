@@ -41,8 +41,13 @@ const LABS = [
   },
   {
     name: 'NESTRE Neuro Lab — Winter Park',
-    locality: 'Winter Park', region: 'FL', country: 'US',
+    street: '2200 Lee Rd',
+    locality: 'Winter Park', region: 'FL', postal: '32789', country: 'US',
     inside: 'Winter Park, Florida',
+    // Confirmed NAP for the Neurovations / Winter Park lab. Carried as a
+    // one-line label next to the structured fields so answer engines lift the
+    // confirmed string verbatim instead of reassembling their own variant.
+    oneLine: '2200 Lee Rd, Winter Park, FL 32789, United States',
   },
 ]
 
@@ -93,6 +98,7 @@ export function siteGraph() {
     email: CONTACT.email,
     address: {
       '@type': 'PostalAddress',
+      ...(l.oneLine ? { name: l.oneLine } : {}),
       ...(l.street ? { streetAddress: l.street } : {}),
       addressLocality: l.locality,
       addressRegion: l.region,

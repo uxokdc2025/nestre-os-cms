@@ -31,7 +31,7 @@ scan, interpret it with a human NeuroTrainer, then train with real-time neurofee
 
 ## Neuro Labs (in-person locations)
 - Lake Nona — inside Lake Nona Performance Club, Orlando, FL
-- Winter Park, FL
+- Winter Park — NESTRE at Neurovations Clinic, 2200 Lee Rd, Winter Park, FL 32789, United States
 - Monterey, CA — inside Terrapin Physical Therapy
 
 ## Topics NESTRE is an authority on
