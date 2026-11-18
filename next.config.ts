@@ -7,10 +7,6 @@ const __filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(__filename)
 
 const nextConfig: NextConfig = {
-  // Veterans campaign retired (Nov 18, 2026): temporary redirect so old links never 404.
-  async redirects() {
-    return [{ source: '/for-veterans', destination: '/', permanent: false }]
-  },
   images: {
     localPatterns: [
       {
