@@ -13,8 +13,10 @@ export const HERO = {
   photoAlt: 'A woman with her eyes closed in a sunlit, plant-filled room',
 }
 
-// The press strip is the same asset the home and get-started pages use.
-export const LOGO_STRIP = '/legacy/logos/logos-color.png'
+// The press strip is the home / get-started asset, except the U.S. Department of
+// Veterans Affairs lockup is knocked out to white: the ad strip sits on navy and
+// the black VA mark disappeared there (Chloe, Nov 18). Same pixels otherwise.
+export const LOGO_STRIP = '/legacy/logos/logos-color-va-white.png'
 export const LOGO_STRIP_ALT =
   'Featured by Bleacher Report, Harvard Medical School, Bloomberg, Sports Illustrated, the U.S. Department of Veterans Affairs, and ESPN'
 
@@ -87,7 +89,7 @@ export const CONSULTATION = {
 // markup, so the bars grow and the numbers count up as it scrolls into view.
 export const SAMPLE_REPORT = {
   badge: 'ILLUSTRATIVE SAMPLE',
-  title: 'Your NESTRE Mindset Profile Score',
+  title: 'Your Data. A Conversation.',
   caption: 'An example of how cognitive performance findings can be presented.',
   metrics: [
     { label: 'Memory', score: 78 },
@@ -98,7 +100,8 @@ export const SAMPLE_REPORT = {
   // The prototype crops a rendered Mindset Profile image; we draw the real ring
   // with <MindsetRingCard/> at the same illustrative split.
   mindset: { cerebral: 56, alpha: 11, prime: 33 },
-  mindsetLabel: 'Your NESTRE Mindset Profile',
+  // Sits at the bottom of the illustrative example, under the ring (Chloe, Nov 18).
+  mindsetLabel: 'Your NESTRE Mindset Profile Score',
   disclaimer:
     'Illustrative layout and sample values only. This is not an actual client report or the confirmed report format.',
 }
