@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { CONSULT_SURVEY_ID } from '@/lib/get-started'
 import { loadConsultSurveyHtml } from '@/lib/survey-widget'
+import { guardScript, issueStamp } from '@/lib/survey-guard'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -14,7 +15,8 @@ export async function GET(_req: Request, ctx: { params: Promise<{ surveyId: stri
     return NextResponse.json({ error: 'unknown_survey' }, { status: 404 })
   }
   try {
-    const html = await loadConsultSurveyHtml(surveyId)
+    // Bot protection on the final submit (honeypot + time-to-submit + Turnstile).
+    const html = await loadConsultSurveyHtml(surveyId, guardScript(issueStamp()))
     return new NextResponse(html, {
       headers: {
         'content-type': 'text/html; charset=utf-8',

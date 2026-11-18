@@ -1324,6 +1324,14 @@ figure.sched-video { margin: 28px 0 0; }
   line-height: 1.5;
 }
 .survey-frame { display: block; width: 100%; border: 0; min-height: 420px; }
+/* Quiz bot check (SurveyModal → lib/survey-guard.ts). Turnstile runs in
+   "interaction-only" mode, so for most people this stays empty; it only shows a
+   checkbox when Cloudflare wants one. */
+.survey-guard:empty { display: none; }
+.survey-turnstile { display: flex; justify-content: center; }
+.survey-turnstile:empty { display: none; }
+.survey-turnstile iframe { margin-top: 12px; }
+.survey-guard-note { margin: 10px 0 0; text-align: center; color: #b42318; font-size: 14px; line-height: 1.45; }
 @keyframes surveyFade { from { opacity: 0 } to { opacity: 1 } }
 @keyframes surveyIn { from { opacity: 0; transform: translate(-50%, calc(-50% + 14px)) } to { opacity: 1; transform: translate(-50%, -50%) } }
 /* Phones (≤480px, e.g. 390px): full-screen sheet so the survey never clips. */
@@ -1483,6 +1491,8 @@ main[data-page="home"] .hero:not(.quote):not(.veterans) .btns { margin-top: 18px
 
 /* ── Press strip ──────────────────────────────────────────────────────────── */
 .adl-trust { background: var(--navy); padding: 34px 0 44px; }
+/* The strip sits on navy, so the ad pages use a copy with the VA lockup knocked
+   out to white (Chloe, Nov 18); every other logo is the original colour art. */
 .adl-logos { width: min(100%, 1060px); height: auto; margin-inline: auto; }
 
 /* ── NESTRE is for — client stories rail ──────────────────────────────────── */
@@ -1521,6 +1531,20 @@ main[data-page="home"] .hero:not(.quote):not(.veterans) .btns { margin-top: 18px
 .adl-person-badge.is-playing { opacity: 0; transform: scale(.85); }
 .adl-person-play:hover .adl-person-badge.is-playing, .adl-person-play:focus-visible .adl-person-badge.is-playing { opacity: .75; transform: none; }
 @media (prefers-reduced-motion: reduce) { .adl-person-badge { transition: none; } }
+/* Sound (PersonaVideo): top-right speaker, as in the approved prototype. Turning it
+   on restarts that film from 0:00 with sound and mutes the others. Sits above the
+   full-card play target (z-index 3), with a 44px hit area around the 34px disc. */
+.adl-person-sound {
+  position: absolute; top: 10px; right: 10px; z-index: 3;
+  width: 34px; height: 34px; padding: 0; border-radius: 50%; display: grid; place-items: center;
+  color: #fff; background: rgba(8,36,43,.6); border: 1px solid rgba(255,255,255,.7);
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); cursor: pointer;
+  transition: background .2s;
+}
+.adl-person-sound::before { content: ''; position: absolute; inset: -5px; border-radius: 50%; }
+.adl-person-sound:hover { background: rgba(8,36,43,.87); }
+.adl-person-sound.is-on { color: #0b2b36; background: rgba(255,255,255,.92); border-color: #fff; }
+.adl-person-sound:focus-visible { outline: 2px solid var(--aqua); outline-offset: 2px; }
 /* Scrim + label sit over the film, so they must not swallow the tap that
    plays it (pointer-events: none). */
 .adl-person-stage::after { content: ''; position: absolute; inset: 45% 0 0; background: linear-gradient(transparent, rgba(0,19,29,.8)); z-index: 1; pointer-events: none; }
