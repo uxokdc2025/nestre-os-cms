@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { ConsultPopover } from './ConsultPopover'
 import { SurveyCtaButton } from './SurveyModal'
+import { ArrowIcon } from './ArrowIcon'
 import { GET_STARTED } from '@/lib/get-started'
 import { AD_LANDING } from '@/lib/ad-landing'
 
@@ -63,9 +64,9 @@ export function SiteHeader({ items, cta, logoUrl }: { items: any[]; cta?: any; l
         <div className="wrap inner">
           <Logo />
           {ad.surveyId ? (
-            <SurveyCtaButton surveyId={ad.surveyId} label={ad.ctaLabel} className="btn aqua adl-cta" title={ad.ctaLabel} />
+            <SurveyCtaButton surveyId={ad.surveyId} label={ad.ctaLabel} className="btn aqua adl-cta" title={ad.ctaLabel} icon={<ArrowIcon />} />
           ) : (
-            <a className="btn aqua adl-cta" href={ad.bookUrl} target="_blank" rel="noopener noreferrer">{ad.ctaLabel}</a>
+            <a className="btn aqua adl-cta" href={ad.bookUrl} target="_blank" rel="noopener noreferrer">{ad.ctaLabel}<ArrowIcon /></a>
           )}
         </div>
       </header>

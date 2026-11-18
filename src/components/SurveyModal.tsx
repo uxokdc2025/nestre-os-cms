@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useId, useRef, useState } from 'react'
+import { useCallback, useEffect, useId, useRef, useState, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 import { consultSurveySrc, isConsultSurvey } from '@/lib/survey-widget'
 
@@ -31,11 +31,14 @@ export function SurveyCtaButton({
   label,
   className = 'btn aqua',
   title = 'Get started',
+  icon,
 }: {
   surveyId: string
   label: string
   className?: string
   title?: string
+  /** Trailing icon rendered after the label — e.g. <ArrowIcon/> on the ad pages. */
+  icon?: ReactNode
 }) {
   const [open, setOpen] = useState(false)
   const [mounted, setMounted] = useState(false)
@@ -128,6 +131,7 @@ export function SurveyCtaButton({
         onClick={() => setOpen(true)}
       >
         {label}
+        {icon}
       </button>
       {open && mounted ? createPortal(modal, document.body) : null}
     </>

@@ -18,16 +18,51 @@ export const LOGO_STRIP = '/legacy/logos/logos-color.png'
 export const LOGO_STRIP_ALT =
   'Featured by Bleacher Report, Harvard Medical School, Bloomberg, Sports Illustrated, the U.S. Department of Veterans Affairs, and ESPN'
 
-// "NESTRE is for" — the four client stories. The prototype plays a short film in
-// each card; the films are not in this repo (see the PR notes), so each card shows
-// its poster frame. Give a card a `video` and it becomes a player again.
+// "NESTRE is for" — the four client stories, each one a short film (Chloe's
+// Nov 2026 drop). H.264 MP4 + a poster still from the same clip, so the card
+// shows a frame before the film loads and iOS/Chrome can both play it inline
+// (see AdLandingBody: muted + playsinline + loop, autoplayed in view).
+//
+// Persona ↔ film mapping is not a guess: the stand-in posters this section
+// shipped with (overthinker/mom/coach/athlete.jpg, now replaced) were stills cut
+// from these very clips, so each pairing is the one the prototype already used —
+// Chloe = the Overthinker, Kelly = the Mom, Steve = the Coach, Alonza = the
+// Athlete. Delivered filenames are kept so an asset traces back to the drop,
+// with one change: "Alonza 1_Website_Video" loses its space, because a space in
+// a static asset path has to survive URL-encoding through the CDN and there's
+// nothing to gain from betting on it.
+const V = '/ads/personas'
 export type Persona = { label: string; poster: string; alt: string; video?: string }
 export const PERSONAS: Persona[] = [
-  { label: 'The Overthinker', poster: '/ads/personas/overthinker.jpg', alt: 'A NESTRE client talking about overthinking' },
-  { label: 'The Mom', poster: '/ads/personas/mom.jpg', alt: 'A NESTRE client talking about showing up for her family' },
-  { label: 'The Coach', poster: '/ads/personas/coach.jpg', alt: 'A NESTRE client talking about coaching' },
-  { label: 'The Athlete', poster: '/ads/personas/athlete.jpg', alt: 'A NESTRE client talking about athletic performance' },
+  {
+    label: 'The Overthinker',
+    video: `${V}/1_Chloe_Ad_Nov_2026.mp4`,
+    poster: `${V}/1_Chloe_Ad_Nov_2026.jpg`,
+    alt: 'Chloe, a NESTRE client, talking about overthinking',
+  },
+  {
+    label: 'The Mom',
+    video: `${V}/Kelly_Ad_Nov_2026.mp4`,
+    poster: `${V}/Kelly_Ad_Nov_2026.jpg`,
+    alt: 'Kelly, a NESTRE client, talking about showing up for her family',
+  },
+  {
+    label: 'The Coach',
+    video: `${V}/2_Steve_Ad_Nov_26.mp4`,
+    poster: `${V}/2_Steve_Ad_Nov_26.jpg`,
+    alt: 'Steve, a NESTRE client, talking about coaching',
+  },
+  {
+    label: 'The Athlete',
+    video: `${V}/Alonza_1_Website_Video.mp4`,
+    poster: `${V}/Alonza_1_Website_Video.jpg`,
+    alt: 'Alonza, a NESTRE client, talking about athletic performance',
+  },
 ]
+
+// The offer, in one place. Ad pages only — the main site's pricing is untouched.
+// `was` is always rendered struck through next to `now` (see AdLandingBody).
+export const PRICE = { now: '$250', was: '$300' }
 
 export const CONSULTATION = {
   headline: ['The NESTRE Initial Consultation.', 'A clearer starting point.'],
@@ -43,8 +78,8 @@ export const CONSULTATION = {
   ],
   facts: [
     { value: '60 minutes', label: 'Full appointment' },
-    { value: '$250', label: 'Limited-time offer · Regularly $300' },
-  ],
+    { value: PRICE.now, was: PRICE.was, label: 'Limited-time offer' },
+  ] as { value: string; label: string; was?: string }[],
   footnote: 'The three-minute recording is one part of your 60-minute consultation.',
 }
 
@@ -52,7 +87,7 @@ export const CONSULTATION = {
 // markup, so the bars grow and the numbers count up as it scrolls into view.
 export const SAMPLE_REPORT = {
   badge: 'ILLUSTRATIVE SAMPLE',
-  title: 'Your data. A conversation.',
+  title: 'Your NESTRE Mindset Profile Score',
   caption: 'An example of how cognitive performance findings can be presented.',
   metrics: [
     { label: 'Memory', score: 78 },
@@ -168,8 +203,8 @@ export const STORIES: Story[] = [
     name: 'Ayden Febres',
     credits: ['2025 FJT Tour Championship winner · Boys 13–15', '2026 U.S. Junior Amateur competitor'],
     links: [
-      { label: 'Read the story ↗', href: 'https://golfusion.com/cognitive-performance/' },
-      { label: 'Golf accomplishments ↗', href: 'https://www.fsga.org/Membership/Profile/791d3b34-0bfa-4f75-8d3e-2872517df06b', ariaLabel: 'Ayden Febres golf accomplishments' },
+      { label: 'Read the story', href: 'https://golfusion.com/cognitive-performance/' },
+      { label: 'Golf accomplishments', href: 'https://www.fsga.org/Membership/Profile/791d3b34-0bfa-4f75-8d3e-2872517df06b', ariaLabel: 'Ayden Febres golf accomplishments' },
     ],
   },
   {
@@ -178,7 +213,7 @@ export const STORIES: Story[] = [
     quote: '“NESTRE Neuro-Strength Training is the future of health, wellness, and performance for elite performers as well as the everyday individual looking to get better.”',
     name: 'Calvin Johnson',
     credits: ['Detroit Lions legend', 'NFL Hall of Famer'],
-    links: [{ label: 'Read the story ↗', href: 'https://nestreperformance.com/destination-packages/' }],
+    links: [{ label: 'Read the story', href: 'https://nestreperformance.com/destination-packages/' }],
   },
   {
     photo: `${S}/vonda-wright-optimized.webp`,
@@ -191,8 +226,8 @@ export const STORIES: Story[] = [
       'Founding director of PRIMA, the Performance and Research Initiative for Masters Athletes',
     ],
     links: [
-      { label: 'Listen to the conversation ↗', href: 'https://thebettermind.buzzsprout.com/2514540/episodes/17694493-the-unbreakable-mindset?t=0' },
-      { label: 'About Dr. Wright ↗', href: 'https://www.penguinrandomhouse.com/books/777365/unbreakable-by-vonda-wright-md/' },
+      { label: 'Listen to the conversation', href: 'https://thebettermind.buzzsprout.com/2514540/episodes/17694493-the-unbreakable-mindset?t=0' },
+      { label: 'About Dr. Wright', href: 'https://www.penguinrandomhouse.com/books/777365/unbreakable-by-vonda-wright-md/' },
     ],
   },
   {
@@ -291,10 +326,12 @@ export const STORIES: Story[] = [
 export const STORIES_NOTE = 'Swipe, scroll, or use the arrows to explore. Individual experiences vary.'
 
 // Closing band + the line under the hero CTA. Discovery explains the quiz step;
-// consultation states the price and goes straight to the calendar.
+// consultation states the price and goes straight to the calendar. Any `$300`
+// in this copy renders struck through (AdLandingBody's `strikeWas`), so the
+// offer always reads as $250 against the regular price.
 export const CTA_SUPPORT = {
   discovery: ['Answer a few questions, then choose a time for a complimentary discovery call about your goals and the NESTRE Initial Consultation.'],
-  consultation: ['$250 · Limited-time offer', 'Choose a time for your initial NESTRE consultation.'],
+  consultation: [`${PRICE.now} ${PRICE.was} · Limited-time offer`, 'Choose a time for your initial NESTRE consultation.'],
 }
 
-export const CONSULT_CARD_NOTE = 'Pay $250 for your initial consultation. Limited-time offer.'
+export const CONSULT_CARD_NOTE = `Pay ${PRICE.now} for your initial consultation, regularly ${PRICE.was}. Limited-time offer.`
