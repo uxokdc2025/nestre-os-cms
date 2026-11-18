@@ -6,13 +6,12 @@
 
 export type NavItem = { label?: string | null; href?: string | null }
 
-export const CAMPAIGN_NAV: { label: string; href: string }[] = []
-
-// Retired campaign pages: hidden from the header even if a CMS nav row still links them.
-const RETIRED_HREFS = new Set(['/for-veterans'])
+export const CAMPAIGN_NAV: { label: string; href: string }[] = [
+  { label: 'For Veterans', href: '/for-veterans' },
+]
 
 export function withCampaignNav(items: NavItem[] | null | undefined): NavItem[] {
-  const list = Array.isArray(items) ? items.filter((item) => item && (item.label || item.href) && !RETIRED_HREFS.has((item.href || '').trim())) : []
+  const list = Array.isArray(items) ? items.filter((item) => item && (item.label || item.href)) : []
   const hrefs = new Set(list.map((item) => (item.href || '').trim()))
   for (const item of CAMPAIGN_NAV) {
     if (!hrefs.has(item.href)) list.push(item)
