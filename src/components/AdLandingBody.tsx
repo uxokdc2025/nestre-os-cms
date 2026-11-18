@@ -4,6 +4,9 @@ import { GtmTag } from './Tracking'
 import { SurveyCtaButton } from './SurveyModal'
 import { MindsetRingCard } from './MindsetRingCard'
 import { AdLandingRail } from './AdLandingRail'
+import { AdLandingGoals } from './AdLandingGoals'
+import { PersonaVideo } from './PersonaVideo'
+import { ArrowIcon } from './ArrowIcon'
 import type { AdLandingConfig } from '@/lib/ad-landing'
 import {
   CONSULTATION,
@@ -15,6 +18,7 @@ import {
   LOGO_STRIP,
   LOGO_STRIP_ALT,
   PERSONAS,
+  PRICE,
   SAMPLE_REPORT,
   SESSIONS,
   STORIES,
@@ -28,17 +32,28 @@ import {
 // every CTA open the LeadConnector quiz popup (discovery), otherwise they link
 // straight to this location's Acuity calendar (consultation).
 
-const ArrowIcon = () => (
-  <svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" strokeWidth="1.4" aria-hidden>
-    <path d="M5 12h14m-6-6 6 6-6 6" />
-  </svg>
-)
-
 const PlusIcon = () => (
   <svg viewBox="0 0 20 20" width="16" height="16" fill="none" aria-hidden>
     <path d="M10 4v12M4 10h12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
   </svg>
 )
+
+// The offer always reads as the current price against the regular one, so any
+// mention of the old price in the ad copy renders struck through.
+const strikeWas = (line: string) => {
+  const parts = line.split(PRICE.was)
+  if (parts.length === 1) return line
+  return parts.map((part, i) => (
+    <React.Fragment key={i}>
+      {i > 0 && <s className="adl-was">{PRICE.was}</s>}
+      {part}
+    </React.Fragment>
+  ))
+}
+
+// Sample-report metric colours, taken from the approved prototype (one hue per
+// row, the number badge matching its bar). See the scorecard section in CSS.
+const METRIC_COLORS = ['#e532ca', '#6fecfb', '#74fb52', '#36d979']
 
 export function AdLandingBody({ cfg }: { cfg: AdLandingConfig }) {
   const support = CTA_SUPPORT[cfg.variant]
@@ -47,10 +62,11 @@ export function AdLandingBody({ cfg }: { cfg: AdLandingConfig }) {
   // card and the closing band. Discovery opens the quiz; consultation books.
   const Cta = ({ className = 'btn aqua adl-cta' }: { className?: string }) =>
     cfg.surveyId ? (
-      <SurveyCtaButton surveyId={cfg.surveyId} label={cfg.ctaLabel} className={className} title={cfg.ctaLabel} />
+      <SurveyCtaButton surveyId={cfg.surveyId} label={cfg.ctaLabel} className={className} title={cfg.ctaLabel} icon={<ArrowIcon />} />
     ) : (
       <a className={className} href={cfg.bookUrl} target="_blank" rel="noopener noreferrer">
         {cfg.ctaLabel}
+        <ArrowIcon />
       </a>
     )
 
@@ -81,7 +97,7 @@ export function AdLandingBody({ cfg }: { cfg: AdLandingConfig }) {
             {support.map((line, i) => (
               <React.Fragment key={line}>
                 {i > 0 && <br />}
-                {i === 0 && cfg.variant === 'consultation' ? <strong>{line}</strong> : line}
+                {i === 0 && cfg.variant === 'consultation' ? <strong>{strikeWas(line)}</strong> : strikeWas(line)}
               </React.Fragment>
             ))}
           </p>
@@ -107,8 +123,10 @@ export function AdLandingBody({ cfg }: { cfg: AdLandingConfig }) {
               <article key={p.label} className="adl-person">
                 <div className="adl-person-stage">
                   {p.video ? (
-                    // Carousels.tsx plays any <main> video muted + looping once in view.
-                    <video src={p.video} poster={p.poster} muted playsInline loop preload="metadata" aria-label={p.alt} />
+                    // MP4 + poster. Carousels.tsx plays any <main> video muted +
+                    // looping once in view; PersonaVideo adds the tap-to-play
+                    // fallback for when a browser refuses autoplay outright.
+                    <PersonaVideo src={p.video} poster={p.poster} label={p.alt} />
                   ) : (
                     <img src={p.poster} alt={p.alt} loading="lazy" decoding="async" />
                   )}
@@ -139,7 +157,11 @@ export function AdLandingBody({ cfg }: { cfg: AdLandingConfig }) {
             <div className="adl-facts">
               {CONSULTATION.facts.map((f) => (
                 <div key={f.value}>
-                  <strong>{f.value}</strong>
+                  <strong>
+                    {f.value}
+                    {/* The offer price sits against the regular one, struck through. */}
+                    {f.was && <s className="adl-was">{f.was}</s>}
+                  </strong>
                   {f.label}
                 </div>
               ))}
@@ -155,7 +177,7 @@ export function AdLandingBody({ cfg }: { cfg: AdLandingConfig }) {
             </p>
             <p className="adl-footnote">{CONSULTATION.footnote}</p>
             <div className="adl-cta-row"><Cta className="btn solid adl-cta" /></div>
-            {cfg.variant === 'consultation' && <p className="adl-consult-note">{CONSULT_CARD_NOTE}</p>}
+            {cfg.variant === 'consultation' && <p className="adl-consult-note">{strikeWas(CONSULT_CARD_NOTE)}</p>}
           </div>
 
           <div className="adl-split-aside">
@@ -170,7 +192,11 @@ export function AdLandingBody({ cfg }: { cfg: AdLandingConfig }) {
                   the numbers up once the card scrolls into view. */}
               <div className="statcard adl-score-metrics">
                 {SAMPLE_REPORT.metrics.map((m, i) => (
-                  <div key={m.label} className={`statrow ${i === 2 ? 'accent' : ''} ${m.score < 90 ? 'low' : ''}`}>
+                  <div
+                    key={m.label}
+                    className="statrow"
+                    style={{ ['--metric-color' as string]: METRIC_COLORS[i % METRIC_COLORS.length] } as React.CSSProperties}
+                  >
                     <div className="lab">{m.label}</div>
                     <div className="statrow-line">
                       <div className="bar"><i style={{ ['--w' as string]: `${m.score}%`, ['--r' as string]: i } as React.CSSProperties} /></div>
@@ -197,14 +223,8 @@ export function AdLandingBody({ cfg }: { cfg: AdLandingConfig }) {
             <br />
             {GOALS.headline[1]}
           </h2>
-          <div className="adl-goal-grid">
-            {GOALS.choices.map((choice) => (
-              <a key={choice} className="adl-goal" href={`#${cfg.ctaAnchor}`}>
-                <span>{choice}</span>
-                <ArrowIcon />
-              </a>
-            ))}
-          </div>
+          {/* Chips glide down to the closing band rather than jumping (mobile). */}
+          <AdLandingGoals choices={GOALS.choices} anchor={cfg.ctaAnchor} />
           <p className="adl-subtle">{GOALS.closing}</p>
         </div>
       </section>
@@ -283,7 +303,8 @@ export function AdLandingBody({ cfg }: { cfg: AdLandingConfig }) {
                   <div className="adl-story-links">
                     {s.links.map((l) => (
                       <a key={l.href} href={l.href} target="_blank" rel="noopener noreferrer" aria-label={l.ariaLabel}>
-                        {l.label}
+                        <span>{l.label}</span>
+                        <ArrowIcon />
                       </a>
                     ))}
                   </div>
@@ -303,7 +324,7 @@ export function AdLandingBody({ cfg }: { cfg: AdLandingConfig }) {
             {support.map((line, i) => (
               <React.Fragment key={line}>
                 {i > 0 && <br />}
-                {i === 0 && cfg.variant === 'consultation' ? <strong>{line}</strong> : line}
+                {i === 0 && cfg.variant === 'consultation' ? <strong>{strikeWas(line)}</strong> : strikeWas(line)}
               </React.Fragment>
             ))}
           </p>
@@ -316,7 +337,7 @@ export function AdLandingBody({ cfg }: { cfg: AdLandingConfig }) {
       <footer className="adl-footer">
         <div className="wrap">
           <span>© {new Date().getFullYear()} NESTRE Health &amp; Performance</span>
-          <a href="https://nestreperformance.com" target="_blank" rel="noopener noreferrer">Visit NESTRE ↗</a>
+          <a href="https://nestreperformance.com" target="_blank" rel="noopener noreferrer">Visit NESTRE<ArrowIcon /></a>
         </div>
       </footer>
 

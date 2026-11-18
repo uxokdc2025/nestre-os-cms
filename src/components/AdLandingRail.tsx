@@ -7,6 +7,22 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 // arrows are an enhancement and disable at each end. Kept separate from the
 // site-wide Carousels rails (.panels/.phones) so the ad pages can snap by card
 // without inheriting the home page's rail behaviour.
+
+// Prev/next glyphs drawn as SVG rather than the "←"/"→" characters, which iOS
+// and macOS render as full-colour Apple emoji instead of type. Same weight as
+// the rest of the icon set (24-box, 1.6 stroke, round caps). The diagonal
+// ArrowIcon isn't used here — these move the rail sideways, not off the page.
+const RailArrow = ({ dir }: { dir: 1 | -1 }) => (
+  <svg
+    viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+    strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"
+    style={dir === -1 ? { transform: 'scaleX(-1)' } : undefined}
+    aria-hidden focusable="false"
+  >
+    <path d="M5 12h14m-6-6 6 6-6 6" />
+  </svg>
+)
+
 export function AdLandingRail({
   heading,
   ariaLabel,
@@ -57,8 +73,8 @@ export function AdLandingRail({
       <div className="adl-railbar">
         {heading}
         <div className="adl-arrows">
-          <button type="button" className="adl-arrow" aria-label="Previous" disabled={atStart} onClick={() => move(-1)}>←</button>
-          <button type="button" className="adl-arrow" aria-label="Next" disabled={atEnd} onClick={() => move(1)}>→</button>
+          <button type="button" className="adl-arrow" aria-label="Previous" disabled={atStart} onClick={() => move(-1)}><RailArrow dir={-1} /></button>
+          <button type="button" className="adl-arrow" aria-label="Next" disabled={atEnd} onClick={() => move(1)}><RailArrow dir={1} /></button>
         </div>
       </div>
       <div
