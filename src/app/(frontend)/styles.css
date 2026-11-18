@@ -63,6 +63,12 @@ h1, h2, h3 { margin: 0; letter-spacing: -0.02em; line-height: 1.02; text-wrap: b
 .btn.outline { border-color: currentColor; opacity: .9; }
 .btn.outline:hover { opacity: 1; }
 .btn.link { padding: 0; height: auto; background: none; }
+/* CTA arrow (components/ArrowIcon.tsx) — the thin outline ↗ that replaced the
+   bare "→"/"↗" characters iOS rendered as an Apple emoji. Sized in em by the
+   component, so it only needs its gap from the label here. Containers that
+   already set a flex `gap` (e.g. the veterans .pill) get no extra margin. */
+.arrow-icon { flex: 0 0 auto; }
+.btn > .arrow-icon { margin-left: 8px; }
 
 /* hero */
 .hero { position: relative; min-height: 82vh; display: flex; align-items: center; background: var(--navy); color: #fff; overflow: hidden; }

@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useEffect, useRef } from 'react'
+import { ArrowIcon, splitArrowLabel } from './ArrowIcon'
 
 type CTA = { label?: string; href?: string | null; style?: string }
 
@@ -73,9 +74,14 @@ export function ClosingParallax({ image, mobileImage, alt, heading, body, accent
               {body && <p className="closing-body">{body}</p>}
               {!!ctas?.length && (
                 <div className="btns">
-                  {ctas.map((c, i) => (
-                    <a key={i} className={`btn ${c.style || 'aqua'}`} href={c.href || '#'} {...(/^https?:/.test(c.href || '') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>{c.label}</a>
-                  ))}
+                  {ctas.map((c, i) => {
+                    // A CMS label typed with a trailing arrow renders the outline
+                    // ↗ icon instead of the character iOS draws as an emoji.
+                    const { text, arrow } = splitArrowLabel(c.label || '')
+                    return (
+                      <a key={i} className={`btn ${c.style || 'aqua'}`} href={c.href || '#'} {...(/^https?:/.test(c.href || '') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>{text}{arrow && <ArrowIcon />}</a>
+                    )
+                  })}
                 </div>
               )}
             </div>

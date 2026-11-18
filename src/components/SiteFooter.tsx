@@ -8,13 +8,16 @@ function A({ href, children, ...rest }: any) { // eslint-disable-line @typescrip
   return isInternal(href) ? <Link href={href} {...rest}>{children}</Link> : <a href={href || '#'} {...rest}>{children}</a>
 }
 
-// Verified NESTRE channels (from nestreperformance.com). App/podcast links match JSON-LD sameAs.
+// Verified NESTRE channels (from nestreperformance.com). The Spotify/Apple
+// podcast links match JSON-LD sameAs (lib/seo.ts); the YouTube podcast link is
+// the share URL NESTRE supplied on 2026-11-18, so it carries their `si` param
+// and is intentionally the one link that differs from sameAs.
 const SOCIALS = [
   { label: 'Instagram', href: 'https://www.instagram.com/nestrebetter/' },
   { label: 'X', href: 'https://x.com/NESTREBetter' },
   { label: 'Facebook', href: 'https://www.facebook.com/NESTREBetter/' },
   { label: 'LinkedIn', href: 'https://www.linkedin.com/company/nestre' },
-  { label: 'YouTube', href: 'https://www.youtube.com/@BetterMindPodcast' },
+  { label: 'YouTube', href: 'https://youtube.com/@bettermindpodcast?si=knVkWz9FL59o8_r_' },
   { label: 'Spotify', href: 'https://open.spotify.com/show/5rL7sOe1lvUmH814dzzbGp' },
   { label: 'ApplePodcasts', href: 'https://podcasts.apple.com/us/podcast/the-better-mind-podcast/id1668627436' },
 ]
@@ -30,6 +33,8 @@ const COLUMNS = [
   { heading: 'Company', links: [
     { label: 'Our Story', href: '/our-story' },
     { label: 'For Teams', href: '/for-teams' },
+    // Moved out of the top nav strip (lib/nav.ts) and into Company, Nov 18 2026.
+    { label: 'For Veterans', href: '/for-veterans' },
     { label: 'Careers', href: '#', wwu: true }, // opens the careers interest form (drawer)
     // News removed for launch — hold for phase 2 (Sept 21 handoff).
   ] },
