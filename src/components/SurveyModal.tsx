@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useId, useRef, useState } from 'react'
+import { useCallback, useEffect, useId, useRef, useState, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 import { consultSurveySrc, isConsultSurvey } from '@/lib/survey-widget'
 
@@ -21,6 +21,96 @@ function ensureEmbedScript() {
   document.body.appendChild(s)
 }
 
+// Cloudflare Turnstile for the quiz's final submit (see lib/survey-guard.ts). The
+// widget lives in this dialog, under the quiz; the guard script inside the quiz
+// asks for a fresh token through window.__nestreSurveyTurnstile right before the
+// submit goes out, and /api/survey-guard verifies it server side. Off until the
+// site key is set (NEXT_PUBLIC_TURNSTILE_SITE_KEY, inlined at build time).
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ''
+const TURNSTILE_SRC = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit'
+function loadTurnstile(): Promise<any> {
+  const w = window as any
+  if (w.turnstile) return Promise.resolve(w.turnstile)
+  if (!w.__nestreTurnstileLoading) {
+    w.__nestreTurnstileLoading = new Promise((resolve, reject) => {
+      const s = document.createElement('script')
+      s.src = TURNSTILE_SRC
+      s.async = true
+      s.onload = () => resolve(w.turnstile)
+      s.onerror = reject
+      document.head.appendChild(s)
+    })
+  }
+  return w.__nestreTurnstileLoading
+}
+
+function SurveyTurnstile() {
+  const boxRef = useRef<HTMLDivElement>(null)
+  const [blocked, setBlocked] = useState(false)
+
+  useEffect(() => {
+    if (!TURNSTILE_SITE_KEY) return
+    const w = window as any
+    let widgetId: string | undefined
+    let token: string | null = null
+    let waiters: ((t: string | null) => void)[] = []
+    let cancelled = false
+    const settle = (t: string | null) => { const ws = waiters; waiters = []; ws.forEach((fn) => fn(t)) }
+
+    loadTurnstile().then((ts) => {
+      if (cancelled || !boxRef.current || !ts) return
+      widgetId = ts.render(boxRef.current, {
+        sitekey: TURNSTILE_SITE_KEY,
+        action: 'survey_submit',
+        // Managed widget, invisible unless Cloudflare decides it needs a click.
+        appearance: 'interaction-only',
+        callback: (t: string) => { token = t; settle(t) },
+        'expired-callback': () => { token = null; ts.reset(widgetId) },
+        'error-callback': () => { token = null; settle(null) },
+      })
+    }).catch(() => settle(null))
+
+    // Tokens are single-use: hand the current one over and start the next.
+    w.__nestreSurveyTurnstile = () =>
+      new Promise<string | null>((resolve) => {
+        const take = (t: string | null) => {
+          token = null
+          if (widgetId !== undefined) try { w.turnstile?.reset(widgetId) } catch { /* noop */ }
+          resolve(t)
+        }
+        if (token) return take(token)
+        waiters.push(take)
+        setTimeout(() => { waiters = waiters.filter((fn) => fn !== take); resolve(null) }, 15000)
+      })
+
+    return () => {
+      cancelled = true
+      delete w.__nestreSurveyTurnstile
+      if (widgetId !== undefined) try { w.turnstile?.remove(widgetId) } catch { /* noop */ }
+    }
+  }, [])
+
+  // The guard tells us when it held a submit back, so a person isn't left guessing.
+  useEffect(() => {
+    const onMsg = (e: MessageEvent) => {
+      if (e.origin === window.location.origin && e.data?.type === 'nestre-survey-blocked') setBlocked(true)
+    }
+    window.addEventListener('message', onMsg)
+    return () => window.removeEventListener('message', onMsg)
+  }, [])
+
+  return (
+    <div className="survey-guard">
+      {TURNSTILE_SITE_KEY && <div ref={boxRef} className="survey-turnstile" />}
+      {blocked && (
+        <p className="survey-guard-note" role="alert">
+          We couldn&apos;t verify that submission. Please complete the check above, then press Submit again.
+        </p>
+      )}
+    </div>
+  )
+}
+
 // A CTA button that opens a modal embedding a LeadConnector survey. Reused by the
 // get-started ad pages (GetStartedBody) and by any Puck CTA given a survey id.
 // Closes via the X, Esc or a backdrop click; focus returns to the button. The
@@ -31,11 +121,14 @@ export function SurveyCtaButton({
   label,
   className = 'btn aqua',
   title = 'Get started',
+  icon,
 }: {
   surveyId: string
   label: string
   className?: string
   title?: string
+  /** Trailing icon rendered after the label — e.g. <ArrowIcon/> on the ad pages. */
+  icon?: ReactNode
 }) {
   const [open, setOpen] = useState(false)
   const [mounted, setMounted] = useState(false)
@@ -112,6 +205,7 @@ export function SurveyCtaButton({
             data-cookie-consent="true"
             data-cookie-consent-provider="auto"
           />
+          {isConsultSurvey(surveyId) && <SurveyTurnstile />}
         </div>
       </div>
     </>
@@ -128,6 +222,7 @@ export function SurveyCtaButton({
         onClick={() => setOpen(true)}
       >
         {label}
+        {icon}
       </button>
       {open && mounted ? createPortal(modal, document.body) : null}
     </>

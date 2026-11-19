@@ -5,7 +5,9 @@ import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { ConsultPopover } from './ConsultPopover'
 import { SurveyCtaButton } from './SurveyModal'
+import { ArrowIcon } from './ArrowIcon'
 import { GET_STARTED } from '@/lib/get-started'
+import { AD_LANDING } from '@/lib/ad-landing'
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // Internal links use next/link for instant client-side nav (no reload/flash);
@@ -51,6 +53,25 @@ export function SiteHeader({ items, cta, logoUrl }: { items: any[]; cta?: any; l
   // The header scrim is a dark→transparent gradient built for dark hero images; on
   // the light legal/support pages it smears over the copy, so use a solid navy block.
   const solid = ['/privacy', '/terms', '/help'].includes(pathname)
+
+  // Ad landing pages (the discovery-call / consultation A/B) get the same stripped
+  // header, carrying that page's own CTA: the quiz popup on the discovery pages,
+  // the location's Acuity calendar on the consultation ones.
+  const ad = AD_LANDING[pathname]
+  if (ad) {
+    return (
+      <header className={`nav nav-minimal${scrolled ? ' scrolled' : ''}`}>
+        <div className="wrap inner">
+          <Logo />
+          {ad.surveyId ? (
+            <SurveyCtaButton surveyId={ad.surveyId} label={ad.ctaLabel} className="btn aqua adl-cta" title={ad.ctaLabel} icon={<ArrowIcon />} />
+          ) : (
+            <a className="btn aqua adl-cta" href={ad.bookUrl} target="_blank" rel="noopener noreferrer">{ad.ctaLabel}<ArrowIcon /></a>
+          )}
+        </div>
+      </header>
+    )
+  }
 
   // Get-started landing pages get a stripped header: logo + a single Book button.
   // No nav, no menu. When the page has a survey configured it opens the quiz popup

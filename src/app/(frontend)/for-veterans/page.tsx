@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { SITE_URL } from '@/lib/seo'
+import { ArrowIcon } from '@/components/ArrowIcon'
 import styles from './veterans.module.css'
 
 const BOOK_HREF =
@@ -25,7 +26,7 @@ function BookLink({ children }: { children: React.ReactNode }) {
   return (
     <a className={styles.pill} href={BOOK_HREF} target="_blank" rel="noopener">
       {children}
-      <span aria-hidden="true">→</span>
+      <ArrowIcon />
     </a>
   )
 }
@@ -209,7 +210,7 @@ export default function ForVeteransPage() {
                 target="_blank"
                 rel="noopener"
               >
-                Watch the Conversation <span aria-hidden="true">→</span>
+                Watch the Conversation <ArrowIcon />
               </a>
             </div>
             <div className={styles.joe}>
@@ -238,7 +239,7 @@ export default function ForVeteransPage() {
               Call to Book: 689-710-3260
             </a>
             <a className={styles.pill} href="mailto:Neurolabs@nestreperformance.com">
-              Email Our Team <span aria-hidden="true">→</span>
+              Email Our Team <ArrowIcon />
             </a>
           </div>
         </div>

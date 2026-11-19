@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
+import { ArrowIcon } from './ArrowIcon'
 
 // Get-started "questions about the consultation" form (Neuro Lab / Facebook-ad
 // landing pages). Posts to /api/neurolab-consult, which emails the request to
@@ -103,7 +104,7 @@ export function GetStartedForm() {
         {errors.message && <span className="field-err">{errors.message}</span>}
       </label>
       <button className="btn aqua get-form-submit" type="submit" disabled={status === 'sending'}>
-        {status === 'sending' ? 'Sending…' : 'Ask Our Team →'}
+        {status === 'sending' ? 'Sending…' : <>Ask Our Team<ArrowIcon /></>}
       </button>
       <p className="get-form-note muted">Our team will reach out to you within 24&ndash;48 hours.</p>
       {status === 'error' && (
