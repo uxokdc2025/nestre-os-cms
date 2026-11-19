@@ -14,7 +14,9 @@ import { createHmac, timingSafeEqual } from 'node:crypto'
 //      side, against Cloudflare's siteverify API.
 //
 // The quiz's submit request only goes out to LeadConnector after POST
-// /api/survey-guard says yes. Turnstile switches on by itself once BOTH
+// /api/survey-guard says yes. With Turnstile on, the guard fails CLOSED: a missing,
+// invalid or unverifiable token (siteverify down) is rejected, and the quiz holds
+// the submit if the guard itself can't be reached. Turnstile switches on by itself once BOTH
 // NEXT_PUBLIC_TURNSTILE_SITE_KEY and TURNSTILE_SECRET_KEY are set (then redeploy:
 // the site key is inlined at build time). Until then the honeypot + timing checks
 // run alone.
@@ -22,8 +24,21 @@ import { createHmac, timingSafeEqual } from 'node:crypto'
 export const MIN_FILL_MS = 4000
 const MAX_AGE_MS = 12 * 60 * 60 * 1000
 
+// Fail-open fallback: with either key missing (e.g. a preview built before the
+// keys were added) Turnstile stays off and submits pass on the honeypot + timing
+// checks alone. That is logged once per server instance so it never goes unnoticed.
+let warnedMissingKeys = false
 export function turnstileEnabled() {
-  return Boolean(process.env.TURNSTILE_SECRET_KEY && process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY)
+  const on = Boolean(process.env.TURNSTILE_SECRET_KEY && process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY)
+  if (!on && !warnedMissingKeys) {
+    warnedMissingKeys = true
+    console.warn(
+      `[survey-guard] Turnstile is OFF (env ${process.env.VERCEL_ENV || process.env.NODE_ENV}): ` +
+        'NEXT_PUBLIC_TURNSTILE_SITE_KEY and TURNSTILE_SECRET_KEY must both be set. ' +
+        'Quiz submits are allowed on the honeypot + timing checks only.',
+    )
+  }
+  return on
 }
 
 function key() {
@@ -61,7 +76,9 @@ export function stampAge(stamp: unknown, now = Date.now()): number | null {
   return age
 }
 
-export type GuardVerdict = { ok: true } | { ok: false; reason: 'honeypot' | 'stamp' | 'too_fast' | 'turnstile' }
+export const TURNSTILE_ACTION = 'survey_submit'
+
+export type GuardVerdict = { ok: true } | { ok: false; reason: 'honeypot' | 'stamp' | 'too_fast' | 'turnstile' | 'turnstile_unavailable' }
 
 export async function verifyTurnstile(token: unknown, ip?: string | null): Promise<boolean | 'unavailable'> {
   const secret = process.env.TURNSTILE_SECRET_KEY
@@ -76,7 +93,10 @@ export async function verifyTurnstile(token: unknown, ip?: string | null): Promi
       signal: AbortSignal.timeout(8000),
     })
     if (!r.ok) return 'unavailable'
-    const data = (await r.json()) as { success?: boolean }
+    const data = (await r.json()) as { success?: boolean; action?: string }
+    // The widget renders with action 'survey_submit'; a token minted for any other
+    // action (or another site's widget) doesn't count.
+    if (data.success === true && data.action && data.action !== TURNSTILE_ACTION) return false
     return data.success === true
   } catch {
     return 'unavailable'
@@ -88,9 +108,10 @@ export async function verifyTurnstile(token: unknown, ip?: string | null): Promi
  * module bundle, so the bundle's fetch picks up this wrapper. Only the survey
  * submit request is intercepted; everything else passes straight through.
  */
-export function guardScript(stamp: string) {
+export function guardScript(stamp: string, enforce = false) {
   const js = `(function(){
   var STAMP=${JSON.stringify(stamp)};
+  var ENFORCE=${enforce ? 'true' : 'false'};
   function addHoneypot(){
     if(document.getElementById('nestre-hp'))return;
     var w=document.createElement('div');
@@ -123,9 +144,9 @@ export function guardScript(stamp: string) {
       return nativeFetch('/api/survey-guard',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({hp:hp,stamp:STAMP,token:token})})
         .then(function(r){
           if(r.ok)return nativeFetch(input,init);
-          if(r.status>=500)return nativeFetch(input,init);
+          if(r.status>=500&&!ENFORCE)return nativeFetch(input,init);
           return r.json().catch(function(){return{}}).then(function(d){return blocked(d&&d.reason||'blocked')});
-        },function(){return nativeFetch(input,init)});
+        },function(){return ENFORCE?blocked('guard_unreachable'):nativeFetch(input,init)});
     });
   };
 })();`

@@ -13,10 +13,13 @@ export const HERO = {
   photoAlt: 'A woman with her eyes closed in a sunlit, plant-filled room',
 }
 
-// The press strip is the home / get-started asset, except the U.S. Department of
-// Veterans Affairs lockup is knocked out to white: the ad strip sits on navy and
-// the black VA mark disappeared there (Chloe, Nov 18). Same pixels otherwise.
-export const LOGO_STRIP = '/legacy/logos/logos-color-va-white.png'
+// The press strip sits on the navy band, so the ad pages use their own all-white
+// strip (logos-navy.svg): B/R, Harvard Medical School (crimson shield kept),
+// Bloomberg, Sports Illustrated, VA and ESPN, in the home strip's order. The
+// marks are the white SVGs David supplied (Nov 18), viewBoxes trimmed to the
+// artwork and sized to balance optically (the bold SI and ESPN marks run
+// smaller). Standalone copies: public/legacy/logos/navy/.
+export const LOGO_STRIP = '/legacy/logos/logos-navy.svg'
 export const LOGO_STRIP_ALT =
   'Featured by Bleacher Report, Harvard Medical School, Bloomberg, Sports Illustrated, the U.S. Department of Veterans Affairs, and ESPN'
 

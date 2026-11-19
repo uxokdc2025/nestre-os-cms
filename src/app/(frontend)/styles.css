@@ -1491,8 +1491,8 @@ main[data-page="home"] .hero:not(.quote):not(.veterans) .btns { margin-top: 18px
 
 /* ── Press strip ──────────────────────────────────────────────────────────── */
 .adl-trust { background: var(--navy); padding: 34px 0 44px; }
-/* The strip sits on navy, so the ad pages use a copy with the VA lockup knocked
-   out to white (Chloe, Nov 18); every other logo is the original colour art. */
+/* The strip sits on navy, so the ad pages use logos-navy.svg: every mark white
+   except the Harvard shield (see LOGO_STRIP in lib/ad-landing-content.ts). */
 .adl-logos { width: min(100%, 1060px); height: auto; margin-inline: auto; }
 
 /* ── NESTRE is for — client stories rail ──────────────────────────────────── */

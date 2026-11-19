@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { CONSULT_SURVEY_ID } from '@/lib/get-started'
 import { loadConsultSurveyHtml } from '@/lib/survey-widget'
-import { guardScript, issueStamp } from '@/lib/survey-guard'
+import { guardScript, issueStamp, turnstileEnabled } from '@/lib/survey-guard'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -16,7 +16,7 @@ export async function GET(_req: Request, ctx: { params: Promise<{ surveyId: stri
   }
   try {
     // Bot protection on the final submit (honeypot + time-to-submit + Turnstile).
-    const html = await loadConsultSurveyHtml(surveyId, guardScript(issueStamp()))
+    const html = await loadConsultSurveyHtml(surveyId, guardScript(issueStamp(), turnstileEnabled()))
     return new NextResponse(html, {
       headers: {
         'content-type': 'text/html; charset=utf-8',
