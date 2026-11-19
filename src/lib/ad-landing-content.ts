@@ -13,10 +13,13 @@ export const HERO = {
   photoAlt: 'A woman with her eyes closed in a sunlit, plant-filled room',
 }
 
-// The press strip is the home / get-started asset, except the U.S. Department of
-// Veterans Affairs lockup is knocked out to white: the ad strip sits on navy and
-// the black VA mark disappeared there (Chloe, Nov 18). Same pixels otherwise.
-export const LOGO_STRIP = '/legacy/logos/logos-color-va-white.png'
+// The press strip sits on the navy band, so the ad pages use their own strip
+// (logos-navy.svg), same layout and sizes as the home / get-started art
+// (logos-color.png) but readable on navy: white B/R letters, the official HMS
+// knockout (white wordmark, crimson shield), a white Bloomberg wordmark and the
+// white VA lockup (Chloe, Nov 18). Sports Illustrated and ESPN are unchanged.
+// Sources for each mark: public/legacy/logos/navy/ and the comments in the SVG.
+export const LOGO_STRIP = '/legacy/logos/logos-navy.svg'
 export const LOGO_STRIP_ALT =
   'Featured by Bleacher Report, Harvard Medical School, Bloomberg, Sports Illustrated, the U.S. Department of Veterans Affairs, and ESPN'
 
