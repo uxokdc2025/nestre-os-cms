@@ -13,12 +13,12 @@ export const HERO = {
   photoAlt: 'A woman with her eyes closed in a sunlit, plant-filled room',
 }
 
-// The press strip sits on the navy band, so the ad pages use their own strip
-// (logos-navy.svg), same layout and sizes as the home / get-started art
-// (logos-color.png) but readable on navy: white B/R letters, the official HMS
-// knockout (white wordmark, crimson shield), a white Bloomberg wordmark and the
-// white VA lockup (Chloe, Nov 18). Sports Illustrated and ESPN are unchanged.
-// Sources for each mark: public/legacy/logos/navy/ and the comments in the SVG.
+// The press strip sits on the navy band, so the ad pages use their own all-white
+// strip (logos-navy.svg): B/R, Harvard Medical School (crimson shield kept),
+// Bloomberg, Sports Illustrated, VA and ESPN, in the home strip's order. The
+// marks are the white SVGs David supplied (Nov 18), viewBoxes trimmed to the
+// artwork and sized to balance optically (the bold SI and ESPN marks run
+// smaller). Standalone copies: public/legacy/logos/navy/.
 export const LOGO_STRIP = '/legacy/logos/logos-navy.svg'
 export const LOGO_STRIP_ALT =
   'Featured by Bleacher Report, Harvard Medical School, Bloomberg, Sports Illustrated, the U.S. Department of Veterans Affairs, and ESPN'
