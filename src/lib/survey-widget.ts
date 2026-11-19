@@ -24,7 +24,11 @@ export function isConsultSurvey(surveyId: string) {
 // Hide the survey's own logo and the "personality type" headline. The questions
 // stay. Ids come from the LeadConnector markup (`el_<surveyId>_image_0` /
 // `_header_1`); the class fallback covers a republish that renumbers the suffix.
-export function rewriteSurveyHtml(html: string, surveyId: string) {
+export function rewriteSurveyHtml(html: string, surveyId: string, extraHead = '') {
+  // The guard goes first in <head>, ahead of every script the quiz loads.
+  if (extraHead) {
+    html = /<head(\s[^>]*)?>/i.test(html) ? html.replace(/<head(\s[^>]*)?>/i, (m) => m + extraHead) : extraHead + html
+  }
   const css = `<style id="nestre-survey-tweaks">
     #el_${surveyId}_image_0,
     #el_${surveyId}_header_1,
@@ -35,12 +39,14 @@ export function rewriteSurveyHtml(html: string, surveyId: string) {
   return css + html
 }
 
-export async function loadConsultSurveyHtml(surveyId: string) {
+// `extraHead` is injected at the top of the head — the route passes the submit
+// guard script there (lib/survey-guard.ts) so it runs before the quiz bundle.
+export async function loadConsultSurveyHtml(surveyId: string, extraHead = '') {
   const upstream = await fetch(`${UPSTREAM}${surveyId}`, {
     headers: { accept: 'text/html', 'user-agent': 'NESTRE-survey-widget' },
     cache: 'no-store',
   })
   if (!upstream.ok) throw new Error(`survey ${upstream.status}`)
   const html = await upstream.text()
-  return rewriteSurveyHtml(html, surveyId)
+  return rewriteSurveyHtml(html, surveyId, extraHead)
 }

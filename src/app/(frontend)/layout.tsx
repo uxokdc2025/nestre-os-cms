@@ -3,6 +3,7 @@ import { Instrument_Sans } from 'next/font/google'
 import { SITE_URL } from '@/lib/seo'
 import { SiteHeader } from '@/components/SiteHeader'
 import { SiteFooter } from '@/components/SiteFooter'
+import { HideOnAdLanding } from '@/components/AdLandingChrome'
 import { Carousels } from '@/components/Carousels'
 import { getChrome } from '@/lib/chrome'
 import { withCampaignNav } from '@/lib/nav'
@@ -46,7 +47,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <BottomBlur />
         <CustomCursor />
         <Carousels />
-        <SiteFooter logoUrl={logoUrl} footer={footer} />
+        <HideOnAdLanding>
+          <SiteFooter logoUrl={logoUrl} footer={footer} />
+        </HideOnAdLanding>
       </body>
     </html>
   )

@@ -5,6 +5,7 @@ import { ClosingParallax } from './ClosingParallax'
 import { PhoneShowcase } from './PhoneShowcase'
 import { LocationsMap } from './LocationsMap'
 import { MindsetRingCard } from './MindsetRingCard'
+import { ArrowIcon, splitArrowLabel } from './ArrowIcon'
 import { consultCostAnswer, CONSULT_COST_TOKEN, type Region } from '@/lib/consult-pricing'
 import { SurveyCtaButton } from './SurveyModal'
 
@@ -57,12 +58,16 @@ function Buttons({ ctas }: { ctas?: CTA[] }) {
     <div className="btns">
       {list.map((c, i) => {
         const cls = `btn ${c.style || 'aqua'}`
-        if (c.survey) return <SurveyCtaButton key={i} surveyId={c.survey} label={c.label || 'Get started'} className={cls} />
+        // A CMS label typed as "Learn more →" renders the outline ↗ icon instead
+        // of the arrow character, which iOS/macOS draw as an Apple emoji.
+        const { text, arrow } = splitArrowLabel(c.label || '')
+        if (c.survey) return <SurveyCtaButton key={i} surveyId={c.survey} label={text || 'Get started'} className={cls} />
+        const label = <>{text}{arrow && <ArrowIcon />}</>
         return isInternal(c.href) ? (
-          <Link key={i} className={cls} href={c.href!}>{c.label}</Link>
+          <Link key={i} className={cls} href={c.href!}>{label}</Link>
         ) : (
           <a key={i} className={cls} href={c.href || '#'} {...(isExternal(c.href) ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
-            {c.label}
+            {label}
           </a>
         )
       })}
