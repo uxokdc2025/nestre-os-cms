@@ -1332,6 +1332,31 @@ figure.sched-video { margin: 28px 0 0; }
 .survey-turnstile:empty { display: none; }
 .survey-turnstile iframe { margin-top: 12px; }
 .survey-guard-note { margin: 10px 0 0; text-align: center; color: #b42318; font-size: 14px; line-height: 1.45; }
+
+/* ── Post-quiz thank-you panel ────────────────────────────────────────────────
+   Once the quiz posts 'nestre-survey-complete' (lib/survey-widget.ts) SurveyModal
+   drops .survey-intro, hides the quiz and renders .survey-thanks on its own. The
+   body becomes a flex box and the panel centres itself with `margin: auto` —
+   centred on both axes, no whitespace stacked above or below it, and still
+   scrollable (unlike align/justify centring) if a short landscape viewport can't
+   fit it. The min-height keeps the dialog a comfortable size on desktop, where
+   the dialog is sized by its content; at ≤480px the sheet is already 100dvh. */
+.survey-quiz[hidden] { display: none; }
+.survey-dialog-body.is-complete { display: flex; min-height: min(380px, 58dvh); }
+.survey-thanks { margin: auto; width: 100%; padding: 28px 22px 32px; }
+/* Focused programmatically when the panel appears, so it takes no focus ring —
+   the heading is the visual anchor and the CTA keeps its own. */
+.survey-thanks-inner { width: 100%; max-width: 440px; margin: 0 auto; text-align: center; }
+.survey-thanks-inner:focus, .survey-thanks-inner:focus-visible { outline: none; }
+.survey-thanks-title { margin: 0; color: var(--ink); font-size: clamp(22px, 4.6vw, 28px); font-weight: 600; line-height: 1.2; }
+.survey-thanks-interest { margin: 14px 0 0; color: var(--muted); font-size: 16px; line-height: 1.5; }
+.survey-thanks-interest strong { color: var(--ink); font-weight: 600; }
+.survey-thanks-prompt { margin: 10px 0 0; color: var(--muted); font-size: 16px; line-height: 1.5; }
+/* The one thing that has to be unmissable: the brand pill CTA at ad-page size. */
+.survey-thanks-cta { height: auto; min-height: 56px; margin: 26px auto 0; padding: 16px 36px; font-size: 18px; font-weight: 600; line-height: 1.2; }
+.survey-thanks-cta > .arrow-icon { margin-left: 14px; }
+.survey-thanks-cta:focus-visible { outline: 2px solid var(--aqua-deep); outline-offset: 3px; }
+
 @keyframes surveyFade { from { opacity: 0 } to { opacity: 1 } }
 @keyframes surveyIn { from { opacity: 0; transform: translate(-50%, calc(-50% + 14px)) } to { opacity: 1; transform: translate(-50%, -50%) } }
 /* Phones (≤480px, e.g. 390px): full-screen sheet so the survey never clips. */
