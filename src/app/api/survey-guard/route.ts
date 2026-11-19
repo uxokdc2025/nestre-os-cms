@@ -20,13 +20,17 @@ export async function POST(req: Request) {
   if (age === null) return NextResponse.json({ ok: false, reason: 'stamp' }, { status: 403 })
   if (age < MIN_FILL_MS) return NextResponse.json({ ok: false, reason: 'too_fast' }, { status: 403 })
 
-  // 3. Turnstile (only once both keys are configured).
+  // 3. Turnstile (only once both keys are configured; turnstileEnabled() logs a
+  // warning when they aren't, and the submit is allowed on checks 1-2 alone).
+  // Fail closed: no token, a bad token, or siteverify unreachable all reject.
   if (turnstileEnabled()) {
     const ip = req.headers.get('cf-connecting-ip') || req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || null
     const ok = await verifyTurnstile(body?.token, ip)
-    // Cloudflare itself unreachable: don't lose a real lead over it; the honeypot
-    // and timing checks above still held.
-    if (ok === false) return NextResponse.json({ ok: false, reason: 'turnstile' }, { status: 403 })
+    if (ok === 'unavailable') {
+      console.warn('[survey-guard] Turnstile siteverify unavailable; rejecting submit (fail closed)')
+      return NextResponse.json({ ok: false, reason: 'turnstile_unavailable' }, { status: 403 })
+    }
+    if (ok !== true) return NextResponse.json({ ok: false, reason: 'turnstile' }, { status: 403 })
   }
 
   return NextResponse.json({ ok: true, turnstile: turnstileEnabled() })

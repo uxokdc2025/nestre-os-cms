@@ -62,6 +62,7 @@ function SurveyTurnstile() {
       widgetId = ts.render(boxRef.current, {
         sitekey: TURNSTILE_SITE_KEY,
         action: 'survey_submit',
+        // Managed widget, invisible unless Cloudflare decides it needs a click.
         appearance: 'interaction-only',
         callback: (t: string) => { token = t; settle(t) },
         'expired-callback': () => { token = null; ts.reset(widgetId) },
