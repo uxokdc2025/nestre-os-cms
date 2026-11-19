@@ -1,8 +1,15 @@
 'use client'
 
-import { useCallback, useEffect, useId, useRef, useState, type ReactNode } from 'react'
+import { useCallback, useEffect, useId, useRef, useState, type ReactNode, type RefObject } from 'react'
 import { createPortal } from 'react-dom'
-import { consultSurveySrc, isConsultSurvey } from '@/lib/survey-widget'
+import { ArrowIcon } from './ArrowIcon'
+import {
+  BOOKINGS_URL,
+  SCHEDULE_LABEL,
+  consultSurveySrc,
+  isConsultSurvey,
+  type SurveyCompletePayload,
+} from '@/lib/survey-widget'
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -111,11 +118,60 @@ function SurveyTurnstile() {
   )
 }
 
+/* ===== Post-quiz thank-you panel =================================== */
+
+// The copy LeadConnector rendered in its own thank-you state, handed over by the
+// watcher inside the proxied quiz (lib/survey-widget.ts → 'nestre-survey-complete').
+type SurveyComplete = Omit<SurveyCompletePayload, 'type'>
+
+const FALLBACK_HEADING = 'Let’s explore what’s available to you.'
+const FALLBACK_PROMPT = 'Schedule a call with our consultant below'
+
+/** Only strings, trimmed and length-capped — the payload crosses postMessage. */
+function text(v: unknown) {
+  return typeof v === 'string' ? v.slice(0, 400).trim() : ''
+}
+
+// The quiz's own line reads "…consultant here:" because its link sat inline right
+// after it. Ours is a button on its own line underneath, so say "below".
+function promptCopy(prompt: string) {
+  const t = prompt.replace(/\s*\bhere\b\s*:?\s*$/i, ' below').replace(/\s*:\s*$/, '').trim()
+  return t || FALLBACK_PROMPT
+}
+
+// Replaces the quiz once it is submitted: the dynamic thank-you copy plus the one
+// thing that has to be unmissable, a full-size Schedule a Call button. The button
+// is a plain link in the top document — Microsoft Bookings sends a `frame-ancestors`
+// CSP, so it can only ever be opened by a top-level navigation, never in an iframe.
+function SurveyThanks({ data, panelRef }: { data: SurveyComplete; panelRef: RefObject<HTMLDivElement | null> }) {
+  return (
+    <div className="survey-thanks">
+      {/* Focused when it appears, so the swap from quiz to thank-you is announced. */}
+      <div className="survey-thanks-inner" ref={panelRef} tabIndex={-1}>
+        <h3 className="survey-thanks-title">{data.heading || FALLBACK_HEADING}</h3>
+        {data.interestValue ? (
+          <p className="survey-thanks-interest">
+            {(data.interestLabel || 'Your interest is').replace(/\s*:\s*$/, '')}{' '}
+            <strong>{data.interestValue}</strong>
+          </p>
+        ) : null}
+        <p className="survey-thanks-prompt">{promptCopy(data.prompt)}</p>
+        <a className="btn aqua survey-thanks-cta" href={BOOKINGS_URL}>
+          {SCHEDULE_LABEL}
+          <ArrowIcon />
+        </a>
+      </div>
+    </div>
+  )
+}
+
 // A CTA button that opens a modal embedding a LeadConnector survey. Reused by the
 // get-started ad pages (GetStartedBody) and by any Puck CTA given a survey id.
 // Closes via the X, Esc or a backdrop click; focus returns to the button. The
 // iframe carries the survey id so form_embed.js auto-sizes it (no inner scrollbar);
 // the modal body scrolls if the survey is taller than the viewport (no clipping).
+// Once the quiz is submitted the intro and the quiz are hidden and SurveyThanks
+// takes the whole body; closing the dialog puts it back to the quiz.
 export function SurveyCtaButton({
   surveyId,
   label,
@@ -132,15 +188,21 @@ export function SurveyCtaButton({
 }) {
   const [open, setOpen] = useState(false)
   const [mounted, setMounted] = useState(false)
+  const [complete, setComplete] = useState<SurveyComplete | null>(null)
   const btnRef = useRef<HTMLButtonElement>(null)
   const dialogRef = useRef<HTMLDivElement>(null)
+  const bodyRef = useRef<HTMLDivElement>(null)
+  const frameRef = useRef<HTMLIFrameElement>(null)
+  const thanksRef = useRef<HTMLDivElement>(null)
   const closeRef = useRef<HTMLButtonElement>(null)
   const wasOpen = useRef(false)
   const headingId = useId()
 
   useEffect(() => { setMounted(true) }, [])
 
-  const close = useCallback(() => setOpen(false), [])
+  // Closing always drops the thank-you state, so the next open starts at the quiz
+  // (the dialog is unmounted while closed, so the iframe reloads from scratch).
+  const close = useCallback(() => { setOpen(false); setComplete(null) }, [])
 
   useEffect(() => {
     if (!open) return
@@ -154,9 +216,11 @@ export function SurveyCtaButton({
       if (e.key !== 'Tab') return
       const dlg = dialogRef.current
       if (!dlg) return
+      // The quiz is hidden (not unmounted) once submitted, so skip anything no
+      // longer on screen — otherwise first/last land on the hidden iframe.
       const focusable = Array.from(
         dlg.querySelectorAll<HTMLElement>('button, a[href], iframe, input, select, textarea, [tabindex]:not([tabindex="-1"])'),
-      )
+      ).filter((el) => el.offsetParent !== null || el.getClientRects().length > 0)
       if (!focusable.length) return
       const first = focusable[0]
       const last = focusable[focusable.length - 1]
@@ -169,6 +233,36 @@ export function SurveyCtaButton({
       document.body.style.overflow = prevOverflow
     }
   }, [open, close])
+
+  // The proxied quiz posts 'nestre-survey-complete' from our own origin when
+  // LeadConnector renders its thank-you state (lib/survey-widget.ts). Accept it
+  // only from this dialog's own iframe.
+  useEffect(() => {
+    if (!open) return
+    const onMsg = (e: MessageEvent) => {
+      if (e.origin !== window.location.origin) return
+      const d = e.data as Record<string, unknown> | null
+      if (!d || d.type !== 'nestre-survey-complete') return
+      const frameWin = frameRef.current?.contentWindow
+      if (frameWin && e.source !== frameWin) return
+      setComplete({
+        heading: text(d.heading),
+        interestLabel: text(d.interestLabel),
+        interestValue: text(d.interestValue),
+        prompt: text(d.prompt),
+      })
+    }
+    window.addEventListener('message', onMsg)
+    return () => window.removeEventListener('message', onMsg)
+  }, [open])
+
+  // The quiz can leave the body scrolled well down the iframe; the thank-you panel
+  // centres itself in the body, so start it at the top and move focus into it.
+  useEffect(() => {
+    if (!complete) return
+    if (bodyRef.current) bodyRef.current.scrollTop = 0
+    thanksRef.current?.focus()
+  }, [complete])
 
   // Return focus to the trigger when the dialog closes (not on first mount).
   useEffect(() => {
@@ -184,8 +278,8 @@ export function SurveyCtaButton({
           <h2 id={headingId} className="survey-dialog-title">{title}</h2>
           <button type="button" ref={closeRef} className="survey-close" aria-label="Close" onClick={close}>×</button>
         </div>
-        <div className="survey-dialog-body">
-          {isConsultSurvey(surveyId) && (
+        <div className={`survey-dialog-body${complete ? ' is-complete' : ''}`} ref={bodyRef}>
+          {isConsultSurvey(surveyId) && !complete && (
             <div className="survey-intro">
               <img
                 className="survey-intro-photo"
@@ -196,16 +290,22 @@ export function SurveyCtaButton({
               <p className="survey-intro-sub">Four quick questions to explore your cognitive patterns— find your starting point for mind and brain fitness.</p>
             </div>
           )}
-          <iframe
-            className="survey-frame"
-            src={consultSurveySrc(surveyId)}
-            id={surveyId}
-            title="survey"
-            scrolling="no"
-            data-cookie-consent="true"
-            data-cookie-consent-provider="auto"
-          />
-          {isConsultSurvey(surveyId) && <SurveyTurnstile />}
+          {/* Hidden rather than unmounted after submit: the iframe keeps its document
+              and SurveyTurnstile keeps window.__nestreSurveyTurnstile installed. */}
+          <div className="survey-quiz" hidden={Boolean(complete)}>
+            <iframe
+              className="survey-frame"
+              ref={frameRef}
+              src={consultSurveySrc(surveyId)}
+              id={surveyId}
+              title="survey"
+              scrolling="no"
+              data-cookie-consent="true"
+              data-cookie-consent-provider="auto"
+            />
+            {isConsultSurvey(surveyId) && <SurveyTurnstile />}
+          </div>
+          {complete && <SurveyThanks data={complete} panelRef={thanksRef} />}
         </div>
       </div>
     </>
@@ -219,7 +319,7 @@ export function SurveyCtaButton({
         className={className}
         aria-haspopup="dialog"
         aria-expanded={open}
-        onClick={() => setOpen(true)}
+        onClick={() => { setComplete(null); setOpen(true) }}
       >
         {label}
         {icon}
