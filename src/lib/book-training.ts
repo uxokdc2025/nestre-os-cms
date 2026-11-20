@@ -20,6 +20,11 @@ export function bookTrainingUrl(name?: string): string | null {
 // dropdown, the location cards' "View Location" links, and the schedule-page hero
 // images. `page` = that location's schedule landing page; `image` = its photo.
 export type BookLocation = { name: string; sub: string; url: string; page: string; image: string }
+/** What the "Choose your location." menu (ConsultPopover) needs from a location:
+ *  its name, its subline and the booking link its Book Now opens. The ad landing
+ *  pages pass their own list of these — same menu, consultation calendars. */
+export type ConsultLocation = Pick<BookLocation, 'name' | 'sub' | 'url'>
+
 export const BOOK_LOCATIONS: BookLocation[] = [
   { name: 'Lake Nona', sub: 'Orlando, FL', url: BOOK_TRAINING_BY_NAME['lake nona'], page: '/schedule-with-nestre-at-lake-nona-performance-club', image: '/api/media/file/lnpc-lake-nona.jpg' },
   { name: 'Winter Park', sub: 'Winter Park, FL', url: BOOK_TRAINING_BY_NAME['winter park'], page: '/schedule-with-nestre-at-neurovations-clinic', image: '/api/media/file/lab-winter-park-building.jpg' },
