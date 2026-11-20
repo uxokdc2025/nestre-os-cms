@@ -46,6 +46,12 @@ const nextConfig: NextConfig = {
       ['/mindset-profile', '/'],
       ['/nestre-news', '/news'],
       ['/wp-content/uploads/2021/10/Dr.-Tommy-Shavers-Bio.pdf', '/our-story'],
+      // Ad landing pages: the per-location URLs moved to one short URL per variant
+      // (Chloe, Nov 20). Next.js carries the query string (UTMs) across.
+      ['/lnpc-discovery-call', '/discovery-call'],
+      ['/neurovations-discovery-call', '/discovery-call'],
+      ['/lnpc-consultation', '/consultation'],
+      ['/neurovations-consultation', '/consultation'],
     ]
     return map.map(([source, destination]) => ({ source, destination, statusCode: 301 }))
   },

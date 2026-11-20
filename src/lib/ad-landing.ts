@@ -99,12 +99,11 @@ const CONSULTATION: AdLandingConfig = {
   ctaAnchor: 'book-consultation',
 }
 
-// Both URLs of a pair render the same combined page.
+// One short URL per variant (Chloe, Nov 20). The old per-location URLs
+// (/lnpc-*, /neurovations-*) 301 to these in next.config.ts.
 export const AD_LANDING: Record<string, AdLandingConfig> = {
-  '/lnpc-discovery-call': DISCOVERY,
-  '/neurovations-discovery-call': DISCOVERY,
-  '/lnpc-consultation': CONSULTATION,
-  '/neurovations-consultation': CONSULTATION,
+  '/discovery-call': DISCOVERY,
+  '/consultation': CONSULTATION,
 }
 
 // The pair shares one title/description: the pages are identical and location
