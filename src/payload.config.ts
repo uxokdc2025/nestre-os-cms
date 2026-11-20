@@ -3,6 +3,7 @@ import { mcpPlugin } from '@payloadcms/plugin-mcp'
 import { cloudStoragePlugin } from '@payloadcms/plugin-cloud-storage'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { supabaseStorageAdapter } from './storage'
+import { payloadPoolConfig } from './lib/db-pool'
 import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
@@ -46,7 +47,7 @@ export default buildConfig({
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
   db: postgresAdapter({
-    pool: { connectionString: process.env.DATABASE_URI || '', max: 3, idleTimeoutMillis: 10000, allowExitOnIdle: true },
+    pool: payloadPoolConfig(),
     schemaName: 'cms',
   }),
   sharp,
