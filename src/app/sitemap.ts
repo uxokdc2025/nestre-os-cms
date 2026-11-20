@@ -25,8 +25,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       { url: `${SITE_URL}/privacy`, lastModified: new Date(), changeFrequency: 'yearly' as const, priority: 0.2 },
       { url: `${SITE_URL}/terms`, lastModified: new Date(), changeFrequency: 'yearly' as const, priority: 0.2 },
       { url: `${SITE_URL}/help`, lastModified: new Date(), changeFrequency: 'yearly' as const, priority: 0.3 },
+      { url: `${SITE_URL}/get-started-at-lnpc`, lastModified: new Date(), changeFrequency: 'weekly' as const, priority: 0.8 },
+      { url: `${SITE_URL}/get-started-at-neurovations`, lastModified: new Date(), changeFrequency: 'weekly' as const, priority: 0.8 },
+      { url: `${SITE_URL}/schedule-with-nestre-at-lake-nona-performance-club`, lastModified: new Date(), changeFrequency: 'weekly' as const, priority: 0.7 },
+      { url: `${SITE_URL}/schedule-with-nestre-at-neurovations-clinic`, lastModified: new Date(), changeFrequency: 'weekly' as const, priority: 0.7 },
     ]
-    return [...cms, ...extra]
+    // A CMS page can share a slug with a standalone route (/help, /privacy, /terms),
+    // so keep the first entry for each URL and drop the repeats.
+    const seen = new Set<string>()
+    return [...cms, ...extra].filter((e) => (seen.has(e.url) ? false : (seen.add(e.url), true)))
   } catch {
     return [{ url: SITE_URL, lastModified: new Date(), changeFrequency: 'weekly', priority: 1 }]
   }

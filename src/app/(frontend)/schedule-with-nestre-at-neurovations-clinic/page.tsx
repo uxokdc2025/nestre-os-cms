@@ -1,11 +1,15 @@
 import type { Metadata } from 'next'
-import { SITE_URL } from '@/lib/seo'
+import { SITE_URL, ogFor, pageGraphs } from '@/lib/seo'
 import { SchedulePageBody, type ScheduleConfig } from '@/components/SchedulePageBody'
 
+const DESCRIPTION = 'Book your NESTRE consultation and Neuro-Strength training at the Neurovations Clinic.'
+
 export const metadata: Metadata = {
-  title: 'Schedule with NESTRE at Neurovations Clinic | NESTRE Performance',
-  description: 'Book your NESTRE consultation and Neuro-Strength training at the Neurovations Clinic.',
+  // The root layout template appends ' · NESTRE'.
+  title: 'Schedule at Neurovations Clinic',
+  description: DESCRIPTION,
   alternates: { canonical: `${SITE_URL}/schedule-with-nestre-at-neurovations-clinic` },
+  openGraph: ogFor('/schedule-with-nestre-at-neurovations-clinic', 'Schedule at Neurovations Clinic · NESTRE', DESCRIPTION),
 }
 
 const cfg: ScheduleConfig = {
@@ -31,4 +35,11 @@ const cfg: ScheduleConfig = {
     { name: 'Quiet in the Storm', id: '2112568' },
   ],
 }
-export default function Page() { return <SchedulePageBody cfg={cfg} /> }
+export default function Page() {
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(pageGraphs('Schedule at Neurovations Clinic', '/schedule-with-nestre-at-neurovations-clinic', DESCRIPTION)) }} />
+      <SchedulePageBody cfg={cfg} />
+    </>
+  )
+}

@@ -6,7 +6,7 @@ import { RenderBlocks } from '@/components/RenderBlocks'
 import { MindsetRing } from '@/components/MindsetRing'
 import { Reveal } from '@/components/Reveal'
 import { ReadingReveal } from '@/components/ReadingReveal'
-import { siteGraph, faqGraph, SITE_URL } from '@/lib/seo'
+import { siteGraph, faqGraph, pageTitle, SITE_URL } from '@/lib/seo'
 import { getRegion } from '@/lib/geo-pricing'
 
 export const dynamic = 'force-dynamic'
@@ -34,7 +34,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug?: st
   const title = page.metaTitle || page.title
   const description = page.metaDescription || undefined
   return {
-    title,
+    title: pageTitle(title),
     description,
     ...(slug?.join('/') === 'appv2' ? { robots: { index: false, follow: false } } : {}),
     alternates: { canonical: path === '/' ? SITE_URL : `${SITE_URL}${path}` },

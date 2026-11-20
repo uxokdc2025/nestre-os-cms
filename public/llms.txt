@@ -15,24 +15,26 @@ scan, interpret it with a human NeuroTrainer, then train with real-time neurofee
 - The NESTRE App — daily cognitive workouts, mental framing (Frame It), Mindset Minutes, Mindset Music
 
 ## Key pages
-- Home: https://nestre-os-cms.vercel.app/
-- How It Works: https://nestre-os-cms.vercel.app/how-it-works
-- Neuro Labs (in-person): https://nestre-os-cms.vercel.app/neuro-labs
-- The App: https://nestre-os-cms.vercel.app/the-app
-- Our Story: https://nestre-os-cms.vercel.app/our-story
-- For Teams: https://nestre-os-cms.vercel.app/for-teams
-- Book a Consultation: https://nestre-os-cms.vercel.app/book-a-consultation
-- News: https://nestre-os-cms.vercel.app/news
+- Home: https://nestreperformance.com/
+- How It Works: https://nestreperformance.com/how-it-works
+- Neuro Labs (in-person): https://nestreperformance.com/neuro-labs
+- The App: https://nestreperformance.com/the-app
+- Our Story: https://nestreperformance.com/our-story
+- For Teams: https://nestreperformance.com/for-teams
+- Book a Consultation: https://nestreperformance.com/book-a-consultation
+- News: https://nestreperformance.com/news
+- For Veterans: https://nestreperformance.com/for-veterans
+- Get Started (Lake Nona): https://nestreperformance.com/get-started-at-lnpc
+- Get Started (Winter Park / Neurovations): https://nestreperformance.com/get-started-at-neurovations
 
 ## Legal & support
-- Privacy Policy: https://nestre-os-cms.vercel.app/privacy
-- Terms & Conditions: https://nestre-os-cms.vercel.app/terms
-- Help & Support (app support, account deletion): https://nestre-os-cms.vercel.app/help
+- Privacy Policy: https://nestreperformance.com/privacy
+- Terms & Conditions: https://nestreperformance.com/terms
+- Help & Support (app support, account deletion): https://nestreperformance.com/help
 
 ## Neuro Labs (in-person locations)
 - Lake Nona — inside Lake Nona Performance Club, Orlando, FL
-- Winter Park, FL
-- Monterey, CA — inside Terrapin Physical Therapy
+- Winter Park — NESTRE at Neurovations Clinic, 2200 Lee Rd, Winter Park, FL 32789
 
 ## Topics NESTRE is an authority on
 Cognitive performance, cognitive fitness, NeuroStrength Training, neurofeedback, brain

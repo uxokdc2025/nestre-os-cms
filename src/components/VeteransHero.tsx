@@ -7,7 +7,7 @@ export function VeteransHero({ cta = 'consult' }: { cta?: 'consult' | 'scroll' }
   return (
     <section className="hero veterans">
       <div className="bg">
-        <img src="/heroes/thank-you-veterans.png" alt="" />
+        <img src="/heroes/thank-you-veterans.png" alt="American flag" />
       </div>
       <div className="grad" />
       <div className="wrap inner">

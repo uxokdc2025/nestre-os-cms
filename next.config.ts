@@ -26,6 +26,29 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: path.resolve(dirname),
   },
+  // Legacy WordPress URLs that 404 today. Exact sources only — no wildcards, because
+  // /nestre-app/help, /nestre-app/privacy and /nestre-app/tandc are live pages the
+  // mobile app links to. statusCode: 301 (permanent: true would emit a 308).
+  async redirects() {
+    const map: [string, string][] = [
+      ['/about', '/our-story'],
+      ['/solutions', '/how-it-works'],
+      ['/neurostrength-training', '/neuro-labs'],
+      ['/nestre-app', '/the-app'],
+      ['/destination-packages', '/'],
+      ['/results', '/how-it-works'],
+      ['/the-science-of-better', '/how-it-works'],
+      ['/partner-with-nestre', '/for-teams'],
+      ['/privacy-policy', '/privacy'],
+      ['/golfusion', '/'],
+      ['/nacda', '/'],
+      ['/va-simlearn', '/'],
+      ['/mindset-profile', '/'],
+      ['/nestre-news', '/news'],
+      ['/wp-content/uploads/2021/10/Dr.-Tommy-Shavers-Bio.pdf', '/our-story'],
+    ]
+    return map.map(([source, destination]) => ({ source, destination, statusCode: 301 }))
+  },
 }
 
 export default withPayload(nextConfig, { devBundleServerPackages: false })
