@@ -1,15 +1,18 @@
 import type { Metadata } from 'next'
 import { SITE_URL, ogFor } from '@/lib/seo'
 import { AdLandingBody } from '@/components/AdLandingBody'
-import { AD_LANDING } from '@/lib/ad-landing'
+import { AD_LANDING, AD_LANDING_META } from '@/lib/ad-landing'
 
-// Ad-only page: noindex and deliberately left out of the sitemap.
+// Ad-only page: noindex and deliberately left out of the sitemap. Both URLs of
+// the pair share one title/description and render the same combined page (#31);
+// each URL keeps its own canonical + og:url (#29).
+const meta = AD_LANDING_META.discovery
+const title = (meta.title as { absolute: string }).absolute
+const description = meta.description ?? undefined
 export const metadata: Metadata = {
-  title: { absolute: 'NESTRE · Your starting point at Lake Nona' },
-  description:
-    'Know your mind. Book a complimentary discovery call about the NESTRE Initial Consultation at Lake Nona Performance Club.',
+  ...meta,
   alternates: { canonical: `${SITE_URL}/lnpc-discovery-call` },
-  openGraph: ogFor('/lnpc-discovery-call', 'NESTRE · Your starting point at Lake Nona', 'Know your mind. Book a complimentary discovery call about the NESTRE Initial Consultation at Lake Nona Performance Club.'),
+  openGraph: ogFor('/lnpc-discovery-call', title, description),
   robots: { index: false, follow: false },
 }
 

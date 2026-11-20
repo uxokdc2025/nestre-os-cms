@@ -56,7 +56,8 @@ export function SiteHeader({ items, cta, logoUrl }: { items: any[]; cta?: any; l
 
   // Ad landing pages (the discovery-call / consultation A/B) get the same stripped
   // header, carrying that page's own CTA: the quiz popup on the discovery pages,
-  // the location's Acuity calendar on the consultation ones.
+  // the "Choose your location." menu over the two consultation calendars on the
+  // consultation ones — the same menu the main site's Book Now button opens.
   const ad = AD_LANDING[pathname]
   if (ad) {
     return (
@@ -66,7 +67,14 @@ export function SiteHeader({ items, cta, logoUrl }: { items: any[]; cta?: any; l
           {ad.surveyId ? (
             <SurveyCtaButton surveyId={ad.surveyId} label={ad.ctaLabel} className="btn aqua adl-cta" title={ad.ctaLabel} icon={<ArrowIcon />} />
           ) : (
-            <a className="btn aqua adl-cta" href={ad.bookUrl} target="_blank" rel="noopener noreferrer">{ad.ctaLabel}<ArrowIcon /></a>
+            <ConsultPopover
+              label={ad.ctaLabel}
+              className="btn aqua adl-cta"
+              locations={ad.bookLocations}
+              icon={<ArrowIcon />}
+              prerender
+              detached
+            />
           )}
         </div>
       </header>
