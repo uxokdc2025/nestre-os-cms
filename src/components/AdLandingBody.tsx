@@ -2,6 +2,7 @@ import React from 'react'
 import { Reveal } from './Reveal'
 import { GtmTag } from './Tracking'
 import { SurveyCtaButton } from './SurveyModal'
+import { ConsultPopover } from './ConsultPopover'
 import { MindsetRingCard } from './MindsetRingCard'
 import { AdLandingRail } from './AdLandingRail'
 import { AdLandingGoals } from './AdLandingGoals'
@@ -29,8 +30,9 @@ import {
 // system — same sections, order and copy, drawn with our tokens, our scorecard
 // (bars grow / numbers count up via Carousels.tsx), our Mindset ring and our
 // reveal motion. One component serves both A/B variants: `cfg.surveyId` makes
-// every CTA open the LeadConnector quiz popup (discovery), otherwise they link
-// straight to this location's Acuity calendar (consultation).
+// every CTA open the LeadConnector quiz popup (discovery), otherwise they open
+// the site's "Choose your location." menu over the two initial-consultation
+// calendars (consultation).
 
 const PlusIcon = () => (
   <svg viewBox="0 0 20 20" width="16" height="16" fill="none" aria-hidden>
@@ -59,15 +61,20 @@ export function AdLandingBody({ cfg }: { cfg: AdLandingConfig }) {
   const support = CTA_SUPPORT[cfg.variant]
 
   // The page's one conversion action, rendered in the hero, the consultation
-  // card and the closing band. Discovery opens the quiz; consultation books.
+  // card and the closing band. Discovery opens the quiz; consultation opens the
+  // location menu — both calendars are in the HTML, the menu just reveals them.
   const Cta = ({ className = 'btn aqua adl-cta' }: { className?: string }) =>
     cfg.surveyId ? (
       <SurveyCtaButton surveyId={cfg.surveyId} label={cfg.ctaLabel} className={className} title={cfg.ctaLabel} icon={<ArrowIcon />} />
     ) : (
-      <a className={className} href={cfg.bookUrl} target="_blank" rel="noopener noreferrer">
-        {cfg.ctaLabel}
-        <ArrowIcon />
-      </a>
+      <ConsultPopover
+        label={cfg.ctaLabel}
+        className={className}
+        locations={cfg.bookLocations}
+        icon={<ArrowIcon />}
+        prerender
+        detached
+      />
     )
 
   return (
@@ -80,7 +87,7 @@ export function AdLandingBody({ cfg }: { cfg: AdLandingConfig }) {
           <img src={HERO.photo} alt={HERO.photoAlt} fetchPriority="high" decoding="async" />
         </div>
         <div className="wrap adl-hero-inner">
-          <p className="eyebrow">Your initial consultation · {cfg.venue}</p>
+          <p className="eyebrow">{cfg.eyebrow}</p>
           <h1 className="adl-h1">
             {HERO.headline[0]}
             <br />
@@ -166,14 +173,12 @@ export function AdLandingBody({ cfg }: { cfg: AdLandingConfig }) {
                 </div>
               ))}
             </div>
+            {/* Both locations, one line per supplied line: the venue headings
+                keep the bold treatment, the address lines sit under them. */}
             <p className="adl-location">
-              <strong>{cfg.locationTitle}</strong>
-              {cfg.locationLines.map((line) => (
-                <React.Fragment key={line}>
-                  <br />
-                  {line}
-                </React.Fragment>
-              ))}
+              {cfg.locationLines.map((line, i) =>
+                line.strong ? <strong key={i}>{line.text}</strong> : <span key={i}>{line.text}</span>,
+              )}
             </p>
             <p className="adl-footnote">{CONSULTATION.footnote}</p>
             <div className="adl-cta-row"><Cta className="btn solid adl-cta" /></div>
