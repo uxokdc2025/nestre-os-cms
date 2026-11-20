@@ -581,6 +581,9 @@ html { scroll-behavior: auto; }
   z-index: 300; animation: consultIn .22s cubic-bezier(.22,1,.36,1) both;
 }
 @keyframes consultIn { from { opacity: 0; transform: translateY(-8px) scale(.98); } to { opacity: 1; transform: none; } }
+/* The portaled menu (ad pages) takes focus when it opens, so it gets the site's
+   focus ring instead of the browser's default one. */
+.consult-pop:focus-visible { outline: 2px solid var(--aqua-deep); outline-offset: 3px; }
 .consult-eyebrow { font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--aqua-ink); font-weight: 700; }
 .consult-title, .consult-done h3 { font-size: 22px; font-weight: 600; line-height: 1.15; margin: 8px 0 18px; }
 /* "Book a Consultation" dropdown → pick a location, each with a Book Now CTA. */
@@ -1415,6 +1418,10 @@ main[data-page="home"] .hero:not(.quote):not(.veterans) .btns { margin-top: 18px
    full-colour Apple emoji instead of type. */
 .adl-cta > .arrow-icon { margin-left: 18px; }
 .nav-minimal .adl-cta > .arrow-icon { margin-left: 12px; }
+/* On the consultation pages that CTA is the site's location menu (ConsultPopover),
+   whose button carries both a full and a short label. These pages have always
+   shown the full label at every width, so the short one stays hidden here. */
+.adl-cta .cta-short { display: none; }
 .adl-cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
 
 /* The offer price, shown against the struck-through regular price. Ad pages
@@ -1553,6 +1560,9 @@ main[data-page="home"] .hero:not(.quote):not(.veterans) .btns { margin-top: 18px
 .adl-facts strong { display: block; font-size: 32px; font-weight: 600; letter-spacing: -.02em; line-height: 1.2; margin-bottom: 9px; color: var(--ink); }
 .adl-location { font-size: 15px; line-height: 1.7; border-left: 3px solid var(--aqua-deep); padding: 5px 0 5px 18px; margin: 30px 0; }
 .adl-location strong { display: block; font-size: 17px; font-weight: 600; }
+/* Both locations sit in one block: every line NESTRE supplied gets its own line,
+   so the address lines are <span>s rather than <br>-separated text. */
+.adl-location span { display: block; }
 .adl-footnote { font-size: 12px; color: var(--muted); }
 .adl-consult-note { font-size: 13px; color: var(--muted); margin-top: 14px; }
 @media (max-width: 900px) {
