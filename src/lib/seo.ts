@@ -30,7 +30,15 @@ const APP_STORE_ANDROID = 'https://play.google.com/store/apps/details?id=com.nes
 const PODCAST_SPOTIFY = 'https://open.spotify.com/show/5rL7sOe1lvUmH814dzzbGp'
 const PODCAST_APPLE = 'https://podcasts.apple.com/us/podcast/better-mind/id1825077930'
 const OFFICIAL_SITE = 'https://nestreperformance.com'
-const SAME_AS = [OFFICIAL_SITE, APP_STORE_IOS, APP_STORE_ANDROID, PODCAST_SPOTIFY, PODCAST_APPLE]
+// The five profiles linked from the site footer.
+const SOCIAL = [
+  'https://www.instagram.com/nestrebetter/',
+  'https://x.com/NESTREBetter',
+  'https://www.facebook.com/NESTREBetter/',
+  'https://www.linkedin.com/company/nestre',
+  'https://www.youtube.com/@BetterMindPodcast',
+]
+const SAME_AS = [OFFICIAL_SITE, APP_STORE_IOS, APP_STORE_ANDROID, PODCAST_SPOTIFY, PODCAST_APPLE, ...SOCIAL]
 
 const LABS = [
   {
@@ -41,7 +49,8 @@ const LABS = [
   },
   {
     name: 'NESTRE Neuro Lab — Winter Park',
-    locality: 'Winter Park', region: 'FL', country: 'US',
+    street: '2200 Lee Rd',
+    locality: 'Winter Park', region: 'FL', postal: '32789', country: 'US',
     inside: 'Winter Park, Florida',
   },
 ]
@@ -168,4 +177,24 @@ export function webPageGraph(name: string, path: string, description?: string): 
       },
     ],
   }
+}
+
+/** Root layout template appends ' · NESTRE'. Titles that already contain the brand opt out. */
+export function pageTitle(title: string): string | { absolute: string } {
+  return /nestre/i.test(title) ? { absolute: title } : title
+}
+
+/** A child `openGraph` replaces the layout's wholesale, so it has to re-carry
+ *  images/type/siteName — this is what keeps og:url on the page's own URL. */
+export function ogFor(path: string, title?: string, description?: string) {
+  return {
+    type: 'website' as const, siteName: 'NESTRE', locale: 'en_US', url: abs(path),
+    ...(title ? { title } : {}), ...(description ? { description } : {}),
+    images: [{ url: '/og', width: 1200, height: 630, alt: title || 'NESTRE — Performance. From within.' }],
+  }
+}
+
+/** JSON-LD for standalone routes: the site graph plus a WebPage/Breadcrumb node. */
+export function pageGraphs(name: string, path: string, description?: string) {
+  return [siteGraph(), webPageGraph(name, path, description)]
 }

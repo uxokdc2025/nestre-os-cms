@@ -1,13 +1,13 @@
 import React from 'react'
 import type { Metadata } from 'next'
-import { SITE_URL } from '@/lib/seo'
+import { SITE_URL, pageTitle, pageGraphs } from '@/lib/seo'
 import { TheAppBody } from '../the-app-v2/page'
 
 // /the-app now serves the refined build (good phone showcase + Mindset ring under
 // it + parallax/gated-rise patterns). This specific route takes precedence over
 // the catch-all CMS route for /the-app.
 export const metadata: Metadata = {
-  title: 'The NESTRE App — Your mind. On your schedule.',
+  title: pageTitle('The NESTRE App — Your mind. On your schedule.'),
   description:
     'Daily cognitive workouts, mental training, and Mindset Frames — deep work for the everyday, guided by your own performance data.',
   alternates: { canonical: `${SITE_URL}/the-app` },
@@ -18,5 +18,10 @@ export const metadata: Metadata = {
 }
 
 export default function TheAppPage() {
-  return <TheAppBody />
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(pageGraphs('The NESTRE App', '/the-app', 'Daily cognitive workouts, mental training, and Mindset Frames — deep work for the everyday, guided by your own performance data.')) }} />
+      <TheAppBody />
+    </>
+  )
 }

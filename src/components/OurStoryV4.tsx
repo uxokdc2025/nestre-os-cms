@@ -266,7 +266,7 @@ export function OurStoryV4() {
                         <span className={styles.pAva}>
                           {l.image ? (
                             // eslint-disable-next-line @next/next/no-img-element
-                            <img src={l.image} alt="" loading="lazy" />
+                            <img src={l.image} alt={l.name} loading="lazy" />
                           ) : (
                             <span>{initialsOf(l.name)}</span>
                           )}
