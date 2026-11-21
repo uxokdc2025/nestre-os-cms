@@ -66,7 +66,7 @@ const DISCOVERY: AdLandingConfig = {
   locationLines: [
     { text: 'We are located in 2 locations', strong: true },
     { text: 'Located at The Lake Nona Performance Club', strong: true },
-    { text: '6775 Chopra Ter' },
+    { text: '6775 Chopra Terrace' },
     { text: 'Orlando, FL 32827' },
     { text: 'United States' },
     { text: 'Neurovations in Winter Park', strong: true },
@@ -86,7 +86,7 @@ const CONSULTATION: AdLandingConfig = {
   locationLines: [
     { text: 'Located at the', strong: true },
     { text: 'Lake Nona Performance Club', strong: true },
-    { text: '6775 Chopra Ter' },
+    { text: '6775 Chopra Terrace' },
     { text: 'Orlando, FL 32827' },
     { text: 'United States' },
     { text: 'Neurovations Clinic in Winter Park', strong: true },
