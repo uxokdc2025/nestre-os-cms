@@ -26,7 +26,7 @@ export type LocationItem = {
 const DEFAULTS: LocationItem[] = [
   // Images point at the SAME CMS media the /neuro-labs block uses, so both places
   // render identical location photos from one source. Maps stay as shipped crops.
-  { name: 'Lake Nona', address: '6775 Chopra Ter, Orlando, FL 32827', miles: '3.1 miles away', hours: 'Open now', earliest: '11:00am', image: '/api/media/file/lnpc-lake-nona.jpg', map: '/img/locations/lake-nona-map.png', mapPos: '50% 78%', viewHref: '#', bookHref: '/book-a-consultation' },
+  { name: 'Lake Nona', address: '6775 Chopra Terrace, Orlando, FL 32827', miles: '3.1 miles away', hours: 'Open now', earliest: '11:00am', image: '/api/media/file/lnpc-lake-nona.jpg', map: '/img/locations/lake-nona-map.png', mapPos: '50% 78%', viewHref: '#', bookHref: '/book-a-consultation' },
   { name: 'Winter Park', address: '2200 Lee Rd, Winter Park, FL 32789', miles: '5.2 miles away', hours: 'Open now', earliest: '11:00am', image: '/api/media/file/lab-winter-park-building.jpg', map: '/img/locations/winter-park-map.png', mapPos: '90% 50%', viewHref: '#', bookHref: '/book-a-consultation' },
 ]
 

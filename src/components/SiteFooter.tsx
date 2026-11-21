@@ -19,7 +19,7 @@ const SOCIALS = [
   { label: 'LinkedIn', href: 'https://www.linkedin.com/company/nestre' },
   { label: 'YouTube', href: 'https://youtube.com/@bettermindpodcast?si=knVkWz9FL59o8_r_' },
   { label: 'Spotify', href: 'https://open.spotify.com/show/5rL7sOe1lvUmH814dzzbGp' },
-  { label: 'ApplePodcasts', href: 'https://podcasts.apple.com/us/podcast/the-better-mind-podcast/id1668627436' },
+  { label: 'ApplePodcasts', href: 'https://podcasts.apple.com/us/podcast/better-mind/id1825077930' },
 ]
 const IOS = 'https://apps.apple.com/us/app/nestre-health-and-performance/id6443393462'
 const ANDROID = 'https://play.google.com/store/apps/details?id=com.nestreapp.prod'
