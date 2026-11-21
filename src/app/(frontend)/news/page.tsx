@@ -34,7 +34,7 @@ export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'News & Events',
-  description: 'Press, partnerships, research collaborations, and upcoming events from NESTRE Health & Performance.',
+  description: 'Press, partnerships, research collaborations and upcoming events from NESTRE Health & Performance, the cognitive performance and NeuroStrength Training team.',
   alternates: { canonical: `${SITE_URL}/news` },
   openGraph: { title: 'NESTRE — News & Events', url: `${SITE_URL}/news`, images: [{ url: '/og', width: 1200, height: 630 }] },
   twitter: { card: 'summary_large_image', title: 'NESTRE — News & Events', images: ['/og'] },
