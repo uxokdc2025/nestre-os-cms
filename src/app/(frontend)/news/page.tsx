@@ -7,7 +7,7 @@ import { SITE_URL } from '@/lib/seo'
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const fmtDay = (d: string) => (d ? new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '')
-const fmtWhen = (d: string) => (d ? new Date(d).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }) + ' · ' + new Date(d).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }) : '')
+const fmtWhen = (d: string) => (d ? new Date(d).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', timeZone: 'America/New_York' }) + ' · ' + new Date(d).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: 'America/New_York' }) : '')
 
 async function getItems(): Promise<NewsCard[]> {
   try {
