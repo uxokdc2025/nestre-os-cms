@@ -198,3 +198,12 @@ export function ogFor(path: string, title?: string, description?: string) {
 export function pageGraphs(name: string, path: string, description?: string) {
   return [siteGraph(), webPageGraph(name, path, description)]
 }
+
+/** Meta descriptions (meta description + og:description + twitter:description)
+ *  for CMS-rendered pages, kept in code so they ship through staging like any
+ *  other change. They take precedence over the CMS `metaDescription` field. */
+export const META_DESCRIPTIONS: Record<string, string> = {
+  '/': 'NESTRE turns cognitive performance data into personalized NeuroStrength Training, guided by a NeuroTrainer. Train with us in Lake Nona or Winter Park, Florida.',
+  '/how-it-works': 'See how NESTRE works: capture your cognitive performance data, review it with a NeuroTrainer, then follow a NeuroStrength Training plan built for you.',
+  '/for-teams': 'NESTRE for Teams brings cognitive performance data and personalized NeuroStrength Training to your organization, with the human at the center of performance.',
+}

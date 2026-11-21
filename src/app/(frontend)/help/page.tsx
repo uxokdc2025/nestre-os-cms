@@ -10,7 +10,7 @@ export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Help & Support',
-  description: 'Get help with the NESTRE app — contact support, manage your subscription, or delete your account.',
+  description: 'Get help with the NESTRE app. Contact support, manage your subscription, update your account details or delete your account, all in one place.',
   alternates: { canonical: `${SITE_URL}/help` },
   openGraph: { title: 'Help & Support · NESTRE', url: `${SITE_URL}/help`, images: [{ url: '/og', width: 1200, height: 630 }] },
   twitter: { card: 'summary_large_image', title: 'Help & Support · NESTRE', images: ['/og'] },
@@ -41,7 +41,7 @@ export default async function HelpPage() {
   const cms = await getDocPage('help')
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageGraph('Help & Support', '/help', 'Get help with the NESTRE app — contact support, manage your subscription, or delete your account.')) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageGraph('Help & Support', '/help', 'Get help with the NESTRE app. Contact support, manage your subscription, update your account details or delete your account, all in one place.')) }} />
       <main id="main" className="legal-page">
         <section className="sec paper">
           <div className="wrap legal">

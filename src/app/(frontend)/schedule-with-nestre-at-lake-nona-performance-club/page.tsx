@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { SITE_URL, ogFor, pageGraphs } from '@/lib/seo'
 import { SchedulePageBody, type ScheduleConfig } from '@/components/SchedulePageBody'
 
-const DESCRIPTION = 'Book your NESTRE consultation and Neuro-Strength training at Lake Nona Performance Club.'
+const DESCRIPTION = 'Book a NESTRE consultation at Lake Nona Performance Club in Orlando, FL. Meet a NeuroTrainer, capture your cognitive data and start NeuroStrength Training.'
 
 export const metadata: Metadata = {
   // The root layout template appends ' · NESTRE'.
