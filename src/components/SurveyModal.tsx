@@ -111,6 +111,22 @@ function SurveyTurnstile() {
   )
 }
 
+// After the quiz, "Book Discovery Call" navigates this iframe to HighLevel's
+// booking app (cross-origin). The booking document itself is only ~650–705px
+// and already shows its Next button; the leftover Chloe intro (~400–490px)
+// above the iframe is what pushed Next below the modal-body fold (page-level
+// scroll on .survey-dialog-body, not an inner iframe scrollbar).
+function isBookingLocation(iframe: HTMLIFrameElement) {
+  try {
+    const href = iframe.contentWindow?.location.href || ''
+    return /leadconnectorhq\.com\/booking|\/booking(\/|\?|$)/i.test(href)
+  } catch {
+    // Same-origin quiz lives at /widget/survey/:id; a cross-origin read
+    // error means the iframe has navigated to HighLevel's booking app.
+    return true
+  }
+}
+
 // A CTA button that opens a modal embedding a LeadConnector survey. Reused by the
 // get-started ad pages (GetStartedBody) and by any Puck CTA given a survey id.
 // Closes via the X, Esc or a backdrop click; focus returns to the button. The
@@ -132,8 +148,12 @@ export function SurveyCtaButton({
 }) {
   const [open, setOpen] = useState(false)
   const [mounted, setMounted] = useState(false)
+  const [bookingStep, setBookingStep] = useState(false)
+  const [showScrollCue, setShowScrollCue] = useState(false)
   const btnRef = useRef<HTMLButtonElement>(null)
   const dialogRef = useRef<HTMLDivElement>(null)
+  const bodyRef = useRef<HTMLDivElement>(null)
+  const iframeRef = useRef<HTMLIFrameElement>(null)
   const closeRef = useRef<HTMLButtonElement>(null)
   const wasOpen = useRef(false)
   const headingId = useId()
@@ -176,6 +196,81 @@ export function SurveyCtaButton({
     wasOpen.current = open
   }, [open])
 
+  // Reset booking UI each time the dialog opens, and watch for the booking step.
+  useEffect(() => {
+    if (!open) {
+      setBookingStep(false)
+      setShowScrollCue(false)
+      return
+    }
+    const iframe = iframeRef.current
+    const onLoad = () => {
+      if (iframe && isBookingLocation(iframe)) setBookingStep(true)
+    }
+    const onMsg = (e: MessageEvent) => {
+      if (e.origin !== window.location.origin) return
+      if (e.data?.type === 'nestre-survey-booking') setBookingStep(true)
+    }
+    iframe?.addEventListener('load', onLoad)
+    window.addEventListener('message', onMsg)
+    return () => {
+      iframe?.removeEventListener('load', onLoad)
+      window.removeEventListener('message', onMsg)
+    }
+  }, [open])
+
+  // Hide the intro, then pin the booking iframe to the top of the modal body
+  // so Next sits in the visible area without the user hunting for a scrollbar.
+  useEffect(() => {
+    if (!bookingStep) return
+    const pin = () => {
+      const body = bodyRef.current
+      const iframe = iframeRef.current
+      if (!body || !iframe) return
+      const b = body.getBoundingClientRect()
+      const f = iframe.getBoundingClientRect()
+      body.scrollTop += f.top - b.top
+    }
+    const raf = requestAnimationFrame(() => requestAnimationFrame(pin))
+    const t1 = window.setTimeout(pin, 50)
+    const t2 = window.setTimeout(pin, 400)
+    return () => {
+      cancelAnimationFrame(raf)
+      window.clearTimeout(t1)
+      window.clearTimeout(t2)
+    }
+  }, [bookingStep])
+
+  // Fallback cue only when the booking widget is still taller than the body
+  // (e.g. the later calendar step). Hidden once the user scrolls to the end.
+  useEffect(() => {
+    if (!bookingStep) {
+      setShowScrollCue(false)
+      return
+    }
+    const body = bodyRef.current
+    const iframe = iframeRef.current
+    if (!body) return
+    const check = () => {
+      const overflow = body.scrollHeight - body.clientHeight > 16
+      const atBottom = body.scrollTop + body.clientHeight >= body.scrollHeight - 8
+      setShowScrollCue(overflow && !atBottom)
+    }
+    check()
+    const ro = new ResizeObserver(check)
+    ro.observe(body)
+    if (iframe) ro.observe(iframe)
+    body.addEventListener('scroll', check, { passive: true })
+    window.addEventListener('resize', check)
+    const t = window.setTimeout(check, 400)
+    return () => {
+      ro.disconnect()
+      body.removeEventListener('scroll', check)
+      window.removeEventListener('resize', check)
+      window.clearTimeout(t)
+    }
+  }, [bookingStep])
+
   const modal = (
     <>
       <div className="survey-backdrop" aria-hidden onClick={close} />
@@ -184,8 +279,8 @@ export function SurveyCtaButton({
           <h2 id={headingId} className="survey-dialog-title">{title}</h2>
           <button type="button" ref={closeRef} className="survey-close" aria-label="Close" onClick={close}>×</button>
         </div>
-        <div className="survey-dialog-body">
-          {isConsultSurvey(surveyId) && (
+        <div className="survey-dialog-body" ref={bodyRef}>
+          {isConsultSurvey(surveyId) && !bookingStep && (
             <div className="survey-intro">
               <img
                 className="survey-intro-photo"
@@ -204,9 +299,18 @@ export function SurveyCtaButton({
             scrolling="no"
             data-cookie-consent="true"
             data-cookie-consent-provider="auto"
+            ref={iframeRef}
           />
-          {isConsultSurvey(surveyId) && <SurveyTurnstile />}
+          {isConsultSurvey(surveyId) && !bookingStep && <SurveyTurnstile />}
         </div>
+        {bookingStep && showScrollCue && (
+          <p className="survey-scroll-cue" aria-hidden="true">
+            Scroll to continue
+            <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M3.5 6.5 8 11l4.5-4.5" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </p>
+        )}
       </div>
     </>
   )
