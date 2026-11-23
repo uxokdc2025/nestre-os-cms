@@ -35,8 +35,23 @@ export function rewriteSurveyHtml(html: string, surveyId: string, extraHead = ''
     .slide-no-1 .form-builder--image,
     .slide-no-1 .heading-element { display: none !important; }
   </style>`
-  if (html.includes('</head>')) return html.replace('</head>', `${css}</head>`)
-  return css + html
+  // Tell the parent dialog to hide the Chloe intro and pin the iframe as soon
+  // as the thank-you "Book Discovery Call" link is clicked, before the iframe
+  // navigates to HighLevel's booking app.
+  const hook = `<script id="nestre-survey-booking-hook">
+(function(){
+  document.addEventListener('click',function(e){
+    var t=e.target;
+    if(!t||!t.closest)return;
+    if(t.closest('.thank-you-message a')){
+      try{window.parent.postMessage({type:'nestre-survey-booking'},window.location.origin)}catch(err){}
+    }
+  },true);
+})();
+</script>`
+  const inject = css + hook
+  if (html.includes('</head>')) return html.replace('</head>', `${inject}</head>`)
+  return inject + html
 }
 
 // `extraHead` is injected at the top of the head — the route passes the submit
