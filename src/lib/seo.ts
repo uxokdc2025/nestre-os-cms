@@ -43,7 +43,7 @@ const SAME_AS = [OFFICIAL_SITE, APP_STORE_IOS, APP_STORE_ANDROID, PODCAST_SPOTIF
 const LABS = [
   {
     name: 'NESTRE Neuro Lab — Lake Nona',
-    street: '6775 Chopra Terrace',
+    street: '6775 Chopra Ter',
     locality: 'Orlando', region: 'FL', postal: '32827', country: 'US',
     inside: 'Inside Lake Nona Performance Club',
   },
