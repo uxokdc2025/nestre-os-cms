@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 const cfg: ScheduleConfig = {
   location: 'Lake Nona Performance Club',
   heroImage: '/api/media/file/lnpc-lake-nona.jpg',
-  address: 'Lake Nona Performance Club · 6775 Chopra Terrace, Orlando, FL 32827',
+  address: 'Lake Nona Performance Club · 6775 Chopra Ter, Orlando, FL 32827',
   consultationId: '2112997',
   jumpstartId: '2108854',
   hours: '10:00am – 5:00pm (EST)',
