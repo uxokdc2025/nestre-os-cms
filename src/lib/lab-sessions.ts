@@ -13,6 +13,10 @@ export type LabSession = {
 export const LAB_SESSIONS_HEADING =
   'Start with a consultation. Then train for what matters to you.'
 
+export const LAB_SESSIONS_CONSULT_HEADING = 'Start with a consultation.'
+
+export const LAB_SESSIONS_OFFERINGS_HEADING = 'Then train for what matters to you.'
+
 export const LAB_SESSIONS: LabSession[] = [
   {
     title: 'NESTRE Consultation',
@@ -34,7 +38,7 @@ export const LAB_SESSIONS: LabSession[] = [
   },
   {
     title: 'NESTRE Executive Training',
-    duration: '30 min',
+    duration: '45 min',
     lead: 'Personalized training, month to month.',
     body: 'Combines Signature sessions built around your data with Everyday Performer sessions focused on specific goals.',
     isNew: true,
