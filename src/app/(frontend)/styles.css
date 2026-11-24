@@ -1733,3 +1733,96 @@ main[data-page="home"] .hero:not(.quote):not(.veterans) .btns { margin-top: 18px
   .adl-final { padding: 64px 0; }
   .adl-footer .wrap { flex-direction: column; }
 }
+
+/* ---------- Neuro Labs session types (#lab-sessions) ---------- */
+#lab-sessions, #lab-locations { scroll-margin-top: 76px; }
+.labsess-heading { max-width: 22ch; }
+.labsess-card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 28px 28px 26px;
+}
+.labsess-consult { padding: 32px 32px 30px; }
+.labsess-card-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px 16px;
+}
+.labsess-title {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+}
+.labsess-duration {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--aqua-ink);
+}
+.labsess-new {
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: var(--aqua);
+  color: var(--ink);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.labsess-lead {
+  margin: 14px 0 0;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.labsess-body {
+  margin: 8px 0 0;
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--muted, #4a5c62);
+  max-width: 68ch;
+}
+.labsess-note {
+  margin: 16px 0 0;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.45;
+  color: var(--aqua-ink);
+}
+.labsess-train {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-top: 18px;
+}
+.labsess-train .labsess-card { height: 100%; display: flex; flex-direction: column; }
+.labsess-train .labsess-body { max-width: none; }
+.labsess-cta { justify-content: center; margin-top: 36px; }
+.labsess-home-link {
+  color: var(--aqua-ink);
+  font-weight: 600;
+  min-height: 52px;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+.labsess-home-link:hover { color: var(--ink); }
+@media (max-width: 900px) {
+  .labsess-train { grid-template-columns: 1fr; }
+  .labsess-consult { padding: 28px 24px 26px; }
+}

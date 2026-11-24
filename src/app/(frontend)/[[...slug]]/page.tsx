@@ -54,9 +54,17 @@ export default async function Page({ params, searchParams }: { params: Promise<{
   if (!page) notFound()
 
   const region = await getRegion()
-  const layout = page.layout || []
-  const faq = faqGraph(layout, region)
   const slugStr = slug?.join('/') || 'home'
+  const layout = [...(page.layout || [])]
+  // Chloe 26.11.23: session types sit after the consultation intro and before
+  // the "Find your place" location cards on /neuro-labs.
+  if (slugStr === 'neuro-labs') {
+    const i = layout.findIndex((b: any) => b?.blockType === 'locations')
+    if (i >= 0 && !layout.some((b: any) => b?.blockType === 'labSessions')) {
+      layout.splice(i, 0, { blockType: 'labSessions', id: 'lab-sessions' })
+    }
+  }
+  const faq = faqGraph(layout, region)
   // Mindset ring lives only on the /appv2 sandbox now — removed from live /the-app.
   const afterHero = slugStr === 'appv2' ? <MindsetRing /> : undefined
   return (

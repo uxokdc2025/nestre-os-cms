@@ -8,6 +8,8 @@ import { MindsetRingCard } from './MindsetRingCard'
 import { ArrowIcon, splitArrowLabel } from './ArrowIcon'
 import { consultCostAnswer, CONSULT_COST_TOKEN, type Region } from '@/lib/consult-pricing'
 import { SurveyCtaButton } from './SurveyModal'
+import { ConsultFooterLink } from './ConsultFooterLink'
+import { LabSessions } from './LabSessions'
 
 // Founder (Dr. Tommy Shavers) NESTRE Mindset Profile — shown in place of his photo
 // in the Our Story "A different view…" section.
@@ -50,19 +52,28 @@ const parseScorecard = (body?: string | null): Metric[] | null => {
   }
 }
 
-function Buttons({ ctas }: { ctas?: CTA[] }) {
+function isConsultCta(c: CTA) {
+  // Empty, "#", or /book-a-consultation — same location picker the header/footer use.
+  const href = (c.href || '').trim()
+  return !c.survey && /book a consultation/i.test(c.label || '') && (!href || href === '#' || href === '/book-a-consultation')
+}
+
+function Buttons({ ctas, after }: { ctas?: CTA[]; after?: React.ReactNode }) {
   // "What to Expect" was a placeholder CTA — removed per design.
   const list = ctas?.filter((c) => !/what to expect/i.test(c.label || ''))
-  if (!list?.length) return null
+  if (!list?.length && !after) return null
   return (
     <div className="btns">
-      {list.map((c, i) => {
+      {list?.map((c, i) => {
         const cls = `btn ${c.style || 'aqua'}`
         // A CMS label typed as "Learn more →" renders the outline ↗ icon instead
         // of the arrow character, which iOS/macOS draw as an Apple emoji.
         const { text, arrow } = splitArrowLabel(c.label || '')
         if (c.survey) return <SurveyCtaButton key={i} surveyId={c.survey} label={text || 'Get started'} className={cls} />
         const label = <>{text}{arrow && <ArrowIcon />}</>
+        if (isConsultCta(c)) {
+          return <ConsultFooterLink key={i} className={cls}>{label}</ConsultFooterLink>
+        }
         return isInternal(c.href) ? (
           <Link key={i} className={cls} href={c.href!}>{label}</Link>
         ) : (
@@ -71,6 +82,7 @@ function Buttons({ ctas }: { ctas?: CTA[] }) {
           </a>
         )
       })}
+      {after}
     </div>
   )
 }
@@ -231,7 +243,18 @@ export function Block({ block, region }: { block: any; region?: Region }) {
             {block.eyebrow && <p className="eyebrow">{block.eyebrow}</p>}
             {block.heading && <h2 className="h2" style={{ marginTop: 16, whiteSpace: 'pre-line' }}>{block.heading}</h2>}
             {block.body && <p className="lead muted" style={{ whiteSpace: 'pre-line' }}>{block.body}</p>}
-            <Buttons ctas={block.ctas} />
+            <Buttons
+              ctas={block.ctas}
+              after={
+                /your brain deserves/i.test(block.heading || '') &&
+                !(block.ctas || []).some((c: CTA) => /explore lab sessions/i.test(c.label || '') || (c.href || '').includes('#lab-sessions')) ? (
+                  <Link className="btn link labsess-home-link" href="/neuro-labs#lab-sessions">
+                    Explore Lab Sessions
+                    <ArrowIcon />
+                  </Link>
+                ) : null
+              }
+            />
             <div className="panels" tabIndex={0} role="group" aria-label={block.heading || 'Panels'}>
               {block.panels?.map((p: any, i: number) => (
                 <div key={i} className="panel">
@@ -414,6 +437,8 @@ export function Block({ block, region }: { block: any; region?: Region }) {
       }))
       return <LocationsMap eyebrow={block.eyebrow} heading={block.heading} body={block.body} items={items} />
     }
+    case 'labSessions':
+      return <LabSessions />
     case 'richText':
       return (
         <section className={`sec ${block.theme || 'paper'}`}>
