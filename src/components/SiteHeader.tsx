@@ -8,6 +8,7 @@ import { SurveyCtaButton } from './SurveyModal'
 import { ArrowIcon } from './ArrowIcon'
 import { GET_STARTED } from '@/lib/get-started'
 import { AD_LANDING } from '@/lib/ad-landing'
+import { HOLIDAY_PATH } from '@/lib/holiday-campaign'
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // Internal links use next/link for instant client-side nav (no reload/flash);
@@ -58,6 +59,9 @@ export function SiteHeader({ items, cta, logoUrl }: { items: any[]; cta?: any; l
   // header, carrying that page's own CTA: the quiz popup on the discovery pages,
   // the "Choose your location." menu over the two consultation calendars on the
   // consultation ones — the same menu the main site's Book Now button opens.
+  // The holiday landing page draws its own header (logo + Book a consultation).
+  if (pathname === HOLIDAY_PATH) return null
+
   const ad = AD_LANDING[pathname]
   if (ad) {
     return (
