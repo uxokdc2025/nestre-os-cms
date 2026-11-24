@@ -1,5 +1,5 @@
-// Per-location "Book Training" Acuity links (catalog add-to-cart). One booking
-// link per NESTRE location — used by the LocationsMap "Book Training" CTA (home +
+// Per-location Acuity catalog add-to-cart links. One booking link per NESTRE
+// location — used by the LocationsMap "Book a Consultation" CTA (home +
 // /neuro-labs) and by each location's schedule page. Keep the mapping here so the
 // cards, the schedule pages, and anywhere else can never drift apart.
 const BOOK_TRAINING_BY_NAME: Record<string, string> = {

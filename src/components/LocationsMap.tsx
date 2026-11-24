@@ -59,7 +59,7 @@ export function LocationsMap({
   const current = locs[Math.min(active, locs.length - 1)]
 
   return (
-    <section className="sec paper locations-sec">
+    <section id="lab-locations" className="sec paper locations-sec">
       <div className="wrap">
         {eyebrow && <p className="eyebrow">{eyebrow}</p>}
         {heading && <h2 className="h2" style={{ marginTop: 16, whiteSpace: 'pre-line' }}>{heading}</h2>}
@@ -122,7 +122,7 @@ export function LocationsMap({
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={(e) => e.stopPropagation()}
-                      >Book Training</a>
+                      >Book a Consultation</a>
                     </div>
                   </div>
                 </div>
