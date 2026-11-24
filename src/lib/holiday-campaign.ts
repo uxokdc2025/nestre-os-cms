@@ -91,7 +91,7 @@ export const HOLIDAY_CAMPAIGN: HolidayCampaign = {
   ctaLabel: 'Book a consultation',
   phone: { display: '689-710-3260', tel: '6897103260' },
   hero: {
-    eyebrow: 'The Black Friday offer',
+    eyebrow: 'The NESTRE Holiday Offer',
     headline: 'More of you|in every season.',
     intro:
       'Invest in your mind and brain for the life you want to live — and the people you want to share it with.',
@@ -105,7 +105,7 @@ export const HOLIDAY_CAMPAIGN: HolidayCampaign = {
     sparkles: true,
   },
   offer: {
-    caption: 'Your Black Friday offer',
+    caption: 'Your NESTRE Holiday Offer',
     label: 'Consultation + first training session',
     duration: '90 minutes',
     durationDetail: '60-minute consultation + 30-minute training',
@@ -163,5 +163,5 @@ export const HOLIDAY_CAMPAIGN: HolidayCampaign = {
   },
   footer: { tagline: 'Life is the performance. Train for it.', areas: 'Lake Nona · Winter Park' },
   disclaimer:
-    'Offer ends January 1, 2027. Includes one 60-minute consultation and one 30-minute training session. Prices subject to change. Additional terms and eligibility restrictions may apply.',
+    'Offer ends January 7, 2027. Includes one 60-minute consultation and one 30-minute training session. Prices subject to change. Additional terms and eligibility restrictions may apply.',
 }
