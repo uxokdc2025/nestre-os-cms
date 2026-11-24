@@ -39,6 +39,10 @@ export function HolidayMotion() {
       let dragStart = 0
       let scrollStart = 0
       let moved = false
+      // After Previous/Next or a drag, hold the drift briefly so the smooth
+      // scroll can finish (the reference set this but never read it, so its
+      // buttons were cancelled by the drift after a few pixels).
+      let resumeAt = 0
       const goalStep = () => originals[0].getBoundingClientRect().width + parseFloat(getComputedStyle(track).columnGap || getComputedStyle(track).gap || '0')
       const loopWidth = () => {
         const firstClone = track.children[originals.length] as HTMLElement | undefined
@@ -57,6 +61,7 @@ export function HolidayMotion() {
       setPauseLabel()
       on(pause, 'click', () => { userPaused = !userPaused; setPauseLabel() })
       const move = (direction: number) => {
+        resumeAt = performance.now() + 4500
         if (direction < 0 && track.scrollLeft < goalStep()) track.scrollLeft += loopWidth()
         track.scrollBy({ left: goalStep() * direction, behavior: reduced.matches ? 'instant' : 'smooth' })
       }
@@ -77,7 +82,7 @@ export function HolidayMotion() {
         const delta = e.clientX - dragStart
         if (Math.abs(delta) > 6) { moved = true; track.classList.add('nh-is-dragging'); track.scrollLeft = scrollStart - delta }
       }) as EventListener)
-      on(window, 'pointerup', () => { dragging = false; track.classList.remove('nh-is-dragging') })
+      on(window, 'pointerup', () => { if (dragging) resumeAt = performance.now() + 4500; dragging = false; track.classList.remove('nh-is-dragging') })
       on(track, 'click', ((e: MouseEvent) => { if (moved) { e.preventDefault(); e.stopPropagation(); moved = false } }) as EventListener, true)
       on(track, 'dragstart', (e) => e.preventDefault())
       const io = new IntersectionObserver((entries) => { visible = entries[0].isIntersecting }, { threshold: 0 })
@@ -90,7 +95,7 @@ export function HolidayMotion() {
       const tick = (now: number) => {
         const dt = lastTime ? Math.min(now - lastTime, 50) : 0
         lastTime = now
-        if (visible && !document.hidden && !userPaused && !dragging) {
+        if (visible && !document.hidden && !userPaused && !dragging && now >= resumeAt) {
           const pixels = pixelRemainder + (28 * dt) / 1000
           const step = Math.floor(pixels)
           pixelRemainder = pixels - step

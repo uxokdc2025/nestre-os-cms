@@ -1,7 +1,7 @@
 /* Holiday landing page (/holiday). Edit copy/photos in src/lib/holiday-campaign.ts.
    Section 1: neutralise the site-wide element styles (styles.css) so the page
    renders like the standalone reference. Section 2: the reference design's CSS,
-   scoped under .nh-page with nh- prefixes (generated, see header comment). */
+   scoped under .nh-page with nh- prefixes. */
 
 /* ── 1. Site resets for this page ───────────────────────────────────────── */
 .nh-page{display:block;min-height:100vh;line-height:normal;-webkit-font-smoothing:auto}
@@ -20,7 +20,9 @@ html:has(.nh-page) .cursor-ring{display:none!important}
 }
 
 /* ── 2. Reference design ────────────────────────────────────────────────── */
-/* GENERATED from the reference design by tools/scope_css.py — scoped under .nh-page. */
+/* Ported from the reference design (Nov 24, 2026), every rule scoped under .nh-page and
+   every class/id prefixed nh-. Safe to edit directly. Note: write border-image-source:none,
+   not border-image:none — the CSS minifier drops the latter. */
 .nh-page{--ink:#112e43;--blue:#668fab;--mint:#a6ddda;--gold:#aa8751;--paper:#fcfcf9;--pale:#eff8f9}
 .nh-page *{box-sizing:border-box}
 .nh-page{margin:0;color:var(--ink);background:var(--paper);font-family:var(--font-mulish),Mulish,Arial,sans-serif}
@@ -500,7 +502,7 @@ html:has(.nh-page) .cursor-ring{display:none!important}
 .nh-page .nh-sample-animate .nh-mindset-sample .nh-ring-logo,
 .nh-page .nh-sample-animate .nh-mindset-sample h4{opacity:1;transform:none;transition:none}
 }
-.nh-page .nh-inline-locations{border-image:none;border-left:3px solid var(--gold)}
+.nh-page .nh-inline-locations{border-image-source:none;border-left:3px solid var(--gold)}
 .nh-page .nh-sample-top>strong{color:#8fc1df}
 .nh-page .nh-profile-ring svg{overflow:visible;filter:drop-shadow(0 0 5px #6fecfb55)}
 .nh-page .nh-profile-ring svg g circle{filter:drop-shadow(0 0 3px currentColor)}
