@@ -1737,6 +1737,16 @@ main[data-page="home"] .hero:not(.quote):not(.veterans) .btns { margin-top: 18px
 /* ---------- Neuro Labs session types (#lab-sessions) ---------- */
 #lab-sessions, #lab-locations { scroll-margin-top: 76px; }
 .labsess-heading { max-width: 22ch; }
+.labsess-consult-block .labsess-heading { max-width: 16ch; }
+.labsess-offerings {
+  margin-top: 64px;
+  padding-top: 64px;
+  border-top: 1px solid var(--line);
+}
+.labsess-offerings .labsess-heading { max-width: 18ch; }
+.labsess-consult-block .labsess-consult { margin-top: 28px; }
+.labsess-offerings .labsess-train { margin-top: 28px; }
+.labsess-consult-block .labsess-cta { justify-content: flex-start; margin-top: 28px; }
 .labsess-card {
   background: var(--white);
   border: 1px solid var(--line);
@@ -1825,4 +1835,5 @@ main[data-page="home"] .hero:not(.quote):not(.veterans) .btns { margin-top: 18px
 @media (max-width: 900px) {
   .labsess-train { grid-template-columns: 1fr; }
   .labsess-consult { padding: 28px 24px 26px; }
+  .labsess-offerings { margin-top: 48px; padding-top: 48px; }
 }
