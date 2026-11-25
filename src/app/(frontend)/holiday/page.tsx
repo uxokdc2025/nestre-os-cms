@@ -3,14 +3,14 @@ import type { CSSProperties } from 'react'
 import Link from 'next/link'
 import { Mulish } from 'next/font/google'
 import { SITE_URL, pageGraphs } from '@/lib/seo'
-import { HOLIDAY_CAMPAIGN as C, type HolidayImage } from '@/lib/holiday-campaign'
+import { HOLIDAY_CAMPAIGN as C, holidayDisclaimer, type HolidayImage } from '@/lib/holiday-campaign'
 import { HolidayMotion } from './HolidayMotion'
 import './holiday.css'
 
-// Holiday landing page (Chloe, Nov 24 2026). All copy, offer, disclaimer and
-// photos come from src/lib/holiday-campaign.ts — edit that file for the next
-// holiday. Markup mirrors the approved reference design one-to-one; classes
-// carry an `nh-` prefix so the page's styles can't leak into the rest of the site.
+// Holiday landing page (Chloe, updated Nov 25 2026). All copy, offer, gift,
+// testimonials, disclaimer and photos come from src/lib/holiday-campaign.ts —
+// edit that file for the next holiday. Markup mirrors the approved reference
+// design; classes carry an `nh-` prefix so styles can't leak into the rest of the site.
 
 const mulish = Mulish({ subsets: ['latin'], weight: ['400', '500', '600', '700', '800', '900'], variable: '--font-mulish', display: 'swap' })
 
@@ -41,6 +41,20 @@ function Book({ className = 'nh-btn nh-booking', label = C.ctaLabel }: { classNa
     <a className={className} href={C.bookingUrl} target="_blank" rel="noopener noreferrer">
       {label}
     </a>
+  )
+}
+
+function DualCtas({ className }: { className: string }) {
+  return (
+    <div className={className}>
+      <a className="nh-btn nh-booking" href={C.bookingUrl} target="_blank" rel="noopener noreferrer">
+        {C.ctaLabel}
+      </a>
+      <span className="nh-or">{C.orLabel}</span>
+      <a className="nh-btn nh-gift-button" href={C.giftUrl} target="_blank" rel="noopener noreferrer">
+        {C.giftLabel}
+      </a>
+    </div>
   )
 }
 
@@ -122,7 +136,7 @@ export default function HolidayPage() {
                 </h2>
               </div>
             )}
-            <Book />
+            <DualCtas className="nh-hero-actions" />
           </div>
           <figure>
             <img src={C.hero.image.src} width={C.hero.image.width} height={C.hero.image.height} alt={C.hero.image.alt} fetchPriority="high" style={C.hero.image.objectPosition ? { objectPosition: C.hero.image.objectPosition } : undefined} />
@@ -173,7 +187,12 @@ export default function HolidayPage() {
                   </div>
                 ))}
               </div>
-              <Book />
+              <div className="nh-gift-purchase">
+                <h3>{C.gift.heading}</h3>
+                <p className="nh-gift-intro">{C.gift.intro}</p>
+                <p className="nh-gift-description">{C.gift.description}</p>
+                <DualCtas className="nh-gift-actions" />
+              </div>
             </div>
             <aside className="nh-data-sample nh-reveal-item" aria-labelledby="nh-data-title">
               <div className="nh-sample-top">
@@ -247,6 +266,41 @@ export default function HolidayPage() {
             <span id="nh-goalPosition" aria-live="polite">1 of {C.goals.cards.length}</span>
           </div>
         </section>
+
+        <section className="nh-testimonials" aria-labelledby="nh-testimonials-title">
+          <div className="nh-testimonials-heading nh-reveal-item">
+            <h2 id="nh-testimonials-title">{C.testimonials.heading}</h2>
+            <div className="nh-testimonial-controls">
+              <button type="button" id="nh-testimonialPrevious" aria-label="Previous testimonial">Previous</button>
+              <button type="button" id="nh-testimonialNext" aria-label="Next testimonial">Next</button>
+            </div>
+          </div>
+          <div
+            className="nh-testimonial-track"
+            id="nh-testimonialTrack"
+            tabIndex={0}
+            role="region"
+            aria-label="Client testimonials"
+          >
+            {C.testimonials.items.map((t) => (
+              <article key={t.name} className="nh-testimonial-card" aria-label={`Testimonial from ${t.name}`}>
+                <img
+                  alt={t.image.alt}
+                  width={t.image.width}
+                  height={t.image.height}
+                  loading="lazy"
+                  src={t.image.src}
+                  style={t.image.objectPosition ? { objectPosition: t.image.objectPosition } : undefined}
+                />
+                <blockquote>{t.quote}</blockquote>
+                <div className="nh-testimonial-author">
+                  <strong>{t.name}</strong>
+                  <p>{t.bio}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
       </main>
       <footer className="nh-reveal-item">
         <strong>{C.footer.tagline}</strong>
@@ -256,7 +310,7 @@ export default function HolidayPage() {
           <a href={`tel:${C.phone.tel}`}>{C.phone.display}</a>
         </div>
       </footer>
-      <div className="nh-offer-disclaimer">{C.disclaimer}</div>
+      <div className="nh-offer-disclaimer">{holidayDisclaimer(C)}</div>
       <HolidayMotion />
     </div>
   )

@@ -9,8 +9,10 @@ import { useEffect } from 'react'
 //  • the photo carousel drifts continuously (keeps moving on hover and while
 //    the page scrolls), loops seamlessly, has Pause / Previous / Next, drag and
 //    arrow keys
+//  • testimonials are manual only (swipe + Previous/Next); no autoplay and no
+//    wheel interception, so vertical page scrolling is never trapped
 // Everything respects prefers-reduced-motion (no reveals, no drift, values shown
-// at their final state).
+// at their final state, testimonial buttons still work instantly).
 export function HolidayMotion() {
   useEffect(() => {
     const root = document.querySelector<HTMLElement>('[data-holiday-page]')
@@ -179,20 +181,51 @@ export function HolidayMotion() {
         }
         frames.set(el, requestAnimationFrame(frame))
       }
+      // Observe the whole sample so every bar, number and the ring start and
+      // reset together. Per-row 0.45 thresholds left Memory or the profile
+      // percentages at 0 when only part of the sample was on screen.
       const bo = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
-          if (!entry.isIntersecting) reset(entry.target)
-          else if (entry.intersectionRatio >= 0.45) run(entry.target)
+          if (!entry.isIntersecting) jobs.forEach((_, el) => reset(el))
+          else if (entry.intersectionRatio >= 0.2) jobs.forEach((_, el) => run(el))
         })
-      }, { threshold: [0, 0.45] })
-      jobs.forEach((_, el) => bo.observe(el))
+      }, { threshold: [0, 0.2, 0.35, 0.5] })
+      bo.observe(sample)
       cleanups.push(() => bo.disconnect())
       const onReduced = (e: MediaQueryListEvent) => {
         if (e.matches) { bo.disconnect(); jobs.forEach((draw, el) => { reset(el); el.classList.add('nh-metric-loaded'); draw(1) }) }
-        else jobs.forEach((_, el) => { reset(el); bo.observe(el) })
+        else { jobs.forEach((_, el) => reset(el)); bo.observe(sample) }
       }
       reduced.addEventListener('change', onReduced)
       cleanups.push(() => reduced.removeEventListener('change', onReduced))
+    }
+
+    // ── Testimonials: manual swipe only, never traps vertical scrolling ────
+    const quotesTrack = root.querySelector<HTMLElement>('#nh-testimonialTrack')
+    const quotesPrev = root.querySelector<HTMLButtonElement>('#nh-testimonialPrevious')
+    const quotesNext = root.querySelector<HTMLButtonElement>('#nh-testimonialNext')
+    if (quotesTrack && quotesPrev && quotesNext) {
+      const updateQuoteControls = () => {
+        quotesPrev.disabled = quotesTrack.scrollLeft <= 2
+        quotesNext.disabled = quotesTrack.scrollLeft >= quotesTrack.scrollWidth - quotesTrack.clientWidth - 2
+      }
+      const moveQuote = (direction: number) => {
+        const first = quotesTrack.firstElementChild as HTMLElement | null
+        if (!first) return
+        const step = first.getBoundingClientRect().width + parseFloat(getComputedStyle(quotesTrack).columnGap || getComputedStyle(quotesTrack).gap || '0')
+        quotesTrack.scrollBy({ left: direction * step, behavior: reduced.matches ? 'instant' : 'smooth' })
+      }
+      on(quotesPrev, 'click', () => moveQuote(-1))
+      on(quotesNext, 'click', () => moveQuote(1))
+      on(quotesTrack, 'scroll', updateQuoteControls, { passive: true })
+      on(window, 'resize', updateQuoteControls)
+      on(quotesTrack, 'keydown', ((e: KeyboardEvent) => {
+        if (e.target === quotesTrack && (e.key === 'ArrowLeft' || e.key === 'ArrowRight')) {
+          e.preventDefault()
+          moveQuote(e.key === 'ArrowRight' ? 1 : -1)
+        }
+      }) as EventListener)
+      updateQuoteControls()
     }
 
     return () => {

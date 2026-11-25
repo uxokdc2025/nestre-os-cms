@@ -2,19 +2,22 @@
 // HOLIDAY LANDING PAGE — the one file to edit for the next holiday.
 //
 // Route: /holiday (src/app/(frontend)/holiday/page.tsx). Not in the main nav.
-// Design: Chloe DeLuca's reference (Nov 24, 2026),
+// Design: Chloe DeLuca's reference (updated Nov 25, 2026),
 //   https://nestre-holiday-page-chloe.gigglyledge2.chatgpt.site
 //
 // To run a new holiday / promotion:
-//   1. Change the text below (eyebrow, headline, intro, offer, disclaimer, …).
-//      A "|" in `headline` is a line break.
+//   1. Change the text below (eyebrow, headline, intro, offer, gift copy,
+//      testimonials, disclaimer, …). A "|" in `headline` is a line break.
 //   2. To change a photo, drop the new file in /public/holiday/ (or
-//      /public/holiday/goals/ for the carousel) and point `src` at it.
+//      /public/holiday/goals/ for the carousel, /public/holiday/testimonials/
+//      for quote portraits) and point `src` at it.
 //   3. No offer this time? Set `hero.offer` to null and `offer.promo` / the
 //      price lines as needed; empty `promoCode` / `terms` lines are hidden.
-//   4. Every "Book a consultation" button (header, hero, offer, includes and
-//      every carousel card) uses `bookingUrl` — change it in one place.
-//   5. Ship it like any other change: staging → team review → production.
+//   4. "Book a consultation" buttons use `bookingUrl`. "Purchase as a Gift"
+//      buttons use `giftUrl`. Change each in one place. Both open in a new tab.
+//   5. The offer end date lives in `offerEndsOn` only — the disclaimer is
+//      built from that field. Change the date there, nowhere else.
+//   6. Ship it like any other change: staging → team review → production.
 // Layout, animations and styles live in holiday.css / HolidayMotion.tsx and
 // normally don't need touching.
 // ─────────────────────────────────────────────────────────────────────────────
@@ -31,13 +34,32 @@ export type HolidayImage = {
   objectPosition?: string
 }
 
+export type HolidayTestimonial = {
+  name: string
+  bio: string
+  quote: string
+  image: HolidayImage
+}
+
 export type HolidayCampaign = {
   path: string
   meta: { title: string; description: string }
   /** Every "Book a consultation" button links here (opens in a new tab). */
   bookingUrl: string
   ctaLabel: string
+  /** Every "Purchase as a Gift" button links here (opens in a new tab). */
+  giftUrl: string
+  giftLabel: string
+  /** Word between the two checkout buttons, e.g. "OR". */
+  orLabel: string
   phone: { display: string; tel: string }
+  /**
+   * Single editable offer end date. The disclaimer is built from this.
+   * Chloe's Nov 25 email says January 1, 2027 (she earlier said January 7).
+   */
+  offerEndsOn: string
+  /** Sentence after the date in the footer disclaimer. */
+  disclaimerRest: string
   hero: {
     /** Small gold-ruled label above the headline. */
     eyebrow: string
@@ -68,6 +90,7 @@ export type HolidayCampaign = {
   }
   includes: { heading: string; items: string[]; bonus: string }
   locations: { heading: string; places: { name: string; lines: string[] }[] }
+  gift: { heading: string; intro: string; description: string }
   dataSample: {
     title: string
     body: string
@@ -75,9 +98,12 @@ export type HolidayCampaign = {
     profile: { cerebral: number; alpha: number; prime: number; caption: string }
   }
   goals: { heading: string; subheading: string; hint: string; cards: { title: string; image: HolidayImage }[] }
+  testimonials: { heading: string; items: HolidayTestimonial[] }
   footer: { tagline: string; areas: string }
-  /** Small print at the very bottom of the page. */
-  disclaimer: string
+}
+
+export function holidayDisclaimer(campaign: Pick<HolidayCampaign, 'offerEndsOn' | 'disclaimerRest'>): string {
+  return `Offer ends ${campaign.offerEndsOn}. ${campaign.disclaimerRest}`
 }
 
 export const HOLIDAY_CAMPAIGN: HolidayCampaign = {
@@ -89,9 +115,15 @@ export const HOLIDAY_CAMPAIGN: HolidayCampaign = {
   },
   bookingUrl: 'https://app.acuityscheduling.com/schedule.php?owner=23912005&appointmentType=100859077',
   ctaLabel: 'Book a consultation',
+  giftUrl: 'https://app.acuityscheduling.com/catalog/1f29f701/?productId=2328855&clearCart=true',
+  giftLabel: 'Purchase as a Gift',
+  orLabel: 'OR',
   phone: { display: '689-710-3260', tel: '6897103260' },
+  offerEndsOn: 'January 1, 2027',
+  disclaimerRest:
+    'Includes one 60-minute consultation and one 30-minute training session. Prices subject to change. Additional terms and eligibility restrictions may apply.',
   hero: {
-    eyebrow: 'The NESTRE Holiday Offer',
+    eyebrow: 'NESTRE Holiday Offer',
     headline: 'More of you|in every season.',
     intro:
       'Invest in your mind and brain for the life you want to live — and the people you want to share it with.',
@@ -105,7 +137,7 @@ export const HOLIDAY_CAMPAIGN: HolidayCampaign = {
     sparkles: true,
   },
   offer: {
-    caption: 'Your NESTRE Holiday Offer',
+    caption: 'Your Holiday Offer',
     label: 'Consultation + first training session',
     duration: '90 minutes',
     durationDetail: '60-minute consultation + 30-minute training',
@@ -135,6 +167,12 @@ export const HOLIDAY_CAMPAIGN: HolidayCampaign = {
       { name: 'Neurovations Clinic in Winter Park', lines: ['2200 Lee Rd', 'Winter Park, FL 32789', 'United States'] },
     ],
   },
+  gift: {
+    heading: 'Want to purchase this offer for someone else?',
+    intro: 'Send them a digital gift card!',
+    description:
+      'Give a friend or loved one a 60-minute NESTRE consultation, with their first 30-minute training session on us. Their digital gift card includes instructions for booking.',
+  },
   dataSample: {
     title: 'Your data. A conversation.',
     body: 'An example of how cognitive performance findings can be presented.',
@@ -156,12 +194,45 @@ export const HOLIDAY_CAMPAIGN: HolidayCampaign = {
       { title: 'Responding to high pressure.', image: { src: '/holiday/goals/pressure-selected.jpg', alt: 'A climber scaling a steep rock face at sunset', width: 1080, height: 1350 } },
       { title: 'Getting better with age.', image: { src: '/holiday/goals/age-man.jpg', alt: 'A man relaxing at home and looking ahead', width: 2048, height: 1080 } },
       { title: 'Training for greater capacity.', image: { src: '/holiday/goals/capacity-selected.jpg', alt: 'A woman with curly hair looking ahead', width: 2048, height: 1152 } },
-      { title: 'Sleeping better.', image: { src: '/holiday/goals/sleep.jpg', alt: 'A woman resting on a pillow', width: 850, height: 1100 } },
+      { title: 'Building resilience for the demands of everyday life.', image: { src: '/holiday/goals/sleep.jpg', alt: 'A woman resting on a pillow', width: 850, height: 1100 } },
       { title: 'Show up better for my family and loved ones.', image: { src: '/holiday/goals/family-selected.jpg', alt: 'Two women, one older, embracing', width: 2048, height: 1316 } },
-      { title: 'Better Relationship', image: { src: '/holiday/goals/relationship.jpg', alt: 'A couple sharing a quiet moment together', width: 2047, height: 1141, objectPosition: '60% 35%' } },
+      { title: 'Building capacity for human connection.', image: { src: '/holiday/goals/relationship.jpg', alt: 'A couple sharing a quiet moment together', width: 2047, height: 1141, objectPosition: '60% 35%' } },
+    ],
+  },
+  testimonials: {
+    heading: 'Clients reported the following',
+    items: [
+      {
+        name: 'Calvin Johnson Jr.',
+        bio: 'Detroit Lions legend, NFL Hall of Famer',
+        quote: '“NESTRE Neuro-Strength training is the future of health, wellness, and performance.”',
+        image: { src: '/holiday/testimonials/calvin.jpg', alt: 'Calvin Johnson Jr.', width: 240, height: 240, objectPosition: '50% 50%' },
+      },
+      {
+        name: 'Kyle Fraser',
+        bio: 'Women’s Professional Golfer · Former Stanford Lacrosse Athlete',
+        quote: '“I have been in athletics my entire life and have never been involved in something that has had as much of a positive impact on my athletic performance as NESTRE.”',
+        image: { src: '/holiday/testimonials/kyle.jpg', alt: 'Kyle Fraser', width: 240, height: 240 },
+      },
+      {
+        name: 'Robert Griffin III',
+        bio: 'Heisman Trophy Winner · NFL Rookie of the Year',
+        quote: '“NESTRE brain training is not just a product, it’s a lifestyle. To be able to sharpen your skills cognitively in a way that hasn’t really been done before is groundbreaking.”',
+        image: { src: '/holiday/testimonials/robert.jpg', alt: 'Robert Griffin III', width: 240, height: 240 },
+      },
+      {
+        name: 'Vonda Wright, MD',
+        bio: 'Orthopedic surgeon, author and longevity specialist',
+        quote: '“Keeping my brain at its highest capacity is a priority and NESTRE works my physical brain to peak performance.”',
+        image: { src: '/holiday/testimonials/vonda.jpg', alt: 'Vonda Wright, MD', width: 240, height: 240 },
+      },
+      {
+        name: 'Ken Williams',
+        bio: 'Former EVP, Chicago White Sox',
+        quote: '“NESTRE can be a game changer for MLB Players and Organizations.”',
+        image: { src: '/holiday/testimonials/ken.jpg', alt: 'Ken Williams', width: 240, height: 240 },
+      },
     ],
   },
   footer: { tagline: 'Life is the performance. Train for it.', areas: 'Lake Nona · Winter Park' },
-  disclaimer:
-    'Offer ends January 7, 2027. Includes one 60-minute consultation and one 30-minute training session. Prices subject to change. Additional terms and eligibility restrictions may apply.',
 }
