@@ -207,7 +207,12 @@ h1, h2, h3 { margin: 0; letter-spacing: -0.02em; line-height: 1.02; text-wrap: b
 @media (min-width: 940px) { .nav .links { display: flex; } }
 .nav .links a {
   color: rgba(255,255,255,.82); font-size: 15px; position: relative; padding: 6px 0;
-  transition: color .2s ease;
+  transition: color .2s ease; white-space: nowrap;
+}
+/* Six header items (NESTRE Holidays after For Teams) need a little less
+   gap than 28px to stay on one line at 1280. 1440 keeps the original spacing. */
+@media (min-width: 940px) and (max-width: 1399px) {
+  .nav .links { gap: 18px; }
 }
 .nav .links a::after {
   content: ''; position: absolute; left: 0; right: 100%; bottom: 0; height: 2px;
